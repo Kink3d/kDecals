@@ -2,9 +2,8 @@
 {
 	Properties 
 	{
-		_DecalTex ("Decal", 2D) = "white" {}
-		_Color ("Color", Color) = (1,1,1,1)
-		_Axis ("Axis", Int) = 0
+		[HideInInspector] _DecalTex ("Decal", 2D) = "white" {}
+		[HideInInspector] _Axis ("Axis", Int) = 0
 	}
 	Subshader 
 	{
@@ -39,7 +38,6 @@
 			float4x4 unity_Projector;
 			Texture2D _DecalTex;
 			SamplerState _Linear_Clamp_sampler;
-			fixed4 _Color;
 			int _Axis;
 			
 			v2f vert (appdata v)
@@ -55,16 +53,13 @@
 			fixed4 frag (v2f i) : SV_Target
 			{
 				fixed4 tex = _DecalTex.Sample(_Linear_Clamp_sampler, i.uv0.xy / i.uv0.w);
-
-				float4 projUVWS = mul(unity_ObjectToWorld, UNITY_PROJ_COORD(i.uv0));
 				fixed4 col;
 				if(_Axis == 2 || _Axis == 3)
-					col = lerp(fixed4(1,1,1,1), tex, saturate(sign(projUVWS.z) * abs(i.normalOS.y)));
+					col = lerp(fixed4(1,1,1,1), tex, saturate(sign(i.uv0.y) * abs(i.normalOS.y)));
 				else if(_Axis == 4 || _Axis == 5)
-					col = lerp(fixed4(1,1,1,1), tex, saturate(-sign(projUVWS.z) * abs(i.normalOS.z)));
+					col = lerp(fixed4(1,1,1,1), tex, saturate(sign(i.uv0.z) * abs(i.normalOS.z)));
 				else
-					col = lerp(fixed4(1,1,1,1), tex, saturate(-sign(projUVWS.z) * abs(i.normalOS.x)));
-				//col.rgb *= _Color.rgb;
+					col = lerp(fixed4(1,1,1,1), tex, saturate(sign(i.uv0.x) * abs(i.normalOS.x)));
 				//UNITY_APPLY_FOG_COLOR(i.fogCoord, col, fixed4(1,1,1,1));
 				return col;
 			}

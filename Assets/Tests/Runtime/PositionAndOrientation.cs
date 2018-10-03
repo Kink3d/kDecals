@@ -7,7 +7,7 @@ namespace SimpleTools.Decals.Tests
 	[RequireComponent(typeof(SimpleDecals))]
 	public class PositionAndOrientation : MonoBehaviour
 	{
-		public Material material;
+		public DecalData decalData;
 
 		void Update () 
 		{
@@ -23,7 +23,7 @@ namespace SimpleTools.Decals.Tests
 				
 				if (Physics.Raycast(ray, out hit)) 
 				{
-					Decal decal = SimpleDecals.Instance.CreateDecal(hit.transform, hit.point, hit.normal, material);
+					Decal decal = SimpleDecals.Instance.CreateDecal(hit.transform, hit.point, hit.normal, decalData);
 					if(decal == null)
 						Debug.LogError("Failed to create Decal");
 				}

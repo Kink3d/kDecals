@@ -4,12 +4,18 @@ using UnityEngine;
 
 namespace SimpleTools.Decals
 {
-	public enum Axis {PositiveX, NegativeX, PositiveY, NegativeY, PositiveZ, NegativeZ}
+	public enum BlendMode { Multiply }
+	public enum Axis { PositiveX, NegativeX, PositiveY, NegativeY, PositiveZ, NegativeZ }
 
 	[AddComponentMenu("")]
 	[RequireComponent(typeof(Projector))]
 	public class Decal : MonoBehaviour 
 	{
+		private static Dictionary<BlendMode, string> s_ShaderFromBlendMode = new Dictionary<BlendMode, string>()
+		{
+			{ BlendMode.Multiply, "Hidden/SimpleDecals/Multiply" },
+		};
+
 		private Projector m_Projector;
 		public Projector projector
 		{
@@ -28,7 +34,7 @@ namespace SimpleTools.Decals
 #endif
 		}
 
-		public void Initialize(Transform hitObj, Vector3 position, Vector3 direction, Material material)
+		public void Initialize(Transform hitObj, Vector3 position, Vector3 direction, DecalData decalData)
 		{
 			Axis axis = GetAxis(direction);
             transform.localPosition = GetPosition(hitObj, position, axis);
@@ -36,7 +42,9 @@ namespace SimpleTools.Decals
             gameObject.SetActive(true);
 
 			// TODO - Replace hack with PropetyBlock after Projector removal
-			Material mat = new Material(material);
+			// TODO - Move to Shader.ToPropertyID
+			Material mat = new Material(Shader.Find(s_ShaderFromBlendMode[decalData.blendMode]));
+			mat.SetTexture("_DecalTex", decalData.texture);
 			mat.SetInt("_Axis", (int)axis);
 			projector.material = mat;
 		}
@@ -48,7 +56,7 @@ namespace SimpleTools.Decals
 		{
 			if(Mathf.Abs(direction.x) > 0.5)
 			{
-				return direction.x < 0 ? Axis.NegativeX : Axis.PositiveX;
+				return direction.x > 0 ? Axis.NegativeX : Axis.PositiveX;
 			}
 			else if(Mathf.Abs(direction.y) > 0.5)
 			{
@@ -56,7 +64,7 @@ namespace SimpleTools.Decals
 			}
 			else //if(Mathf.Abs(direction.z) > 0.5)
 			{
-				return direction.z < 0 ? Axis.NegativeZ : Axis.PositiveZ;
+				return direction.z > 0 ? Axis.NegativeZ : Axis.PositiveZ;
 			}
 		}
 
@@ -79,6 +87,7 @@ namespace SimpleTools.Decals
 
 		private Vector3 GetRotation(Vector3 direction, Axis axis)
 		{
+			// TODO - Use this random rotation?
 			float randomZ = 0;//UnityEngine.Random.Range(0, 360);
 			switch(axis)
 			{

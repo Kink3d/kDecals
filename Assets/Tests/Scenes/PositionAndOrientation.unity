@@ -309,7 +309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0227998ffde22154790f94038211c48f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material: {fileID: 2100000, guid: 96f7420aab4b9734891774f69722a2a3, type: 2}
+  decalData: {fileID: 11400000, guid: 465baafc01b33f146a65479871ee231d, type: 2}
 --- !u!1 &1497639662
 GameObject:
   m_ObjectHideFlags: 0

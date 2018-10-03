@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,29 +22,28 @@ namespace SimpleTools.Decals
         }
 
 		// -------------------------------------------------------------------
-        // Public Fields
-
-		public int maxDecals = 100;
-
-		// -------------------------------------------------------------------
         // Data
 
-		private Decal[] decals;
-
-		// -------------------------------------------------------------------
-        // Unity Methods
-
-		private void OnEnable()
-		{
-			InitializeDecals();
-		}
+		private List<DecalPool> pools = new List<DecalPool>();
 
 		// -------------------------------------------------------------------
         // Initialization
 
-		private void InitializeDecals()
+		private DecalPool GetPool(DecalData decalData)
 		{
-			decals = new Decal[maxDecals];
+			for (int i = 0; i < pools.Count; i++)
+            {
+                if (pools[i].decalData == decalData)
+                {
+                    return pools[i];
+                }
+            }
+			return InitializePool(decalData);
+		}
+
+		private DecalPool InitializePool(DecalData decalData)
+		{
+			Decal[] decals = new Decal[decalData.maxInstances];
 			for (int i = 0; i < decals.Length; i++)
             {
 				GameObject obj = new GameObject();
@@ -56,34 +56,55 @@ namespace SimpleTools.Decals
 				decals[i] = decal;
 				obj.SetActive(false);
             }
+
+			DecalPool pool = new DecalPool(decalData, decals);
+			pools.Add(pool);
+			return pool;
 		}
 
 		// -------------------------------------------------------------------
-        // Instances
+        // Decal Instances
 
-		private bool TryGetInstance(out Decal decal)
+		public Decal CreateDecal(Transform hitObj, Vector3 position, Vector3 rotation, DecalData decalData)
+        {
+            Decal decal = null;
+            bool createdInstance = TryGetInstance(decalData, out decal);
+            if (createdInstance)
+			{
+                decal.Initialize(hitObj, position, rotation, decalData);
+			}
+			return decal;
+        }
+
+		private bool TryGetInstance(DecalData decalData, out Decal decal)
 		{
-			for (int i = 0; i < decals.Length; i++)
+			DecalPool pool = GetPool(decalData);
+			for (int i = 0; i < pool.decals.Length; i++)
             {
-                if (!decals[i].gameObject.activeSelf)
+                if (!pool.decals[i].gameObject.activeSelf)
                 {
-                    decal = decals[i];
+                    decal = pool.decals[i];
                     return true;
                 }
             }
 			decal = null;
 			return false;
 		}
+	}
 
-		public Decal CreateDecal(Transform hitObj, Vector3 position, Vector3 rotation, Material material)
-        {
-            Decal decal = null;
-            bool createdInstance = TryGetInstance(out decal);
-            if (createdInstance)
-			{
-                decal.Initialize(hitObj, position, rotation, material);
-			}
-			return decal;
-        }
+	// -------------------------------------------------------------------
+    // Data Structures
+
+	[Serializable]
+	public class DecalPool
+	{
+		public DecalPool (DecalData decalData, Decal[] decals)
+		{
+			this.decalData = decalData;
+			this.decals = decals;	
+		}
+
+		public DecalData decalData;
+		public Decal[] decals;
 	}
 }
