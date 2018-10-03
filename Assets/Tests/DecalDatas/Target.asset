@@ -13,4 +13,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blendMode: 0
   texture: {fileID: 2800000, guid: fe6c4e94eacff0b4cac2b6e3cf26559d, type: 3}
-  maxInstances: 100
+  maxInstances: 10

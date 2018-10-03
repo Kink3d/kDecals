@@ -27,23 +27,12 @@ namespace SimpleTools.Decals
 		private List<DecalPool> pools = new List<DecalPool>();
 
 		// -------------------------------------------------------------------
-        // Initialization
+        // Pool Management
 
-		private DecalPool GetPool(DecalData decalData)
-		{
-			for (int i = 0; i < pools.Count; i++)
-            {
-                if (pools[i].decalData == decalData)
-                {
-                    return pools[i];
-                }
-            }
-			return InitializePool(decalData);
-		}
-
-		private DecalPool InitializePool(DecalData decalData)
+		public DecalPool InitializePool(DecalData decalData)
 		{
 			Decal[] decals = new Decal[decalData.maxInstances];
+			float[] initTime = new float[decalData.maxInstances];
 			for (int i = 0; i < decals.Length; i++)
             {
 				GameObject obj = new GameObject();
@@ -57,13 +46,44 @@ namespace SimpleTools.Decals
 				obj.SetActive(false);
             }
 
-			DecalPool pool = new DecalPool(decalData, decals);
+			DecalPool pool = new DecalPool(decalData, decals, initTime);
 			pools.Add(pool);
 			return pool;
 		}
 
+		private DecalPool GetPool(DecalData decalData)
+		{
+			for (int i = 0; i < pools.Count; i++)
+            {
+                if (pools[i].decalData == decalData)
+                {
+                    return pools[i];
+                }
+            }
+			return InitializePool(decalData);
+		}
+
+		private void ValidatePool(DecalPool pool)
+		{
+			int oldestIndex = 0;
+			float oldestTime = Mathf.Infinity;
+			for (int i = 0; i < pool.decals.Length; i++)
+            {
+                if (!pool.decals[i].gameObject.activeSelf)
+					return;
+
+				if(pool.initTimes[i] < oldestTime)
+				{
+					oldestTime = pool.initTimes[i];
+					oldestIndex = i;
+				}
+            }
+
+			pool.decals[oldestIndex].gameObject.SetActive(false);
+		}
+
 		// -------------------------------------------------------------------
-        // Decal Instances
+        // Decal Instance Management
 
 		public Decal CreateDecal(Transform hitObj, Vector3 position, Vector3 rotation, DecalData decalData)
         {
@@ -79,11 +99,13 @@ namespace SimpleTools.Decals
 		private bool TryGetInstance(DecalData decalData, out Decal decal)
 		{
 			DecalPool pool = GetPool(decalData);
+			ValidatePool(pool);
 			for (int i = 0; i < pool.decals.Length; i++)
             {
                 if (!pool.decals[i].gameObject.activeSelf)
                 {
                     decal = pool.decals[i];
+					pool.initTimes[i] = Time.realtimeSinceStartup;
                     return true;
                 }
             }
@@ -98,13 +120,15 @@ namespace SimpleTools.Decals
 	[Serializable]
 	public class DecalPool
 	{
-		public DecalPool (DecalData decalData, Decal[] decals)
+		public DecalPool (DecalData decalData, Decal[] decals, float[] initTime)
 		{
 			this.decalData = decalData;
 			this.decals = decals;	
+			this.initTimes = initTime;
 		}
 
 		public DecalData decalData;
 		public Decal[] decals;
+		public float[] initTimes;
 	}
 }
