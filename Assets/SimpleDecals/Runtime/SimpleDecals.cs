@@ -27,7 +27,7 @@ namespace SimpleTools.Decals
 		private List<DecalPool> pools = new List<DecalPool>();
 
 		// -------------------------------------------------------------------
-        // Pool Management
+        // Pool Managementas
 
 		public DecalPool InitializePool(DecalData decalData)
 		{
@@ -87,11 +87,16 @@ namespace SimpleTools.Decals
 
 		public Decal CreateDecal(Transform hitObj, Vector3 position, Vector3 rotation, DecalData decalData)
         {
+			return CreateDecal(hitObj, position, rotation, Vector2.one, decalData);
+        }
+
+		public Decal CreateDecal(Transform hitObj, Vector3 position, Vector3 rotation, Vector2 scale, DecalData decalData)
+        {
             Decal decal = null;
             bool createdInstance = TryGetInstance(decalData, out decal);
             if (createdInstance)
 			{
-                decal.Initialize(hitObj, position, rotation, decalData);
+                decal.Initialize(hitObj, position, rotation, scale, decalData);
 			}
 			return decal;
         }

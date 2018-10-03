@@ -36,11 +36,11 @@ float4 SampleDecal(VaryingsDecal IN, float4 defaultColor)
 {
     fixed4 tex = _DecalTex.Sample(_Linear_Clamp_sampler, IN.uv0.xy / IN.uv0.w);
     if(_Axis == 2 || _Axis == 3)
-        return lerp(defaultColor, tex, saturate(sign(IN.uv0.y) * abs(IN.normalOS.y)));
+        return lerp(defaultColor, tex, saturate(sign(IN.uv0.z) * abs(IN.normalOS.y)));
     else if(_Axis == 4 || _Axis == 5)
         return lerp(defaultColor, tex, saturate(sign(IN.uv0.z) * abs(IN.normalOS.z)));
     else
-        return lerp(defaultColor, tex, saturate(sign(IN.uv0.x) * abs(IN.normalOS.x)));
+        return lerp(defaultColor, tex, saturate(sign(IN.uv0.z) * abs(IN.normalOS.x)));
 }
 
 #endif

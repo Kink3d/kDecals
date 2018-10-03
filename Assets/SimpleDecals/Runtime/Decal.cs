@@ -36,12 +36,18 @@ namespace SimpleTools.Decals
 #endif
 		}
 
-		public void Initialize(Transform hitObj, Vector3 position, Vector3 direction, DecalData decalData)
+		public void Initialize(Transform hitObj, Vector3 position, Vector3 direction, Vector2 scale, DecalData decalData)
 		{
 			Axis axis = GetAxis(direction);
             transform.localPosition = GetPosition(hitObj, position, axis);
 			transform.localEulerAngles = GetRotation(direction, axis);
             gameObject.SetActive(true);
+
+			projector.orthographic = true;
+			projector.nearClipPlane = -0.5f;
+			projector.farClipPlane = 0.0f;
+			projector.orthographicSize = scale.y * 0.5f;
+			projector.aspectRatio = scale.x / scale.y;
 
 			// TODO - Replace hack with PropetyBlock after Projector removal
 			// TODO - Move to Shader.ToPropertyID
