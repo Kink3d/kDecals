@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SimpleTools.Decals
 {
-	public enum BlendMode { Multiply }
+	public enum BlendMode { Blend, Multiply, Additive }
 	public enum Axis { PositiveX, NegativeX, PositiveY, NegativeY, PositiveZ, NegativeZ }
 
 	[AddComponentMenu("")]
@@ -13,7 +13,9 @@ namespace SimpleTools.Decals
 	{
 		private static Dictionary<BlendMode, string> s_ShaderFromBlendMode = new Dictionary<BlendMode, string>()
 		{
+			{ BlendMode.Blend, "Hidden/SimpleDecals/Blend" },
 			{ BlendMode.Multiply, "Hidden/SimpleDecals/Multiply" },
+			{ BlendMode.Additive, "Hidden/SimpleDecals/Additive" },
 		};
 
 		private Projector m_Projector;
