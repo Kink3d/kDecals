@@ -8,6 +8,8 @@ namespace SimpleTools.Decals.Tests
 	public class PositionAndOrientation : MonoBehaviour
 	{
 		public DecalData decalData;
+		public float width = 1;
+		public float height = 1;
 
 		void Update () 
 		{
@@ -23,7 +25,7 @@ namespace SimpleTools.Decals.Tests
 				
 				if (Physics.Raycast(ray, out hit)) 
 				{
-					Decal decal = SimpleDecals.Instance.CreateDecal(hit.transform, hit.point, hit.normal, decalData);
+					Decal decal = SimpleDecals.Instance.CreateDecal(hit.transform, hit.point, hit.normal, new Vector2(width, height), decalData);
 					if(decal == null)
 						Debug.LogError("Failed to create Decal");
 				}

@@ -284,7 +284,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5f731956f7792b4bb037db374805a90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxDecals: 100
 --- !u!4 &620046556
 Transform:
   m_ObjectHideFlags: 0
@@ -310,6 +309,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   decalData: {fileID: 11400000, guid: 465baafc01b33f146a65479871ee231d, type: 2}
+  width: 1
+  height: 1
 --- !u!1 &1497639662
 GameObject:
   m_ObjectHideFlags: 0
