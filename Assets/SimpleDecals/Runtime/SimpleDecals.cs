@@ -36,6 +36,7 @@ namespace SimpleTools.Decals
 			for (int i = 0; i < decals.Length; i++)
             {
 				GameObject obj = new GameObject();
+				obj.name = string.Format("Decal_{0}", decalData.name);
                 Transform transform = obj.transform;
 				transform.parent = this.transform;
 				transform.position = Vector3.zero;
