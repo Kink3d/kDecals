@@ -15,8 +15,8 @@ namespace kTools.Decals
         public string name { get; set; }
         public string shader { get; set; }
 
-        private List<ShaderProperty> m_Properties;
-        public List<ShaderProperty> properties
+        private List<DecalProperty> m_Properties;
+        public List<DecalProperty> properties
         {
             get { return m_Properties; }
         }
@@ -29,10 +29,10 @@ namespace kTools.Decals
         /// Add a ShaderProperty.
         /// </summary>
         /// <param name="value">ShaderProperty to add.</param>
-        public void AddShaderProperty(ShaderProperty value)
+        public void AddShaderProperty(DecalProperty value)
         {
             if(m_Properties == null)
-                m_Properties = new List<ShaderProperty>();
+                m_Properties = new List<DecalProperty>();
 
             m_Properties.Add(value);
         }

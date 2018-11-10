@@ -4,7 +4,7 @@ namespace kTools.Decals
 {
 	public class PositionAndOrientation : MonoBehaviour
 	{
-		public kDecalData decalData;
+		public DecalData decalData;
 		public float width = 1;
 		public float height = 1;
 
@@ -22,7 +22,7 @@ namespace kTools.Decals
 				
 				if (Physics.Raycast(ray, out hit)) 
 				{
-					kDecal decal = DecalSystem.GetDecal(hit.point, hit.normal, new Vector2(width, height), decalData, true);
+					Decal decal = DecalSystem.GetDecal(hit.point, hit.normal, new Vector2(width, height), decalData, true);
 					if(decal == null)
 						Debug.LogError("Failed to create Decal");
 				}

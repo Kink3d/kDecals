@@ -5,7 +5,7 @@ namespace kTools.Decals
 	[ExecuteInEditMode]
 	public class DecalScale : MonoBehaviour
 	{
-		public kDecalData decalData;
+		public DecalData decalData;
 
 		private void Update()
 		{

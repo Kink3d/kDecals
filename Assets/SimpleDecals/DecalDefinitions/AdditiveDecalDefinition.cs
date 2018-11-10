@@ -3,7 +3,7 @@ using kTools.ShaderUtil;
 
 namespace kTools.Decals
 {
-    public class AdditiveDecalDefinition : kDecalDefinition
+    public class AdditiveDecalDefinition : DecalDefinition
     {
         public override void DefineDecal(out DecalDefinitionContext context)
         {
@@ -13,7 +13,7 @@ namespace kTools.Decals
                 shader = "Hidden/SimpleDecals/Additive",
             };
 
-            context.AddShaderProperty(new TextureProperty(
+            context.AddShaderProperty(new TextureDecalProperty(
                 "Decal",
                 "_DecalTex",
                 null

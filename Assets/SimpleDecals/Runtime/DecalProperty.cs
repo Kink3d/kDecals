@@ -4,7 +4,7 @@ using UnityEngine;
 namespace kTools.ShaderUtil
 {
     [Serializable]
-    public abstract class ShaderProperty
+    public abstract class DecalProperty
     {
         // -------------------------------------------------- //
         //                   PRIVATE FIELDS                   //
@@ -25,7 +25,7 @@ namespace kTools.ShaderUtil
     }
 
     [Serializable]
-    public class TextureProperty : ShaderProperty
+    public class TextureDecalProperty : DecalProperty
     {
         // -------------------------------------------------- //
         //                   PRIVATE FIELDS                   //
@@ -37,7 +37,7 @@ namespace kTools.ShaderUtil
         //                    CONSTRUCTORS                    //
         // -------------------------------------------------- //
 
-        public TextureProperty(string displayName, string referenceName, Texture2D value)
+        public TextureDecalProperty(string displayName, string referenceName, Texture2D value)
         {
             this.displayName = displayName;
             this.referenceName = referenceName;
@@ -59,7 +59,7 @@ namespace kTools.ShaderUtil
     }
 
     [Serializable]
-    public class ColorProperty : ShaderProperty
+    public class ColorDecalProperty : DecalProperty
     {
         // -------------------------------------------------- //
         //                   PRIVATE FIELDS                   //
@@ -71,7 +71,7 @@ namespace kTools.ShaderUtil
         //                    CONSTRUCTORS                    //
         // -------------------------------------------------- //
 
-        public ColorProperty(string displayName, string referenceName, Color value)
+        public ColorDecalProperty(string displayName, string referenceName, Color value)
         {
             this.displayName = displayName;
             this.referenceName = referenceName;
@@ -93,7 +93,7 @@ namespace kTools.ShaderUtil
     }
 
     [Serializable]
-    public class FloatProperty : ShaderProperty
+    public class FloatDecalProperty : DecalProperty
     {
         // -------------------------------------------------- //
         //                   PRIVATE FIELDS                   //
@@ -105,7 +105,7 @@ namespace kTools.ShaderUtil
         //                    CONSTRUCTORS                    //
         // -------------------------------------------------- //
 
-        public FloatProperty(string displayName, string referenceName, float value)
+        public FloatDecalProperty(string displayName, string referenceName, float value)
         {
             this.displayName = displayName;
             this.referenceName = referenceName;
@@ -127,7 +127,7 @@ namespace kTools.ShaderUtil
     }
 
     [Serializable]
-    public class VectorProperty : ShaderProperty
+    public class VectorDecalProperty : DecalProperty
     {
         // -------------------------------------------------- //
         //                   PRIVATE FIELDS                   //
@@ -139,7 +139,7 @@ namespace kTools.ShaderUtil
         //                    CONSTRUCTORS                    //
         // -------------------------------------------------- //
 
-        public VectorProperty(string displayName, string referenceName, Vector4 value)
+        public VectorDecalProperty(string displayName, string referenceName, Vector4 value)
         {
             this.displayName = displayName;
             this.referenceName = referenceName;

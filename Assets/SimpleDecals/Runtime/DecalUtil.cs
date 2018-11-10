@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace kTools.Decals
 {
-    public static class kDecalUtil
+    public static class DecalUtil
     {
         // -------------------------------------------------- //
         //                     TYPE UTILS                     //

@@ -11,7 +11,7 @@ namespace kTools.Decals
         /// <param name="directionWS">World space direction/normal vector to use for Decal rotation.</param>
         /// <param name="decalData">DecalData to set.</param>
         /// <param name="usePooling">If true the Decal will be taken from a DecalPooler instance.</param>
-        public static kDecal GetDecal(Vector3 positionWS, Vector3 directionWS, kDecalData decalData, bool usePooling)
+        public static Decal GetDecal(Vector3 positionWS, Vector3 directionWS, DecalData decalData, bool usePooling)
         {
 			return GetDecal(positionWS, directionWS, Vector2.one, decalData, usePooling);
         }
@@ -24,9 +24,9 @@ namespace kTools.Decals
         /// <param name="scaleWS">Decal scale in World space.</param>
         /// <param name="decalData">DecalData to set.</param>
         /// <param name="usePooling">If true the Decal will be taken from a DecalPooler instance.</param>
-		public static kDecal GetDecal(Vector3 positionWS, Vector3 directionWS, Vector2 scaleWS, kDecalData decalData, bool usePooling)
+		public static Decal GetDecal(Vector3 positionWS, Vector3 directionWS, Vector2 scaleWS, DecalData decalData, bool usePooling)
         {
-            kDecal decal = GetDecalInstance(decalData, usePooling);
+            Decal decal = GetDecalInstance(decalData, usePooling);
             decal.SetDecalActive(true);
             decal.SetDecalTransform(positionWS, directionWS, scaleWS);
             decal.SetDecalData(decalData);
@@ -40,7 +40,7 @@ namespace kTools.Decals
         /// <param name="rotationWS">Decal rotation in World space.</param>
         /// <param name="decalData">DecalData to set.</param>
         /// <param name="usePooling">If true the Decal will be taken from a DecalPooler instance.</param>
-        public static kDecal GetDecal(Vector3 positionWS, Quaternion rotationWS, kDecalData decalData, bool usePooling)
+        public static Decal GetDecal(Vector3 positionWS, Quaternion rotationWS, DecalData decalData, bool usePooling)
         {
 			return GetDecal(positionWS, rotationWS, Vector2.one, decalData, usePooling);
         }
@@ -53,9 +53,9 @@ namespace kTools.Decals
         /// <param name="scaleWS">Decal scale in World space.</param>
         /// <param name="decalData">DecalData to set.</param>
         /// <param name="usePooling">If true the Decal will be taken from a DecalPooler instance.</param>
-		public static kDecal GetDecal(Vector3 positionWS, Quaternion rotationWS, Vector2 scaleWS, kDecalData decalData, bool usePooling)
+		public static Decal GetDecal(Vector3 positionWS, Quaternion rotationWS, Vector2 scaleWS, DecalData decalData, bool usePooling)
         {
-            kDecal decal = GetDecalInstance(decalData, usePooling);
+            Decal decal = GetDecalInstance(decalData, usePooling);
             decal.SetDecalActive(true);
             decal.SetDecalTransform(positionWS, rotationWS, scaleWS);
             decal.SetDecalData(decalData);
@@ -66,7 +66,7 @@ namespace kTools.Decals
         /// Create a new Decal directly.
         /// </summary>
         /// <param name="decalData">DecalData to set.</param>
-        public static kDecal CreateDecal(kDecalData decalData)
+        public static Decal CreateDecal(DecalData decalData)
         {
             GameObject obj = new GameObject();
             obj.name = string.Format("Decal_{0}", decalData.name);
@@ -74,7 +74,7 @@ namespace kTools.Decals
             transform.position = Vector3.zero;
             transform.rotation = Quaternion.identity;
             transform.localScale = Vector3.one;
-            return transform.gameObject.AddComponent<kDecal>();
+            return transform.gameObject.AddComponent<Decal>();
         }
 
         // -------------------------------------------------- //
@@ -82,7 +82,7 @@ namespace kTools.Decals
         // -------------------------------------------------- //
 
         // Get a Decal instance, either from pooling or directly
-        private static kDecal GetDecalInstance(kDecalData decalData, bool usePooling)
+        private static Decal GetDecalInstance(DecalData decalData, bool usePooling)
         {
             if(usePooling)
             {
@@ -92,7 +92,7 @@ namespace kTools.Decals
                     CreateDecalPooler();
 
                 // Get a poolable Decal instance
-                kDecal decal;
+                Decal decal;
                 DecalPooler.Instance.TryGetInstance(decalData, out decal);
                 return decal;
             }

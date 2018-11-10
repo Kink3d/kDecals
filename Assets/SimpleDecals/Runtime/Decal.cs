@@ -4,7 +4,7 @@ using kTools.ShaderUtil;
 namespace kTools.Decals
 {
     [RequireComponent(typeof(Projector))]
-    public class kDecal : MonoBehaviour
+    public class Decal : MonoBehaviour
     {
         // -------------------------------------------------- //
         //                        ENUM                        //
@@ -27,8 +27,8 @@ namespace kTools.Decals
 			}
 		}
 
-        private kDecalData m_DecalData;
-        public kDecalData decalData
+        private DecalData m_DecalData;
+        public DecalData decalData
         {
             get { return m_DecalData; }
         }
@@ -76,7 +76,7 @@ namespace kTools.Decals
         /// Set DecalData for the Decal and update its renderer.
         /// </summary>
         /// <param name="value">DecalData to set.</param>
-        public void SetDecalData(kDecalData value)
+        public void SetDecalData(DecalData value)
         {
             m_DecalData = value;
             SetDecalMaterial();
@@ -198,7 +198,7 @@ namespace kTools.Decals
 			material.SetInt("_Axis", (int)GetAxisFromDirection(transform.forward));
 
             // Set properties from DecalDefinition
-            foreach(ShaderProperty prop in decalData.decalDefinition.shaderProperties)
+            foreach(DecalProperty prop in decalData.decalDefinition.shaderProperties)
                 prop.SetProperty(material);
 
 			projector.material = material;

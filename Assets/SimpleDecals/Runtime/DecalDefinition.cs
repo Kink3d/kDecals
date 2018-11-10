@@ -6,7 +6,7 @@ using kTools.ShaderUtil;
 namespace kTools.Decals
 {
     [Serializable]
-    public abstract class kDecalDefinition
+    public abstract class DecalDefinition
     {
         // -------------------------------------------------- //
         //                   PRIVATE FIELDS                   //
@@ -24,8 +24,8 @@ namespace kTools.Decals
             get { return m_Shader; }
         }
 
-        [SerializeField] private ShaderProperty[] m_ShaderProprties;
-        public ShaderProperty[] shaderProperties
+        [SerializeField] private DecalProperty[] m_ShaderProprties;
+        public DecalProperty[] shaderProperties
         {
             get { return m_ShaderProprties; }
         }
@@ -34,7 +34,7 @@ namespace kTools.Decals
         //                    CONSTRUCTORS                    //
         // -------------------------------------------------- //
 
-        public kDecalDefinition()
+        public DecalDefinition()
         {
             // Define Decal and serialize
             DecalDefinitionContext context;
@@ -56,7 +56,7 @@ namespace kTools.Decals
             // Shader properties
             if(context.properties != null)
             {
-                m_ShaderProprties = new ShaderProperty[context.properties.Count];
+                m_ShaderProprties = new DecalProperty[context.properties.Count];
                 for(int i = 0; i < m_ShaderProprties.Length; i++)
                     m_ShaderProprties[i] = context.properties[i];
             }

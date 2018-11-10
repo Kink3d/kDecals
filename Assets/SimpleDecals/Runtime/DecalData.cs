@@ -5,7 +5,7 @@ using System.Linq;
 namespace kTools.Decals
 {
     [CreateAssetMenu(fileName = "New DecalData", menuName = "kTools/kDecalData", order = 1)]
-	public class kDecalData : ScriptableObject 
+	public class DecalData : ScriptableObject 
     {
         // -------------------------------------------------- //
         //                   PRIVATE FIELDS                   //
@@ -19,8 +19,8 @@ namespace kTools.Decals
             get { return m_MaxInstances; }
         }
 
-        [SerializeField] private kDecalDefinition m_DecalDefinition;
-        public kDecalDefinition decalDefinition
+        [SerializeField] private DecalDefinition m_DecalDefinition;
+        public DecalDefinition decalDefinition
         {
             get { return m_DecalDefinition; }
         }
@@ -29,7 +29,7 @@ namespace kTools.Decals
         //                    CONSTRUCTORS                    //
         // -------------------------------------------------- //
 
-        public kDecalData()
+        public DecalData()
         {
             // Init to DecalDefintiion index 0
             ChangeDefinition(0);
@@ -45,13 +45,13 @@ namespace kTools.Decals
         /// <param name="value">New DecalDefinition type.</param>
         public void ChangeDefinition(int value)
         {
-            var editorTypes = kDecalUtil.GetAllAssemblySubclassTypes(typeof(kDecalDefinition));
+            var editorTypes = DecalUtil.GetAllAssemblySubclassTypes(typeof(DecalDefinition));
             var selectedType = editorTypes.ElementAt(value);
             if(selectedType == m_DecalDefinitionType)
                 return;
             
             m_DecalDefinitionType = selectedType;
-            m_DecalDefinition = (kDecalDefinition)Activator.CreateInstance(selectedType);
+            m_DecalDefinition = (DecalDefinition)Activator.CreateInstance(selectedType);
         }
     }
 }
