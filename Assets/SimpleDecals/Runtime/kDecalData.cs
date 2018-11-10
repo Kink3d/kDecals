@@ -1,7 +1,5 @@
 ﻿using System;
 using UnityEngine;
-
-using System.Collections.Generic;
 using System.Linq;
 
 namespace kTools.Decals
@@ -47,39 +45,13 @@ namespace kTools.Decals
         /// <param name="value">New DecalDefinition type.</param>
         public void ChangeDefinition(int value)
         {
-            var editorTypes = GetAllAssemblyTypes()
-                .Where(
-                    t => t.IsSubclassOf(typeof(kDecalDefinition))
-                    && !t.IsAbstract
-                    );
-
+            var editorTypes = kDecalUtil.GetAllAssemblySubclassTypes(typeof(kDecalDefinition));
             var selectedType = editorTypes.ElementAt(value);
             if(selectedType == m_DecalDefinitionType)
                 return;
             
             m_DecalDefinitionType = selectedType;
             m_DecalDefinition = (kDecalDefinition)Activator.CreateInstance(selectedType);
-        }
-
-        // -------------------------------------------------- //
-        //                   PRIVATE METHODS                  //
-        // -------------------------------------------------- //
-
-        // Get all Types in current Assembly
-        private static IEnumerable<Type> GetAllAssemblyTypes()
-        {
-            return AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(t =>
-                {
-                    // Ugly hack to handle mis-versioned dlls
-                    var innerTypes = new Type[0];
-                    try
-                    {
-                        innerTypes = t.GetTypes();
-                    }
-                    catch {}
-                    return innerTypes;
-                });
         }
     }
 }

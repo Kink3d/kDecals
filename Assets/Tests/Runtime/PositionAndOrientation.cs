@@ -1,11 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using kTools.Decals;
+﻿using UnityEngine;
 
-namespace SimpleTools.Decals.Tests
+namespace kTools.Decals
 {
-	[RequireComponent(typeof(SimpleDecals))]
 	public class PositionAndOrientation : MonoBehaviour
 	{
 		public kDecalData decalData;
@@ -26,7 +22,7 @@ namespace SimpleTools.Decals.Tests
 				
 				if (Physics.Raycast(ray, out hit)) 
 				{
-					kDecal decal = SimpleDecals.Instance.CreateDecal(hit.transform, hit.point, hit.normal, new Vector2(width, height), decalData);
+					kDecal decal = DecalSystem.GetDecal(hit.point, hit.normal, new Vector2(width, height), decalData, true);
 					if(decal == null)
 						Debug.LogError("Failed to create Decal");
 				}
