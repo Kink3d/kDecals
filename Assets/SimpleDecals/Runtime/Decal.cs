@@ -39,8 +39,8 @@ namespace SimpleTools.Decals
 		public void Initialize(Transform hitObj, Vector3 position, Vector3 direction, Vector2 scale, DecalData decalData)
 		{
 			Axis axis = GetAxis(direction);
-            transform.localPosition = GetPosition(hitObj, position, axis);
-			transform.localEulerAngles = GetRotation(direction, axis);
+            transform.position = GetPosition(hitObj, position, axis);
+			transform.eulerAngles = GetRotation(direction, axis);
             gameObject.SetActive(true);
 
 			projector.orthographic = true;
@@ -78,7 +78,8 @@ namespace SimpleTools.Decals
 
         private Vector3 GetPosition(Transform hitObj, Vector3 position, Axis axis)
 		{
-			Vector3 localPosition = hitObj.InverseTransformPoint(position);
+			Vector3 localPosition = position;//hitObj.InverseTransformPoint(position);
+			return localPosition;//
 			if(axis == Axis.PositiveX || axis == Axis.NegativeX)
 			{
 				return new Vector3 (0, localPosition.y, localPosition.z);

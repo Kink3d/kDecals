@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using kTools.Decals;
 
 namespace SimpleTools.Decals.Tests
 {
@@ -8,7 +9,7 @@ namespace SimpleTools.Decals.Tests
 	[RequireComponent(typeof(SimpleDecals))]
 	public class DecalScale : MonoBehaviour
 	{
-		public DecalData decalData;
+		public kDecalData decalData;
 
 		private void Update()
 		{

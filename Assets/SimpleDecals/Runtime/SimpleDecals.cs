@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using kTools.Decals;
 
 namespace SimpleTools.Decals
 {
@@ -29,9 +30,9 @@ namespace SimpleTools.Decals
 		// -------------------------------------------------------------------
         // Pool Managementas
 
-		public DecalPool InitializePool(DecalData decalData)
+		public DecalPool InitializePool(kDecalData decalData)
 		{
-			Decal[] decals = new Decal[decalData.maxInstances];
+			kDecal[] decals = new kDecal[decalData.maxInstances];
 			float[] initTime = new float[decalData.maxInstances];
 			for (int i = 0; i < decals.Length; i++)
             {
@@ -42,7 +43,7 @@ namespace SimpleTools.Decals
 				transform.position = Vector3.zero;
 				transform.rotation = Quaternion.identity;
 				transform.localScale = transform.InverseTransformVector(Vector3.zero);
-				Decal decal = transform.gameObject.AddComponent<Decal>();
+				kDecal decal = transform.gameObject.AddComponent<kDecal>();
 				decals[i] = decal;
 				obj.SetActive(false);
             }
@@ -52,7 +53,7 @@ namespace SimpleTools.Decals
 			return pool;
 		}
 
-		private DecalPool GetPool(DecalData decalData)
+		private DecalPool GetPool(kDecalData decalData)
 		{
 			for (int i = 0; i < pools.Count; i++)
             {
@@ -86,23 +87,25 @@ namespace SimpleTools.Decals
 		// -------------------------------------------------------------------
         // Decal Instance Management
 
-		public Decal CreateDecal(Transform hitObj, Vector3 position, Vector3 rotation, DecalData decalData)
+		public kDecal CreateDecal(Transform hitObj, Vector3 position, Vector3 rotation, kDecalData decalData)
         {
 			return CreateDecal(hitObj, position, rotation, Vector2.one, decalData);
         }
 
-		public Decal CreateDecal(Transform hitObj, Vector3 position, Vector3 rotation, Vector2 scale, DecalData decalData)
+		public kDecal CreateDecal(Transform hitObj, Vector3 position, Vector3 rotation, Vector2 scale, kDecalData decalData)
         {
-            Decal decal = null;
+            kDecal decal = null;
             bool createdInstance = TryGetInstance(decalData, out decal);
             if (createdInstance)
 			{
-                decal.Initialize(hitObj, position, rotation, scale, decalData);
+				decal.SetDecalActive(true);
+				decal.SetDecalTransform(position, rotation, scale);
+				decal.SetDecalData(decalData);
 			}
 			return decal;
         }
 
-		private bool TryGetInstance(DecalData decalData, out Decal decal)
+		private bool TryGetInstance(kDecalData decalData, out kDecal decal)
 		{
 			DecalPool pool = GetPool(decalData);
 			ValidatePool(pool);
@@ -126,15 +129,15 @@ namespace SimpleTools.Decals
 	[Serializable]
 	public class DecalPool
 	{
-		public DecalPool (DecalData decalData, Decal[] decals, float[] initTime)
+		public DecalPool (kDecalData decalData, kDecal[] decals, float[] initTime)
 		{
 			this.decalData = decalData;
 			this.decals = decals;	
 			this.initTimes = initTime;
 		}
 
-		public DecalData decalData;
-		public Decal[] decals;
+		public kDecalData decalData;
+		public kDecal[] decals;
 		public float[] initTimes;
 	}
 }

@@ -2,7 +2,7 @@
 {
 	Properties 
 	{
-		[HideInInspector] _DecalTex ("Decal", 2D) = "white" {}
+		_DecalTex ("Decal", 2D) = "white" {}
 		[HideInInspector] _Axis ("Axis", Int) = 0
 	}
 	Subshader 
