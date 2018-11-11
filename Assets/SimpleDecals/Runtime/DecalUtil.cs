@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace kTools.Decals
 {
@@ -36,6 +37,17 @@ namespace kTools.Decals
                     catch {}
                     return innerTypes;
                 });
+        }
+
+        // -------------------------------------------------- //
+        //                  ATTRIBUTE UTILS                   //
+        // -------------------------------------------------- //
+
+        // Get the first Attribute of a Type on a certain Type
+        public static T GetAttribute<T>(this Type type) where T : Attribute
+        {
+            Assert.IsTrue(type.IsDefined(typeof(T), false), "Attribute not found");
+            return (T)type.GetCustomAttributes(typeof(T), false)[0];
         }
     }
 }

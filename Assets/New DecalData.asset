@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6aee005232edea64fa9cfeff642bbb24, type: 3}
   m_Name: New DecalData
   m_EditorClassIdentifier: 
-  m_MaxInstances: 100
+  m_MaxInstances: 1

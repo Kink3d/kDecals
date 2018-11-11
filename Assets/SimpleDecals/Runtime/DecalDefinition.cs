@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using kTools.ShaderUtil;
 
 namespace kTools.Decals
 {
@@ -12,22 +11,16 @@ namespace kTools.Decals
         //                   PRIVATE FIELDS                   //
         // -------------------------------------------------- //
 
-        [SerializeField] private string m_Name;
-        public string name
-        {
-            get { return m_Name; }
-        }
-
         [SerializeField] private string m_Shader;
         public string shader
         {
             get { return m_Shader; }
         }
 
-        [SerializeField] private DecalProperty[] m_ShaderProprties;
-        public DecalProperty[] shaderProperties
+        [SerializeField] private DecalProperty[] m_Proprties;
+        public DecalProperty[] properties
         {
-            get { return m_ShaderProprties; }
+            get { return m_Proprties; }
         }
 
         // -------------------------------------------------- //
@@ -50,15 +43,14 @@ namespace kTools.Decals
         private void ConvertContextToDefinition(DecalDefinitionContext context)
         {
             // Common fields
-            m_Name = context.name;
             m_Shader = context.shader;
 
             // Shader properties
             if(context.properties != null)
             {
-                m_ShaderProprties = new DecalProperty[context.properties.Count];
-                for(int i = 0; i < m_ShaderProprties.Length; i++)
-                    m_ShaderProprties[i] = context.properties[i];
+                m_Proprties = new DecalProperty[context.properties.Count];
+                for(int i = 0; i < m_Proprties.Length; i++)
+                    m_Proprties[i] = context.properties[i];
             }
         }
 

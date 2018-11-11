@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace kTools.ShaderUtil
+namespace kTools.Decals
 {
     [Serializable]
     public abstract class DecalProperty
@@ -10,8 +10,8 @@ namespace kTools.ShaderUtil
         //                   PRIVATE FIELDS                   //
         // -------------------------------------------------- //
 
-        public string displayName;
-        public string referenceName;
+        [SerializeField] public string displayName;
+        [SerializeField] public string referenceName;
 
         // -------------------------------------------------- //
         //                 ABSTRACT METHODS                   //
@@ -31,7 +31,7 @@ namespace kTools.ShaderUtil
         //                   PRIVATE FIELDS                   //
         // -------------------------------------------------- //
 
-        public Texture2D value;
+        [SerializeField] public Texture2D value;
 
         // -------------------------------------------------- //
         //                    CONSTRUCTORS                    //
@@ -65,7 +65,7 @@ namespace kTools.ShaderUtil
         //                   PRIVATE FIELDS                   //
         // -------------------------------------------------- //
 
-        public Color value;
+        [SerializeField] public Color value;
 
         // -------------------------------------------------- //
         //                    CONSTRUCTORS                    //
@@ -99,7 +99,7 @@ namespace kTools.ShaderUtil
         //                   PRIVATE FIELDS                   //
         // -------------------------------------------------- //
 
-        public float value;
+        [SerializeField] public float value;
 
         // -------------------------------------------------- //
         //                    CONSTRUCTORS                    //
@@ -133,7 +133,7 @@ namespace kTools.ShaderUtil
         //                   PRIVATE FIELDS                   //
         // -------------------------------------------------- //
 
-        public Vector4 value;
+        [SerializeField] public Vector4 value;
 
         // -------------------------------------------------- //
         //                    CONSTRUCTORS                    //

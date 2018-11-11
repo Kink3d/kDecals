@@ -31,8 +31,8 @@ namespace kTools.Decals
 
         public DecalData()
         {
-            // Init to DecalDefintiion index 0
-            ChangeDefinition(0);
+            // Init to DecalDefintiion index Unlit/Blend
+            ChangeDefinition(typeof(BlendDecalDefinition));
         }
 
         // -------------------------------------------------- //
@@ -43,15 +43,13 @@ namespace kTools.Decals
         /// Change the active DecalDefinition.
         /// </summary>
         /// <param name="value">New DecalDefinition type.</param>
-        public void ChangeDefinition(int value)
+        public void ChangeDefinition(Type value)
         {
-            var editorTypes = DecalUtil.GetAllAssemblySubclassTypes(typeof(DecalDefinition));
-            var selectedType = editorTypes.ElementAt(value);
-            if(selectedType == m_DecalDefinitionType)
+            if(value == m_DecalDefinitionType)
                 return;
             
-            m_DecalDefinitionType = selectedType;
-            m_DecalDefinition = (DecalDefinition)Activator.CreateInstance(selectedType);
+            m_DecalDefinitionType = value;
+            m_DecalDefinition = (DecalDefinition)Activator.CreateInstance(value);
         }
     }
 }

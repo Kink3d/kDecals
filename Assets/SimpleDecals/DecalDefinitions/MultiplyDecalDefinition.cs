@@ -1,13 +1,13 @@
 ﻿namespace kTools.Decals
 {
-    [DecalDefinition("Unlit/Additive")]
-    public class AdditiveDecalDefinition : DecalDefinition
+    [DecalDefinition("Unlit/Multiply")]
+    public class MultiplyDecalDefinition : DecalDefinition
     {
         public override void DefineDecal(out DecalDefinitionContext context)
         {
             context = new DecalDefinitionContext()
             {
-                shader = "Hidden/kDecals/Unlit/Additive",
+                shader = "Hidden/kDecals/Unlit/Multiply",
             };
 
             context.AddShaderProperty(new TextureDecalProperty(

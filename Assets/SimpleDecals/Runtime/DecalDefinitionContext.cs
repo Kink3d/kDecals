@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using kTools.ShaderUtil;
 
 namespace kTools.Decals
 {
@@ -13,6 +12,7 @@ namespace kTools.Decals
         // -------------------------------------------------- //
 
         public string name { get; set; }
+        public string path { get; set; }
         public string shader { get; set; }
 
         private List<DecalProperty> m_Properties;

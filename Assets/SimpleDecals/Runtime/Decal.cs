@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using kTools.ShaderUtil;
 
 namespace kTools.Decals
 {
@@ -198,7 +197,7 @@ namespace kTools.Decals
 			material.SetInt("_Axis", (int)GetAxisFromDirection(transform.forward));
 
             // Set properties from DecalDefinition
-            foreach(DecalProperty prop in decalData.decalDefinition.shaderProperties)
+            foreach(DecalProperty prop in decalData.decalDefinition.properties)
                 prop.SetProperty(material);
 
 			projector.material = material;
