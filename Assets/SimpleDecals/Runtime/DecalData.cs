@@ -11,7 +11,11 @@ namespace kTools.Decals
         //                   PRIVATE FIELDS                   //
         // -------------------------------------------------- //
 
-        [SerializeField] private Type m_DecalDefinitionType;
+        [SerializeField] private string m_DecalDefinitionType;
+        public string decalDefinitionType
+        {
+            get { return m_DecalDefinitionType; }
+        }
 
         [SerializeField] private int m_MaxInstances = 100;
         public int maxInstances
@@ -19,10 +23,16 @@ namespace kTools.Decals
             get { return m_MaxInstances; }
         }
 
-        [SerializeField] private DecalDefinition m_DecalDefinition;
-        public DecalDefinition decalDefinition
+        [SerializeField] private string m_Shader;
+        public string shader
         {
-            get { return m_DecalDefinition; }
+            get { return m_Shader; }
+        }
+
+        [SerializeField] private SerializableDecalProperty[] m_SerializedProperties;
+        public SerializableDecalProperty[] serializedProperties
+        {
+            get { return m_SerializedProperties; }
         }
 
         // -------------------------------------------------- //
@@ -45,11 +55,67 @@ namespace kTools.Decals
         /// <param name="value">New DecalDefinition type.</param>
         public void ChangeDefinition(Type value)
         {
-            if(value == m_DecalDefinitionType)
+            if(value.AssemblyQualifiedName == m_DecalDefinitionType)
                 return;
             
-            m_DecalDefinitionType = value;
-            m_DecalDefinition = (DecalDefinition)Activator.CreateInstance(value);
+            m_DecalDefinitionType = value.AssemblyQualifiedName;
+
+            // Define Decal and serialize
+            var definition = (DecalDefinition)Activator.CreateInstance(value);
+            DecalDefinitionContext context;
+            definition.DefineDecal(out context);
+            ConvertContextToSerializableData(context);
+        }
+
+        // -------------------------------------------------- //
+        //                   PRIVATE METHODS                  //
+        // -------------------------------------------------- //
+
+        // Convert a DecalDefinitionContext to serializable data
+        private void ConvertContextToSerializableData(DecalDefinitionContext context)
+        {
+            // Common fields
+            m_Shader = context.shader;
+
+            // Shader properties
+            if(context.properties != null)
+            {
+                m_SerializedProperties = new SerializableDecalProperty[context.properties.Count];
+                for(int i = 0; i < m_SerializedProperties.Length; i++)
+                {
+                    m_SerializedProperties[i] = new SerializableDecalProperty()
+                    {
+                        displayName = context.properties[i].displayName,
+                        referenceName = context.properties[i].referenceName,
+                    };
+                    if(context.properties[i] as TextureDecalProperty != null)
+                    {
+                        TextureDecalProperty textureProp = context.properties[i] as TextureDecalProperty;
+                        m_SerializedProperties[i].type = SerializableDecalProperty.Type.Texture;
+                        m_SerializedProperties[i].textureValue = textureProp.value;
+                    }
+                    else if(context.properties[i] as ColorDecalProperty != null)
+                    {
+                        ColorDecalProperty colorProp = context.properties[i] as ColorDecalProperty;
+                        m_SerializedProperties[i].type = SerializableDecalProperty.Type.Color;
+                        m_SerializedProperties[i].colorValue = colorProp.value;
+                    }
+                    else if(context.properties[i] as FloatDecalProperty != null)
+                    {
+                        FloatDecalProperty floatProp = context.properties[i] as FloatDecalProperty;
+                        m_SerializedProperties[i].type = SerializableDecalProperty.Type.Float;
+                        m_SerializedProperties[i].floatValue = floatProp.value;
+                    }
+                    else if(context.properties[i] as VectorDecalProperty != null)
+                    {
+                        VectorDecalProperty vectorProp = context.properties[i] as VectorDecalProperty;
+                        m_SerializedProperties[i].type = SerializableDecalProperty.Type.Vector;
+                        m_SerializedProperties[i].vectorValue = vectorProp.value;
+                    }
+                    else
+                        Debug.LogError("Not a valid Property type!");
+                }
+            }
         }
     }
 }

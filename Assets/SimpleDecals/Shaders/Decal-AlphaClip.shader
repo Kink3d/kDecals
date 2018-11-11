@@ -2,6 +2,7 @@
 {
 	Properties 
 	{
+		[HideInInspector] _Axis ("Axis", Int) = 0
 		_DecalTex ("Decal", 2D) = "white" {}
 		_Threshold ("Threshold", float) = 0.5
 	}

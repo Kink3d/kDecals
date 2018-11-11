@@ -4,6 +4,58 @@ using UnityEngine;
 namespace kTools.Decals
 {
     [Serializable]
+    public class SerializableDecalProperty
+    {
+        // -------------------------------------------------- //
+        //                        ENUMS                       //
+        // -------------------------------------------------- //
+
+        [Serializable] public enum Type { Texture, Color, Float, Vector }
+
+        // -------------------------------------------------- //
+        //                    PUBLIC FIELDS                   //
+        // -------------------------------------------------- //
+
+        [SerializeField] public string displayName;
+        [SerializeField] public string referenceName;
+        [SerializeField] public Type type;
+        [SerializeField] public Texture2D textureValue;
+        [SerializeField] public Color colorValue;
+        [SerializeField] public float floatValue;
+        [SerializeField] public Vector4 vectorValue;
+
+        // -------------------------------------------------- //
+        //                   PUBLIC METHODS                   //
+        // -------------------------------------------------- //
+
+        /// <summary>
+        /// Set the SerializedDecalProperty on a Material.
+        /// </summary>
+        /// <param name="material">Material to set the SerializedDecalProperty on.</param>
+        public void SetProperty(Material material)
+        {
+            switch(type)
+            {
+                case Type.Texture:
+                    material.SetTexture(referenceName, textureValue);
+                    break;
+                case Type.Color:
+                    material.SetColor(referenceName, colorValue);
+                    break;
+                case Type.Float:
+                    material.SetFloat(referenceName, floatValue);
+                    break;
+                case Type.Vector:
+                    material.SetVector(referenceName, vectorValue);
+                    break;
+                default:
+                    Debug.LogError("Not a valid Property type!");
+                    break;
+            }
+        }
+    }
+
+    [Serializable]
     public abstract class DecalProperty
     {
         // -------------------------------------------------- //
@@ -18,9 +70,9 @@ namespace kTools.Decals
         // -------------------------------------------------- //
 
         /// <summary>
-        /// Set the ShaderProperty on a Material.
+        /// Set the DecalProperty on a Material.
         /// </summary>
-        /// <param name="material">Material to set the ShaderProperty on.</param>
+        /// <param name="material">Material to set the DecalProperty on.</param>
         public abstract void SetProperty(Material material);
     }
 
@@ -44,14 +96,10 @@ namespace kTools.Decals
             this.value = value;
         }
 
-        // -------------------------------------------------- //
-        //                   PUBLIC METHODS                   //
-        // -------------------------------------------------- //
-
         /// <summary>
-        /// Set the ShaderProperty on a Material.
+        /// Set the DecalProperty on a Material.
         /// </summary>
-        /// <param name="material">Material to set the ShaderProperty on.</param>
+        /// <param name="material">Material to set the DecalProperty on.</param>
         public override void SetProperty(Material material)
         {
             material.SetTexture(referenceName, value);
@@ -83,9 +131,9 @@ namespace kTools.Decals
         // -------------------------------------------------- //
 
         /// <summary>
-        /// Set the ShaderProperty on a Material.
+        /// Set the DecalProperty on a Material.
         /// </summary>
-        /// <param name="material">Material to set the ShaderProperty on.</param>
+        /// <param name="material">Material to set the DecalProperty on.</param>
         public override void SetProperty(Material material)
         {
             material.SetColor(referenceName, value);
@@ -117,9 +165,9 @@ namespace kTools.Decals
         // -------------------------------------------------- //
 
         /// <summary>
-        /// Set the ShaderProperty on a Material.
+        /// Set the DecalProperty on a Material.
         /// </summary>
-        /// <param name="material">Material to set the ShaderProperty on.</param>
+        /// <param name="material">Material to set the DecalProperty on.</param>
         public override void SetProperty(Material material)
         {
             material.SetFloat(referenceName, value);
@@ -151,9 +199,9 @@ namespace kTools.Decals
         // -------------------------------------------------- //
 
         /// <summary>
-        /// Set the ShaderProperty on a Material.
+        /// Set the DecalProperty on a Material.
         /// </summary>
-        /// <param name="material">Material to set the ShaderProperty on.</param>
+        /// <param name="material">Material to set the DecalProperty on.</param>
         public override void SetProperty(Material material)
         {
             material.SetVector(referenceName, value);

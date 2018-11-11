@@ -306,7 +306,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0227998ffde22154790f94038211c48f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  decalData: {fileID: 11400000, guid: f765f128a62532b4a9fd4eaadc47a1e2, type: 2}
+  decalData: {fileID: 0}
   width: 1
   height: 1
 --- !u!1 &1497639662

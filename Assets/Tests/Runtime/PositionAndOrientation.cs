@@ -22,9 +22,7 @@ namespace kTools.Decals
 				
 				if (Physics.Raycast(ray, out hit)) 
 				{
-					Decal decal = DecalSystem.GetDecal(hit.point, hit.normal, new Vector2(width, height), decalData, true);
-					if(decal == null)
-						Debug.LogError("Failed to create Decal");
+					DecalSystem.GetDecal(hit.point, hit.normal, new Vector2(width, height), decalData, true);
 				}
 			}
 		}

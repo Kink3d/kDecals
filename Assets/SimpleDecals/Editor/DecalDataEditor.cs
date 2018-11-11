@@ -65,7 +65,8 @@ namespace kTools.DecalsEditor
                 {
                     OnSelectDefinition();
                 }
-                EditorGUILayout.SelectableLabel(m_ActualTarget.decalDefinition.GetType().GetAttribute<DecalDefinitionAttribute>().menuItem, EditorStyles.textField, 
+                var definitionType = System.Type.GetType(m_ActualTarget.decalDefinitionType);
+                EditorGUILayout.SelectableLabel(definitionType.GetAttribute<DecalDefinitionAttribute>().menuItem, EditorStyles.textField, 
                     GUILayout.Width(GUILayoutUtility.GetLastRect().width + EditorGUIUtility.labelWidth), GUILayout.Height(EditorGUIUtility.singleLineHeight));
             }
             EditorGUILayout.EndHorizontal();
@@ -84,28 +85,16 @@ namespace kTools.DecalsEditor
         private void DrawProperties()
         {
             EditorGUILayout.LabelField(Styles.propertiesText, EditorStyles.boldLabel);
-            foreach(DecalProperty prop in m_ActualTarget.decalDefinition.properties)
+            foreach(SerializableDecalProperty prop in m_ActualTarget.serializedProperties)
             {
-                if(prop as TextureDecalProperty != null)
-                {
-                    var textureProp = prop as TextureDecalProperty;
-                    textureProp.value = (Texture2D)EditorGUILayout.ObjectField(textureProp.displayName, textureProp.value, typeof(Texture2D), false);
-                }
-                else if(prop as ColorDecalProperty != null)
-                {
-                    var colorProp = prop as ColorDecalProperty;
-                    colorProp.value = EditorGUILayout.ColorField(colorProp.displayName, colorProp.value);
-                }
-                else if(prop as FloatDecalProperty != null)
-                {
-                    var floatProp = prop as FloatDecalProperty;
-                    floatProp.value = EditorGUILayout.FloatField(floatProp.displayName, floatProp.value);
-                }
-                else if(prop as VectorDecalProperty != null)
-                {
-                    var vectorProp = prop as VectorDecalProperty;
-                    vectorProp.value = EditorGUILayout.Vector4Field(vectorProp.displayName, vectorProp.value);
-                }
+                if(prop.type == SerializableDecalProperty.Type.Texture)
+                    prop.textureValue = (Texture2D)EditorGUILayout.ObjectField(prop.displayName, prop.textureValue, typeof(Texture2D), false);
+                else if(prop.type == SerializableDecalProperty.Type.Color)
+                    prop.colorValue = EditorGUILayout.ColorField(prop.displayName, prop.colorValue);
+                else if(prop.type == SerializableDecalProperty.Type.Float)
+                    prop.floatValue = EditorGUILayout.FloatField(prop.displayName, prop.floatValue);
+                else if(prop.type == SerializableDecalProperty.Type.Vector)
+                    prop.vectorValue = EditorGUILayout.Vector4Field(prop.displayName, prop.vectorValue);
                 else
                     Debug.LogError("Property is not a valid DecalProperty.");
             }

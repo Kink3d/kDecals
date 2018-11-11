@@ -12,7 +12,8 @@ namespace kTools.Decals
         // -------------------------------------------------- //
         //                   GEOMETRY UTILS                   //
         // -------------------------------------------------- //
-
+        
+        // Find the nearest face point to a Decal using Physics
         public static Vector3 GetDirectionToNearestFace(Decal decal)
         {
             Vector3 hitPoint = Vector3.zero;

@@ -198,18 +198,18 @@ namespace kTools.Decals
             // TODO - Replace hack with PropetyBlock after Projector removal
 			// TODO - Move to Shader.ToPropertyID
 
-            if(m_DecalData.decalDefinition.shader == null)
+            if(m_DecalData == null || m_DecalData.shader == null)
             {
-                Debug.LogError("No Shader defined for this DecalDefinition. Aborting.");
+                Debug.LogError("DecalData is not fully defined for this Decal. Aborting.");
                 return;
             }
 
             // Initialize material and set common properties
-			material = new Material(Shader.Find(m_DecalData.decalDefinition.shader));
+			material = new Material(Shader.Find(m_DecalData.shader));
 			material.SetInt("_Axis", (int)GetAxisFromDirection(transform.forward));
 
             // Set properties from DecalDefinition
-            foreach(DecalProperty prop in decalData.decalDefinition.properties)
+            foreach(SerializableDecalProperty prop in decalData.serializedProperties)
                 prop.SetProperty(material);
 
 			projector.material = material;
