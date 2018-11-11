@@ -62,15 +62,22 @@ namespace kTools.DecalsEditor
         private void DrawTools()
         {
             EditorGUILayout.LabelField(Styles.toolsText, EditorStyles.boldLabel);
+            if(GUILayout.Button("Move to nearest face"))
+                OnClickMoveToNearestFace();
             if(GUILayout.Button("Orientate to nearest face"))
-            {
                 OnClickOrientateToNearestFace();
-            }
             if(GUILayout.Button("Snap to nearest face"))
-            {
                 OnClickSnapToNearestFace();
-            }
             EditorGUILayout.Space();
+        }
+
+        // Called when "Orientate to nearest face" button is clicked
+        private void OnClickMoveToNearestFace()
+        {
+            Vector3 position;
+            DecalUtil.GetDirectionToNearestFace(m_ActualTarget, out position);
+            m_ActualTarget.SetDecalTransform(position, m_ActualTarget.transform.rotation, m_ActualTarget.transform.lossyScale);
+            m_ActualTarget.SetDecalData(m_ActualTarget.decalData);
         }
 
         // Called when "Orientate to nearest face" button is clicked
