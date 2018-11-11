@@ -65,7 +65,7 @@ namespace kTools.Decals
         {
             if(transform.localScale != m_PreviousScale)
             {
-                m_PreviousScale = transform.localScale;
+                m_PreviousScale = transform.lossyScale;
                 SetDecalScale(new Vector2(m_PreviousScale.x, m_PreviousScale.y));
             }
         }

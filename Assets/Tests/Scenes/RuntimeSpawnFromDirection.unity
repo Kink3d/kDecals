@@ -179,7 +179,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &534669902
 GameObject:
@@ -261,7 +261,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &620046554
 GameObject:
@@ -272,14 +272,27 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 620046556}
-  - component: {fileID: 620046557}
+  - component: {fileID: 620046555}
   m_Layer: 0
-  m_Name: SimpleDecals
+  m_Name: Test
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &620046555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 620046554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0227998ffde22154790f94038211c48f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  decalData: {fileID: 11400000, guid: 5415922034cff7846b09c40052693ace, type: 2}
 --- !u!4 &620046556
 Transform:
   m_ObjectHideFlags: 0
@@ -292,23 +305,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &620046557
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 620046554}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0227998ffde22154790f94038211c48f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  decalData: {fileID: 0}
-  width: 1
-  height: 1
 --- !u!1 &1497639662
 GameObject:
   m_ObjectHideFlags: 0

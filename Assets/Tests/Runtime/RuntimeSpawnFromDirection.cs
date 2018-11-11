@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
+using kTools.Decals;
 
-namespace kTools.Decals
+namespace kTools.Decals.Tests
 {
-	public class PositionAndOrientation : MonoBehaviour
+	public class RuntimeSpawnFromDirection : MonoBehaviour
 	{
 		public DecalData decalData;
-		public float width = 1;
-		public float height = 1;
 
 		void Update () 
 		{
@@ -20,10 +19,8 @@ namespace kTools.Decals
 				RaycastHit hit;
 				Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 				
-				if (Physics.Raycast(ray, out hit)) 
-				{
-					DecalSystem.GetDecal(hit.point, hit.normal, new Vector2(width, height), decalData, true);
-				}
+				if (Physics.Raycast(ray, out hit))
+					DecalSystem.GetDecal(hit.point, hit.normal, Vector2.one, decalData, true);
 			}
 		}
 	}
