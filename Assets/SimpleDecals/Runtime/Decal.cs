@@ -2,6 +2,7 @@
 
 namespace kTools.Decals
 {
+    [ExecuteInEditMode]
     [RequireComponent(typeof(Projector))]
     public class Decal : MonoBehaviour
     {
@@ -26,7 +27,7 @@ namespace kTools.Decals
 			}
 		}
 
-        private DecalData m_DecalData;
+        [SerializeField] private DecalData m_DecalData;
         public DecalData decalData
         {
             get { return m_DecalData; }
@@ -39,7 +40,7 @@ namespace kTools.Decals
             set
             {
                 if(m_Material)
-                    Destroy(m_Material);
+                    DecalUtil.Destroy(m_Material);
                 m_Material = value;
             }
         }
