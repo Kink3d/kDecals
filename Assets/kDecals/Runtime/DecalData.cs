@@ -5,7 +5,7 @@ using System.Linq;
 namespace kTools.Decals
 {
     [CreateAssetMenu(fileName = "New DecalData", menuName = "kTools/kDecalData", order = 1)]
-	public class DecalData : ScriptableObject 
+	public sealed class DecalData : ScriptableObject 
     {
         // -------------------------------------------------- //
         //                   PRIVATE FIELDS                   //

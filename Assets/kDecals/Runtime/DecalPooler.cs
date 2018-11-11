@@ -6,7 +6,7 @@ using UnityEngine;
 namespace kTools.Decals
 {
 	[AddComponentMenu("")]
-	public class DecalPooler : MonoBehaviour
+	public sealed class DecalPooler : MonoBehaviour
 	{
 		// -------------------------------------------------- //
         //                     SINGELTON                      //

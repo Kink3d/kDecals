@@ -4,7 +4,7 @@ namespace kTools.Decals
 {
     [ExecuteInEditMode]
     [RequireComponent(typeof(Projector))]
-    public class Decal : MonoBehaviour
+    public sealed class Decal : MonoBehaviour
     {
         // -------------------------------------------------- //
         //                        ENUM                        //
