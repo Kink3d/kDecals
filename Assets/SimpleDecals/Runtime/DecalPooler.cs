@@ -66,7 +66,7 @@ namespace kTools.Decals
 			for (int i = 0; i < decals.Length; i++)
             {
 				Decal decal = DecalSystem.CreateDecal(decalData);
-            	decal.transform.localScale = this.transform.InverseTransformVector(Vector3.zero);
+            	decal.transform.localScale = this.transform.InverseTransformVector(Vector3.one);
 				decal.transform.SetParent(this.transform);
 				decals[i] = decal;
 				decal.gameObject.SetActive(false);
