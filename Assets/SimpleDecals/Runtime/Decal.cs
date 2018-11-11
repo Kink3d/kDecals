@@ -214,7 +214,7 @@ namespace kTools.Decals
 
             // Initialize material and set common properties
 			material = new Material(Shader.Find(m_DecalData.shader));
-			material.SetInt("_Axis", (int)GetAxisFromDirection(transform.forward));
+			material.SetInt("_Axis", (int)GetAxisFromDirection(transform.TransformDirection(transform.forward)));
 
             // Set properties from DecalDefinition
             foreach(SerializableDecalProperty prop in decalData.serializedProperties)

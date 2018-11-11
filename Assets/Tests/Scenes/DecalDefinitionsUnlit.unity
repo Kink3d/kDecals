@@ -534,13 +534,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 763845919}
-  m_LocalRotation: {x: 0, y: -0.0000014007092, z: -0, w: 1}
-  m_LocalPosition: {x: 0.00041592866, y: -0.009841887, z: -0.09000001}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.005471707, y: -0.013011373, z: 0.0000000041909516}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 869216923}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -80.354004, z: 0}
 --- !u!114 &763845921
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -566,10 +566,10 @@ Projector:
   m_NearClipPlane: -0.5
   m_FarClipPlane: 0.5
   m_FieldOfView: 60
-  m_AspectRatio: 1
+  m_AspectRatio: 1.0000002
   m_Orthographic: 1
   m_OrthographicSize: 0.5
-  m_Material: {fileID: 1461389730}
+  m_Material: {fileID: 947639554}
   m_IgnoreLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -644,14 +644,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 869216920}
-  m_LocalRotation: {x: -0, y: -0.7071058, z: -0, w: 0.7071078}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -0, y: 0, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 763845920}
   m_Father: {fileID: 0}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!65 &869216924
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -663,8 +663,34 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 0.18}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1, z: 0.1}
+  m_Center: {x: 0, y: 0, z: 0.05}
+--- !u!21 &947639554
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Hidden/kDecals/Unlit/Blend
+  m_Shader: {fileID: 4800000, guid: fc6629188256ca04c8db2aaed2913d5f, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _DecalTex:
+        m_Texture: {fileID: 2800000, guid: 142d8848d98ecd940a652d3dc19c4d03, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Axis: 4
+    m_Colors: []
 --- !u!1 &1102129968
 GameObject:
   m_ObjectHideFlags: 0
@@ -784,32 +810,6 @@ Material:
     - _Axis: 4
     - _Threshold: 0.5
     m_Colors: []
---- !u!21 &1461389730
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Hidden/kDecals/Unlit/Blend
-  m_Shader: {fileID: 4800000, guid: fc6629188256ca04c8db2aaed2913d5f, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _DecalTex:
-        m_Texture: {fileID: 2800000, guid: 142d8848d98ecd940a652d3dc19c4d03, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats:
-    - _Axis: 4
-    m_Colors: []
 --- !u!1 &1497639662
 GameObject:
   m_ObjectHideFlags: 0
@@ -902,6 +902,32 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!21 &1679699593
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Hidden/kDecals/Unlit/Multiply
+  m_Shader: {fileID: 4800000, guid: f8fffe968e5174f45b0ca2de2b88b54a, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _DecalTex:
+        m_Texture: {fileID: 2800000, guid: e4206582c0c8df54c9971f04916e653e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Axis: 4
+    m_Colors: []
 --- !u!1 &1790299452
 GameObject:
   m_ObjectHideFlags: 0
@@ -928,7 +954,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1790299452}
   m_LocalRotation: {x: 0, y: -0.0000014007092, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.00000012014061}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1497639666}
@@ -962,33 +988,7 @@ Projector:
   m_AspectRatio: 1
   m_Orthographic: 1
   m_OrthographicSize: 0.5
-  m_Material: {fileID: 1837934527}
+  m_Material: {fileID: 1679699593}
   m_IgnoreLayers:
     serializedVersion: 2
     m_Bits: 0
---- !u!21 &1837934527
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Hidden/kDecals/Unlit/Multiply
-  m_Shader: {fileID: 4800000, guid: f8fffe968e5174f45b0ca2de2b88b54a, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _DecalTex:
-        m_Texture: {fileID: 2800000, guid: e4206582c0c8df54c9971f04916e653e, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats:
-    - _Axis: 4
-    m_Colors: []
