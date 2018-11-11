@@ -23,7 +23,6 @@ namespace kTools.DecalsEditor
         // -------------------------------------------------- //
 
         Decal m_ActualTarget;
-        SerializedProperty m_DecalDataProp;
 
         // -------------------------------------------------- //
         //                   PUBLIC METHODS                   //
@@ -44,7 +43,6 @@ namespace kTools.DecalsEditor
         private void OnEnable()
         {
             m_ActualTarget = (Decal)target;
-            m_DecalDataProp = serializedObject.FindProperty("m_DecalData");
         }
 
         // Draw Properties fields section
@@ -52,10 +50,10 @@ namespace kTools.DecalsEditor
         {
             EditorGUILayout.LabelField(Styles.propertiesText, EditorStyles.boldLabel);
             EditorGUI.BeginChangeCheck();
-            EditorGUILayout.PropertyField(m_DecalDataProp, Styles.decalDataText);
+            var decalData = (DecalData)EditorGUILayout.ObjectField(m_ActualTarget.decalData, typeof(DecalData), false);
             if (EditorGUI.EndChangeCheck())
             {
-                m_ActualTarget.SetDecalData(m_ActualTarget.decalData);
+                m_ActualTarget.SetDecalData(decalData);
             }
             EditorGUILayout.Space();
         }
