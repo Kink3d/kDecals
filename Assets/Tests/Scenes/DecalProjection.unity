@@ -233,32 +233,6 @@ Material:
     m_Floats:
     - _Axis: 0
     m_Colors: []
---- !u!21 &372208602
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Hidden/kDecals/Unlit/Multiply
-  m_Shader: {fileID: 4800000, guid: f8fffe968e5174f45b0ca2de2b88b54a, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _DecalTex:
-        m_Texture: {fileID: 2800000, guid: 373a70bcda9fbc54db6a5b6a8069ed8b, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats:
-    - _Axis: 3
-    m_Colors: []
 --- !u!1 &534669902
 GameObject:
   m_ObjectHideFlags: 0
@@ -341,6 +315,32 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!21 &578395668
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Hidden/kDecals/Unlit/Multiply
+  m_Shader: {fileID: 4800000, guid: f8fffe968e5174f45b0ca2de2b88b54a, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _DecalTex:
+        m_Texture: {fileID: 2800000, guid: 373a70bcda9fbc54db6a5b6a8069ed8b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Axis: 2
+    m_Colors: []
 --- !u!1 &809518161
 GameObject:
   m_ObjectHideFlags: 0
@@ -395,8 +395,8 @@ Projector:
   m_GameObject: {fileID: 809518161}
   m_Enabled: 1
   serializedVersion: 2
-  m_NearClipPlane: -0.5
-  m_FarClipPlane: 0
+  m_NearClipPlane: 0.1
+  m_FarClipPlane: 0.01
   m_FieldOfView: 60
   m_AspectRatio: 1
   m_Orthographic: 1
@@ -459,8 +459,8 @@ Projector:
   m_GameObject: {fileID: 942484001}
   m_Enabled: 1
   serializedVersion: 2
-  m_NearClipPlane: -0.5
-  m_FarClipPlane: 0
+  m_NearClipPlane: 0.1
+  m_FarClipPlane: 0.01
   m_FieldOfView: 60
   m_AspectRatio: 1.0000007
   m_Orthographic: 1
@@ -494,8 +494,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 959704740}
-  m_LocalRotation: {x: -0.49999854, y: -0.5000014, z: 0.50000143, w: -0.49999866}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalRotation: {x: -0.000002086269, y: -0.7071068, z: -0.7071068, w: 0.000002086269}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1.0000005, y: 1, z: 1.0000005}
   m_Children: []
   m_Father: {fileID: 1138590523}
@@ -523,13 +523,13 @@ Projector:
   m_GameObject: {fileID: 959704740}
   m_Enabled: 1
   serializedVersion: 2
-  m_NearClipPlane: -0.5
-  m_FarClipPlane: 0
+  m_NearClipPlane: 0.1
+  m_FarClipPlane: 0.01
   m_FieldOfView: 60
-  m_AspectRatio: 1.0000007
+  m_AspectRatio: 1.0000005
   m_Orthographic: 1
   m_OrthographicSize: 0.5
-  m_Material: {fileID: 372208602}
+  m_Material: {fileID: 578395668}
   m_IgnoreLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -587,8 +587,8 @@ Projector:
   m_GameObject: {fileID: 1100420236}
   m_Enabled: 1
   serializedVersion: 2
-  m_NearClipPlane: -0.5
-  m_FarClipPlane: 0
+  m_NearClipPlane: 0.1
+  m_FarClipPlane: 0.01
   m_FieldOfView: 60
   m_AspectRatio: 1
   m_Orthographic: 1
@@ -839,8 +839,8 @@ Projector:
   m_GameObject: {fileID: 1836391771}
   m_Enabled: 1
   serializedVersion: 2
-  m_NearClipPlane: -0.5
-  m_FarClipPlane: 0
+  m_NearClipPlane: 0.1
+  m_FarClipPlane: 0.01
   m_FieldOfView: 60
   m_AspectRatio: 1
   m_Orthographic: 1
@@ -955,8 +955,8 @@ Projector:
   m_GameObject: {fileID: 1988857731}
   m_Enabled: 1
   serializedVersion: 2
-  m_NearClipPlane: -0.5
-  m_FarClipPlane: 0
+  m_NearClipPlane: 0.1
+  m_FarClipPlane: 0.01
   m_FieldOfView: 60
   m_AspectRatio: 1
   m_Orthographic: 1

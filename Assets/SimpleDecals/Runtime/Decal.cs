@@ -137,7 +137,7 @@ namespace kTools.Decals
         {
 			projector.orthographic = true;
 			projector.nearClipPlane = -0.5f;
-			projector.farClipPlane = 0.0f;
+			projector.farClipPlane = 0.5f;
         }
 
         // Set Decal position in World space

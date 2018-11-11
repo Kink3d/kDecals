@@ -20,7 +20,7 @@ namespace kTools.Decals.Tests
 				Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 				
 				if (Physics.Raycast(ray, out hit))
-					DecalSystem.GetDecal(hit.point, hit.normal, Vector2.one, decalData, true);
+					DecalSystem.GetDecal(hit.point, -hit.normal, Vector2.one, decalData, true);
 			}
 		}
 	}
