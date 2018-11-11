@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace kTools.Decals
 {
+	[AddComponentMenu("")]
 	public class DecalPooler : MonoBehaviour
 	{
 		// -------------------------------------------------- //
