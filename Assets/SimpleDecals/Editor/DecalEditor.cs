@@ -50,10 +50,10 @@ namespace kTools.DecalsEditor
         {
             EditorGUILayout.LabelField(Styles.propertiesText, EditorStyles.boldLabel);
             EditorGUI.BeginChangeCheck();
-            var decalData = (DecalData)EditorGUILayout.ObjectField(m_ActualTarget.decalData, typeof(DecalData), false);
+            var decalData = (DecalData)EditorGUILayout.ObjectField(Styles.decalDataText, m_ActualTarget.decalData, typeof(DecalData), false);
             if (EditorGUI.EndChangeCheck())
             {
-                m_ActualTarget.SetDecalData(decalData);
+                m_ActualTarget.SetData(decalData);
             }
             EditorGUILayout.Space();
         }
@@ -76,16 +76,16 @@ namespace kTools.DecalsEditor
         {
             Vector3 position;
             DecalUtil.GetDirectionToNearestFace(m_ActualTarget, out position);
-            m_ActualTarget.SetDecalTransform(position, m_ActualTarget.transform.rotation, m_ActualTarget.transform.lossyScale);
-            m_ActualTarget.SetDecalData(m_ActualTarget.decalData);
+            m_ActualTarget.SetTransform(position, m_ActualTarget.transform.rotation, m_ActualTarget.transform.lossyScale);
+            m_ActualTarget.SetData(m_ActualTarget.decalData);
         }
 
         // Called when "Orientate to nearest face" button is clicked
         private void OnClickOrientateToNearestFace()
         {
             Vector3 directionVector = DecalUtil.GetDirectionToNearestFace(m_ActualTarget);
-            m_ActualTarget.SetDecalTransform(m_ActualTarget.transform.position, directionVector, m_ActualTarget.transform.lossyScale);
-            m_ActualTarget.SetDecalData(m_ActualTarget.decalData);
+            m_ActualTarget.SetTransform(m_ActualTarget.transform.position, directionVector, m_ActualTarget.transform.lossyScale);
+            m_ActualTarget.SetData(m_ActualTarget.decalData);
         }
 
         // Called when "Snap to nearest face" button is clicked
@@ -93,8 +93,8 @@ namespace kTools.DecalsEditor
         {
             Vector3 position;
             Vector3 directionVector = DecalUtil.GetDirectionToNearestFace(m_ActualTarget, out position);
-            m_ActualTarget.SetDecalTransform(position, directionVector, m_ActualTarget.transform.lossyScale);
-            m_ActualTarget.SetDecalData(m_ActualTarget.decalData);
+            m_ActualTarget.SetTransform(position, directionVector, m_ActualTarget.transform.lossyScale);
+            m_ActualTarget.SetData(m_ActualTarget.decalData);
         }
     }
 }

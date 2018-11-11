@@ -7,6 +7,7 @@ namespace kTools.DecalsEditor
 {
     public class DecalMenuItems
     {
+        // Create a new Decal object from Hierarchy window
         [MenuItem("GameObject/kTools/Decal", false, 10)]
         static void CreateDecalObject(MenuCommand menuCommand)
         {
@@ -18,6 +19,7 @@ namespace kTools.DecalsEditor
             Selection.activeObject = go;
         }
 
+        // Refresh all Decal objects in Scene from kTools menu
         [MenuItem("kTools/Decals/Refresh All Scene Decals", false, 1)]
         static void RefreshAllSceneDecals(MenuCommand menuCommand)
         {

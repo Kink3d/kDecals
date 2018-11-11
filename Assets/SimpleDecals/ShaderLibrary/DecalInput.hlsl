@@ -1,24 +1,37 @@
 #ifndef DECAL_INPUT_INCLUDED
 #define DECAL_INPUT_INCLUDED
 
+// -------------------------------------------------- //
+//                      INCLUDES                      //
+// -------------------------------------------------- //
+
 #include "UnityCG.cginc"
 
-#ifdef _APPLYFOG
-    #pragma multi_compile_fog
-#endif
+// -------------------------------------------------- //
+//                      UNIFORMS                      //
+// -------------------------------------------------- //
 
 float4x4 unity_Projector;
 Texture2D _DecalTex;
 SamplerState _Linear_Clamp_sampler;
 
-// TODO - Move to Instanced
+// TODO
+// - Move to InstancedProperty
 int _Axis;
+
+// -------------------------------------------------- //
+//                     ATTRIBUTES                     //
+// -------------------------------------------------- //
 
 struct AttributesDecal
 {
     float4 vertex : POSITION;
     float3 normal : NORMAL;
 };
+
+// -------------------------------------------------- //
+//                      VARYINGS                      //
+// -------------------------------------------------- //
 
 struct VaryingsDecal 
 {
@@ -29,6 +42,10 @@ struct VaryingsDecal
     UNITY_FOG_COORDS(2)
 #endif
 };
+
+// -------------------------------------------------- //
+//                       VERTEX                       //
+// -------------------------------------------------- //
 
 VaryingsDecal VertexDecal (AttributesDecal v)
 {
@@ -41,6 +58,10 @@ VaryingsDecal VertexDecal (AttributesDecal v)
 #endif
     return o;
 }
+
+// -------------------------------------------------- //
+//                      SAMPLING                      //
+// -------------------------------------------------- //
 
 float4 SampleDecal(VaryingsDecal IN, float4 defaultColor)
 {

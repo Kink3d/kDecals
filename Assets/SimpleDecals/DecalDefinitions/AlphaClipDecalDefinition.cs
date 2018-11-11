@@ -10,13 +10,13 @@
                 shader = "Hidden/kDecals/Unlit/AlphaClip",
             };
 
-            context.AddShaderProperty(new TextureDecalProperty(
+            context.AddDecalProperty(new TextureDecalProperty(
                 "Decal",
                 "_DecalTex",
                 null
             ));
 
-            context.AddShaderProperty(new FloatDecalProperty(
+            context.AddDecalProperty(new FloatDecalProperty(
                 "Threshold",
                 "_Threshold",
                 0.5f

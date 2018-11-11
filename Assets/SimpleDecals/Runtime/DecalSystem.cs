@@ -27,9 +27,9 @@ namespace kTools.Decals
 		public static Decal GetDecal(Vector3 positionWS, Vector3 directionWS, Vector2 scaleWS, DecalData decalData, bool usePooling)
         {
             Decal decal = GetDecalInstance(decalData, usePooling);
-            decal.SetDecalActive(true);
-            decal.SetDecalTransform(positionWS, directionWS, scaleWS);
-            decal.SetDecalData(decalData);
+            decal.SetActive(true);
+            decal.SetTransform(positionWS, directionWS, scaleWS);
+            decal.SetData(decalData);
 			return decal;
         }
 
@@ -56,9 +56,9 @@ namespace kTools.Decals
 		public static Decal GetDecal(Vector3 positionWS, Quaternion rotationWS, Vector2 scaleWS, DecalData decalData, bool usePooling)
         {
             Decal decal = GetDecalInstance(decalData, usePooling);
-            decal.SetDecalActive(true);
-            decal.SetDecalTransform(positionWS, rotationWS, scaleWS);
-            decal.SetDecalData(decalData);
+            decal.SetActive(true);
+            decal.SetTransform(positionWS, rotationWS, scaleWS);
+            decal.SetData(decalData);
 			return decal;
         }
 

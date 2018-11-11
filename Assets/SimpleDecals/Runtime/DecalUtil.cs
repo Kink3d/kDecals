@@ -62,6 +62,7 @@ namespace kTools.Decals
         //                    OBJECT UTILS                    //
         // -------------------------------------------------- //
 
+        // Safely destroy a Object
         public static void Destroy(UnityEngine.Object obj)
         {
             #if UNITY_EDITOR

@@ -16,6 +16,8 @@ namespace kTools.Decals
         //                   PRIVATE FIELDS                   //
         // -------------------------------------------------- //
 
+        private static int m_AxisPropertyID = Shader.PropertyToID("_Axis");
+
         private Vector3 m_PreviousScale = Vector3.one;
 
         private Projector m_Projector;
@@ -35,7 +37,7 @@ namespace kTools.Decals
             get { return m_DecalData; }
         }
 
-        private Material m_Material;
+        [SerializeField] private Material m_Material;
         public Material material
         {
             get { return m_Material; }
@@ -63,6 +65,7 @@ namespace kTools.Decals
 
         private void Update()
         {
+            // Track Decal scale so it can be edited from the Transform
             if(transform.localScale != m_PreviousScale)
             {
                 m_PreviousScale = transform.lossyScale;
@@ -79,14 +82,14 @@ namespace kTools.Decals
         /// </summary>
         public void Refresh()
         {
-            SetDecalMaterial();
+            RefreshInternal();
         }
 
         /// <summary>
         /// Activates/Deactivates the Decal.
         /// </summary>
         /// <param name="value">Activate or deactivate the Decal.</param>
-        public void SetDecalActive(bool value)
+        public void SetActive(bool value)
         {
             gameObject.SetActive(value);
         }
@@ -95,10 +98,10 @@ namespace kTools.Decals
         /// Set DecalData for the Decal and refresh its renderer.
         /// </summary>
         /// <param name="value">DecalData to set.</param>
-        public void SetDecalData(DecalData value)
+        public void SetData(DecalData value)
         {
             m_DecalData = value;
-            SetDecalMaterial();
+            RefreshInternal();
         }
 
         /// <summary>
@@ -107,7 +110,7 @@ namespace kTools.Decals
         /// <param name="positionWS">Decal position in World space.</param>
         /// <param name="rotationWS">Decal rotation in World space.</param>
         /// <param name="scaleWS">Decal scale in World space.</param>
-        public void SetDecalTransform(Vector3 positionWS, Quaternion rotationWS, Vector2 scaleWS)
+        public void SetTransform(Vector3 positionWS, Quaternion rotationWS, Vector2 scaleWS)
         {
             SetDecalPosition(positionWS);
             SetDecalRotation(rotationWS);
@@ -121,7 +124,7 @@ namespace kTools.Decals
         /// <param name="directionWS">World space direction/normal vector to use for Decal rotation.</param>
         /// <param name="scaleWS">Decal scale in World space.</param>
         /// <param name="randomRotationZ">If true Decal will be randomly rotated on its local Z axis.</param>
-        public void SetDecalTransform(Vector3 positionWS, Vector3 directionWS, Vector2 scaleWS, bool randomRotationZ = false)
+        public void SetTransform(Vector3 positionWS, Vector3 directionWS, Vector2 scaleWS, bool randomRotationZ = false)
         {
             SetDecalPosition(positionWS);
             SetDecalRotation(directionWS, randomRotationZ);
@@ -201,20 +204,26 @@ namespace kTools.Decals
 		}
 
         // Set all Material values on the Decal
-        private void SetDecalMaterial()
+        private void RefreshInternal()
         {
-            // TODO - Replace hack with PropetyBlock after Projector removal
-			// TODO - Move to Shader.ToPropertyID
-
+            // If DecalData hasnt been initialized correctly
             if(m_DecalData == null || m_DecalData.shader == null)
             {
                 Debug.LogError("DecalData is not fully defined for this Decal. Aborting.");
                 return;
             }
 
+            // Calculate correct relative direction vector
+            var direction = transform.forward;
+            if(transform.parent != null)
+                direction = transform.parent.InverseTransformVector(direction);
+
+            // TODO
+            // - Rewrite this section with PropetyBlock after Projector removal
+
             // Initialize material and set common properties
 			material = new Material(Shader.Find(m_DecalData.shader));
-			material.SetInt("_Axis", (int)GetAxisFromDirection(transform.TransformDirection(transform.forward)));
+			material.SetInt(m_AxisPropertyID, (int)GetAxisFromDirection(direction));
 
             // Set properties from DecalDefinition
             foreach(SerializableDecalProperty prop in decalData.serializedProperties)

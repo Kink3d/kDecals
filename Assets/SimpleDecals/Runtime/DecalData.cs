@@ -77,7 +77,7 @@ namespace kTools.Decals
             // Common fields
             m_Shader = context.shader;
 
-            // Shader properties
+            // Serializable Decal properties
             if(context.properties != null)
             {
                 m_SerializedProperties = new SerializableDecalProperty[context.properties.Count];

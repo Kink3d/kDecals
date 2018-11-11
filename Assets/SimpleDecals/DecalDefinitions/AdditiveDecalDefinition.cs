@@ -10,7 +10,7 @@
                 shader = "Hidden/kDecals/Unlit/Additive",
             };
 
-            context.AddShaderProperty(new TextureDecalProperty(
+            context.AddDecalProperty(new TextureDecalProperty(
                 "Decal",
                 "_DecalTex",
                 null

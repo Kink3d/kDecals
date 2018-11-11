@@ -26,10 +26,10 @@ namespace kTools.Decals
         // -------------------------------------------------- //
 
         /// <summary>
-        /// Add a ShaderProperty.
+        /// Add a DecalProperty.
         /// </summary>
-        /// <param name="value">ShaderProperty to add.</param>
-        public void AddShaderProperty(DecalProperty value)
+        /// <param name="value">DecalProperty to add.</param>
+        public void AddDecalProperty(DecalProperty value)
         {
             if(m_Properties == null)
                 m_Properties = new List<DecalProperty>();
