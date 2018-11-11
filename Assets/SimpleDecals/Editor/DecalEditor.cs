@@ -51,7 +51,12 @@ namespace kTools.DecalsEditor
         private void DrawProperties()
         {
             EditorGUILayout.LabelField(Styles.propertiesText, EditorStyles.boldLabel);
+            EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(m_DecalDataProp, Styles.decalDataText);
+            if (EditorGUI.EndChangeCheck())
+            {
+                m_ActualTarget.SetDecalData(m_ActualTarget.decalData);
+            }
             EditorGUILayout.Space();
         }
 
