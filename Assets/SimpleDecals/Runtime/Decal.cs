@@ -16,6 +16,8 @@ namespace kTools.Decals
         //                   PRIVATE FIELDS                   //
         // -------------------------------------------------- //
 
+        private Vector3 m_PreviousScale = Vector3.one;
+
         private Projector m_Projector;
 		public Projector projector
 		{
@@ -58,6 +60,15 @@ namespace kTools.Decals
             // Initialize the Projector
             SetupProjector();
 		}
+
+        private void Update()
+        {
+            if(transform.localScale != m_PreviousScale)
+            {
+                m_PreviousScale = transform.localScale;
+                SetDecalScale(new Vector2(m_PreviousScale.x, m_PreviousScale.y));
+            }
+        }
 
         // -------------------------------------------------- //
         //                   PUBLIC METHODS                   //
