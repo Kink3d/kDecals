@@ -75,6 +75,14 @@ namespace kTools.Decals
         // -------------------------------------------------- //
 
         /// <summary>
+        /// Refresh the Decal's renderer.
+        /// </summary>
+        public void Refresh()
+        {
+            SetDecalMaterial();
+        }
+
+        /// <summary>
         /// Activates/Deactivates the Decal.
         /// </summary>
         /// <param name="value">Activate or deactivate the Decal.</param>
@@ -84,7 +92,7 @@ namespace kTools.Decals
         }
 
         /// <summary>
-        /// Set DecalData for the Decal and update its renderer.
+        /// Set DecalData for the Decal and refresh its renderer.
         /// </summary>
         /// <param name="value">DecalData to set.</param>
         public void SetDecalData(DecalData value)

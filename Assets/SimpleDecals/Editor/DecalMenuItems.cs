@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEditor;
-using UnityEditor.ProjectWindowCallback;
+using UnityEditor.SceneManagement;
 using kTools.Decals;
 
 namespace kTools.DecalsEditor
@@ -16,6 +16,15 @@ namespace kTools.DecalsEditor
             go.AddComponent<Decal>();
             Undo.RegisterCreatedObjectUndo(go, "Create " + go.name);
             Selection.activeObject = go;
+        }
+
+        [MenuItem("kTools/Decals/Refresh All Scene Decals", false, 1)]
+        static void RefreshAllSceneDecals(MenuCommand menuCommand)
+        {
+            Decal[] allDecals = GameObject.FindObjectsOfType<Decal>();
+            foreach(Decal decal in allDecals)
+                decal.Refresh();
+            EditorSceneManager.MarkAllScenesDirty();
         }
     }
 }

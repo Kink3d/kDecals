@@ -112,7 +112,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!21 &46343326
+--- !u!21 &12319301
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
@@ -132,11 +132,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _DecalTex:
-        m_Texture: {fileID: 2800000, guid: d2a51e5bf86ebc046a15ba438206f4f1, type: 3}
+        m_Texture: {fileID: 2800000, guid: 373a70bcda9fbc54db6a5b6a8069ed8b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Axis: 0
+    - _Axis: 3
     m_Colors: []
 --- !u!1 &170076733
 GameObject:
@@ -207,7 +207,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!21 &311528477
+--- !u!21 &224482291
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
@@ -231,7 +231,33 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Axis: 1
+    - _Axis: 0
+    m_Colors: []
+--- !u!21 &372208602
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Hidden/kDecals/Unlit/Multiply
+  m_Shader: {fileID: 4800000, guid: f8fffe968e5174f45b0ca2de2b88b54a, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _DecalTex:
+        m_Texture: {fileID: 2800000, guid: 373a70bcda9fbc54db6a5b6a8069ed8b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Axis: 3
     m_Colors: []
 --- !u!1 &534669902
 GameObject:
@@ -315,32 +341,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!21 &550400891
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Hidden/kDecals/Unlit/Multiply
-  m_Shader: {fileID: 4800000, guid: f8fffe968e5174f45b0ca2de2b88b54a, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _DecalTex:
-        m_Texture: {fileID: 2800000, guid: 6b3d5a952a2da3d499dcae18c3940496, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats:
-    - _Axis: 5
-    m_Colors: []
 --- !u!1 &809518161
 GameObject:
   m_ObjectHideFlags: 0
@@ -401,7 +401,7 @@ Projector:
   m_AspectRatio: 1
   m_Orthographic: 1
   m_OrthographicSize: 0.5
-  m_Material: {fileID: 2032904407}
+  m_Material: {fileID: 1978703989}
   m_IgnoreLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -465,7 +465,7 @@ Projector:
   m_AspectRatio: 1.0000007
   m_Orthographic: 1
   m_OrthographicSize: 0.5
-  m_Material: {fileID: 1525420256}
+  m_Material: {fileID: 12319301}
   m_IgnoreLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -529,7 +529,7 @@ Projector:
   m_AspectRatio: 1.0000007
   m_Orthographic: 1
   m_OrthographicSize: 0.5
-  m_Material: {fileID: 1561713708}
+  m_Material: {fileID: 372208602}
   m_IgnoreLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -593,7 +593,7 @@ Projector:
   m_AspectRatio: 1
   m_Orthographic: 1
   m_OrthographicSize: 0.5
-  m_Material: {fileID: 550400891}
+  m_Material: {fileID: 1989860864}
   m_IgnoreLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -785,58 +785,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!21 &1525420256
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Hidden/kDecals/Unlit/Multiply
-  m_Shader: {fileID: 4800000, guid: f8fffe968e5174f45b0ca2de2b88b54a, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _DecalTex:
-        m_Texture: {fileID: 2800000, guid: 373a70bcda9fbc54db6a5b6a8069ed8b, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats:
-    - _Axis: 3
-    m_Colors: []
---- !u!21 &1561713708
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Hidden/kDecals/Unlit/Multiply
-  m_Shader: {fileID: 4800000, guid: f8fffe968e5174f45b0ca2de2b88b54a, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _DecalTex:
-        m_Texture: {fileID: 2800000, guid: 373a70bcda9fbc54db6a5b6a8069ed8b, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats:
-    - _Axis: 3
-    m_Colors: []
 --- !u!1 &1836391771
 GameObject:
   m_ObjectHideFlags: 0
@@ -897,10 +845,62 @@ Projector:
   m_AspectRatio: 1
   m_Orthographic: 1
   m_OrthographicSize: 0.5
-  m_Material: {fileID: 46343326}
+  m_Material: {fileID: 224482291}
   m_IgnoreLayers:
     serializedVersion: 2
     m_Bits: 0
+--- !u!21 &1919067311
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Hidden/kDecals/Unlit/Multiply
+  m_Shader: {fileID: 4800000, guid: f8fffe968e5174f45b0ca2de2b88b54a, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _DecalTex:
+        m_Texture: {fileID: 2800000, guid: d2a51e5bf86ebc046a15ba438206f4f1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Axis: 1
+    m_Colors: []
+--- !u!21 &1978703989
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Hidden/kDecals/Unlit/Multiply
+  m_Shader: {fileID: 4800000, guid: f8fffe968e5174f45b0ca2de2b88b54a, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _DecalTex:
+        m_Texture: {fileID: 2800000, guid: 6b3d5a952a2da3d499dcae18c3940496, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Axis: 4
+    m_Colors: []
 --- !u!1 &1988857731
 GameObject:
   m_ObjectHideFlags: 0
@@ -961,11 +961,11 @@ Projector:
   m_AspectRatio: 1
   m_Orthographic: 1
   m_OrthographicSize: 0.5
-  m_Material: {fileID: 311528477}
+  m_Material: {fileID: 1919067311}
   m_IgnoreLayers:
     serializedVersion: 2
     m_Bits: 0
---- !u!21 &2032904407
+--- !u!21 &1989860864
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
@@ -989,5 +989,5 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Axis: 4
+    - _Axis: 5
     m_Colors: []
