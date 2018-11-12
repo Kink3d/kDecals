@@ -27,7 +27,7 @@ namespace kTools.Decals
         /// Get a direction vector from a Decal to the nearest Collider face.
         /// </summary>
         /// <param name="decal">Decal to use as vector source.</param>
-        /// <param name="hitPoint">The location of the hit on the Collider face</param>
+        /// <param name="hitPoint">The location of the hit on the Collider face.</param>
         public static Vector3 GetDirectionToNearestFace(Decal decal, out Vector3 hitPoint)
         {
             Vector3 nearestVector = Vector3.zero;
@@ -70,7 +70,7 @@ namespace kTools.Decals
         // -------------------------------------------------- //
 
         /// <summary>
-        /// Safely destroy an Object
+        /// Safely destroy an Object.
         /// </summary>
         /// <param name="obj">Object to destroy.</param>
         public static void Destroy(UnityEngine.Object obj)
@@ -87,7 +87,7 @@ namespace kTools.Decals
         // -------------------------------------------------- //
 
         /// <summary>
-        /// Get all Types in the current Assembly that are subclass of a Type
+        /// Get all Types in the current Assembly that are subclass of a Type.
         /// </summary>
         /// <param name="parentType">Type to return children of.</param>
         public static IEnumerable<Type> GetAllAssemblySubclassTypes(Type parentType)
@@ -100,7 +100,7 @@ namespace kTools.Decals
         }
 
         /// <summary>
-        /// Get all Types in current Assembly
+        /// Get all Types in current Assembly.
         /// </summary>
         public static IEnumerable<Type> GetAllAssemblyTypes()
         {
@@ -122,7 +122,9 @@ namespace kTools.Decals
         //                  ATTRIBUTE UTILS                   //
         // -------------------------------------------------- //
 
-        // Get the first Attribute of a Type on a certain Type
+        /// <summary>
+        /// Get the first Attribute of a Type on a certain Type.
+        /// </summary>
         public static T GetAttribute<T>(this Type type) where T : Attribute
         {
             Assert.IsTrue(type.IsDefined(typeof(T), false), "Attribute not found");
