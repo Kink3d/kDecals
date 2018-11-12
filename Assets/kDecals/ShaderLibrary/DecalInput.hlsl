@@ -51,7 +51,7 @@ VaryingsDecal VertexDecal (AttributesDecal v)
 {
     VaryingsDecal o;
     o.positionCS = UnityObjectToClipPos(v.vertex);
-    o.normalOS = v.normal;
+    o.normalOS = mul(v.normal, UNITY_MATRIX_M);
     o.uv0 = mul (unity_Projector, v.vertex);
 #ifdef _APPLYFOG
     UNITY_TRANSFER_FOG(o,o.positionCS);

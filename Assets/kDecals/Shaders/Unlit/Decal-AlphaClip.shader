@@ -16,7 +16,7 @@
 			CGPROGRAM
 			#pragma vertex VertexDecal
 			#pragma fragment FragmentDecalAlphaClip
-			#include "../ShaderLibrary/DecalInput.hlsl"
+			#include "../../ShaderLibrary/DecalInput.hlsl"
 
 			float _Threshold;
 

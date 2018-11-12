@@ -16,7 +16,7 @@
 			CGPROGRAM
 			#pragma vertex VertexDecal
 			#pragma fragment FragmentDecalAdditive
-			#include "../ShaderLibrary/DecalInput.hlsl"
+			#include "../../ShaderLibrary/DecalInput.hlsl"
 
 			float4 FragmentDecalAdditive (VaryingsDecal IN) : SV_Target
 			{

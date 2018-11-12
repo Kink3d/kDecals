@@ -16,7 +16,7 @@
 			CGPROGRAM
 			#pragma vertex VertexDecal
 			#pragma fragment FragmentDecalMultiply
-			#include "../ShaderLibrary/DecalInput.hlsl"
+			#include "../../ShaderLibrary/DecalInput.hlsl"
 
 			float4 FragmentDecalMultiply (VaryingsDecal IN) : SV_Target
 			{

@@ -3,6 +3,7 @@
 namespace kTools.Decals
 {
     [ExecuteInEditMode]
+    [AddComponentMenu("kTools/Decal")]
     [RequireComponent(typeof(Projector))]
     public sealed class Decal : MonoBehaviour
     {
@@ -215,8 +216,6 @@ namespace kTools.Decals
 
             // Calculate correct relative direction vector
             var direction = transform.forward;
-            if(transform.parent != null)
-                direction = transform.parent.InverseTransformVector(direction);
 
             // TODO
             // - Rewrite this section with PropetyBlock after Projector removal

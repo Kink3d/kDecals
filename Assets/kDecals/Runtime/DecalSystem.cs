@@ -63,10 +63,10 @@ namespace kTools.Decals
         }
 
         /// <summary>
-        /// Create a new Decal directly.
+        /// Create a new Decal directly. Does not handle Transform or Renderer setup.
         /// </summary>
         /// <param name="decalData">DecalData to set.</param>
-        public static Decal CreateDecal(DecalData decalData)
+        public static Decal CreateDecalDirect(DecalData decalData)
         {
             GameObject obj = new GameObject();
             obj.name = string.Format("Decal_{0}", decalData.name);
@@ -98,7 +98,7 @@ namespace kTools.Decals
             }
             else
                 // Create single Decal
-                return CreateDecal(decalData);
+                return CreateDecalDirect(decalData);
         }
 
         // Create a new DecalPooler instance

@@ -46,7 +46,7 @@ namespace kTools.Decals
         }
 
         // Get a random direction vector based on uniform spherical distribution
-        public static Vector3 RandomSphericalDistributionVector()
+        private static Vector3 RandomSphericalDistributionVector()
         {
             float theta = UnityEngine.Random.Range(-(Mathf.PI / 2), Mathf.PI / 2);
             float phi = UnityEngine.Random.Range(0, Mathf.PI * 2);
