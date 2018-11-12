@@ -230,5 +230,14 @@ namespace kTools.Decals
 
 			projector.material = material;
         }
+        
+        // -------------------------------------------------- //
+        //                       GIZMOS                       //
+        // -------------------------------------------------- //
+
+        void OnDrawGizmos()
+        {
+            Gizmos.DrawIcon(transform.position, "kTools/Decals/Decal icon.png", true);
+        }
     }
 }
