@@ -50,7 +50,7 @@ namespace kTools.DecalsEditor
         {
             EditorGUILayout.LabelField(Styles.propertiesText, EditorStyles.boldLabel);
             EditorGUI.BeginChangeCheck();
-            var decalData = (DecalData)EditorGUILayout.ObjectField(Styles.decalDataText, m_ActualTarget.decalData, typeof(DecalData), false);
+            var decalData = (ScriptableDecal)EditorGUILayout.ObjectField(Styles.decalDataText, m_ActualTarget.decalData, typeof(ScriptableDecal), false);
             if (EditorGUI.EndChangeCheck())
             {
                 m_ActualTarget.SetData(decalData);

@@ -7,7 +7,7 @@ namespace kTools.Decals.Tests
     [AddComponentMenu("kTools/Tests/Decals/RuntimeRefresh")]
     public class RuntimeRefresh : MonoBehaviour
     {
-        public DecalData[] decalDatas;
+        public ScriptableDecal[] decalDatas;
         public Transform location;
         public float refreshInterval = 1.0f;
 

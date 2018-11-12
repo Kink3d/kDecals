@@ -4,7 +4,7 @@ using kTools.Decals;
 
 namespace kTools.DecalsEditor
 {
-    [CustomEditor(typeof(DecalData))]
+    [CustomEditor(typeof(ScriptableDecal))]
     public class DecalDataEditor : Editor
     {
         // -------------------------------------------------- //
@@ -24,7 +24,7 @@ namespace kTools.DecalsEditor
         //                   PRIVATE FIELDS                   //
         // -------------------------------------------------- //
 
-        DecalData m_ActualTarget;
+        ScriptableDecal m_ActualTarget;
         SerializedProperty m_MaxInstancesProp;
 
         // -------------------------------------------------- //
@@ -47,7 +47,7 @@ namespace kTools.DecalsEditor
 
         private void OnEnable()
         {
-            m_ActualTarget = (DecalData)target;
+            m_ActualTarget = (ScriptableDecal)target;
             m_MaxInstancesProp = serializedObject.FindProperty("m_MaxInstances");
         }
 

@@ -38,7 +38,7 @@ namespace kTools.Decals
         /// </summary>
         /// <param name="decalData">DecalData to get an instance of.</param>
         /// <param name="decal">Decal instance out.</param>
-		public bool TryGetInstance(DecalData decalData, out Decal decal)
+		public bool TryGetInstance(ScriptableDecal decalData, out Decal decal)
 		{
 			DecalPool pool = GetPool(decalData);
 			ValidatePool(pool);
@@ -60,7 +60,7 @@ namespace kTools.Decals
         // -------------------------------------------------- //
 
 		// Initialize a new DecalPool
-		private DecalPool InitializePool(DecalData decalData)
+		private DecalPool InitializePool(ScriptableDecal decalData)
 		{
 			Decal[] decals = new Decal[decalData.maxInstances];
 			float[] initTime = new float[decalData.maxInstances];
@@ -79,7 +79,7 @@ namespace kTools.Decals
 		}
 		
 		// Get a DecalPool by DecalData
-		private DecalPool GetPool(DecalData decalData)
+		private DecalPool GetPool(ScriptableDecal decalData)
 		{
 			for (int i = 0; i < pools.Count; i++)
             {
@@ -117,14 +117,14 @@ namespace kTools.Decals
 	[Serializable]
 	public class DecalPool
 	{
-		public DecalPool (DecalData decalData, Decal[] decals, float[] initTime)
+		public DecalPool (ScriptableDecal decalData, Decal[] decals, float[] initTime)
 		{
 			this.decalData = decalData;
 			this.decals = decals;	
 			this.initTimes = initTime;
 		}
 
-		public DecalData decalData;
+		public ScriptableDecal decalData;
 		public Decal[] decals;
 		public float[] initTimes;
 	}

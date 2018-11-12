@@ -4,8 +4,8 @@ using System.Linq;
 
 namespace kTools.Decals
 {
-    [CreateAssetMenu(fileName = "New DecalData", menuName = "kTools/kDecalData", order = 1)]
-	public sealed class DecalData : ScriptableObject 
+    [CreateAssetMenu(fileName = "New ScriptableDecal", menuName = "kTools/ScriptableDecal", order = 1)]
+	public sealed class ScriptableDecal : ScriptableObject 
     {
         // -------------------------------------------------- //
         //                   PRIVATE FIELDS                   //
@@ -39,7 +39,7 @@ namespace kTools.Decals
         //                    CONSTRUCTORS                    //
         // -------------------------------------------------- //
 
-        public DecalData()
+        public ScriptableDecal()
         {
             // Init to DecalDefintiion index Unlit/Blend
             ChangeDefinition(typeof(BlendDecalDefinition));

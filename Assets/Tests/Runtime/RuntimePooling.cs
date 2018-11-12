@@ -7,7 +7,7 @@ namespace kTools.Decals.Tests
     [AddComponentMenu("kTools/Tests/Decals/RuntimePooling")]
     public class RuntimePooling : MonoBehaviour
     {
-        public DecalData decalData;
+        public ScriptableDecal decalData;
         public float spawnInterval = 1.0f;
         public Transform[] locations;
 

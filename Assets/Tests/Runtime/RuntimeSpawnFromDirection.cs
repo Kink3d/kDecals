@@ -6,7 +6,7 @@ namespace kTools.Decals.Tests
 	[AddComponentMenu("kTools/Tests/Decals/RuntimeSpawnFromDirection")]
 	public class RuntimeSpawnFromDirection : MonoBehaviour
 	{
-		public DecalData decalData;
+		public ScriptableDecal decalData;
 
 		void Update () 
 		{

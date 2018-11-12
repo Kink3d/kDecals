@@ -32,8 +32,8 @@ namespace kTools.Decals
 			}
 		}
 
-        [SerializeField] private DecalData m_DecalData;
-        public DecalData decalData
+        [SerializeField] private ScriptableDecal m_DecalData;
+        public ScriptableDecal decalData
         {
             get { return m_DecalData; }
         }
@@ -99,7 +99,7 @@ namespace kTools.Decals
         /// Set DecalData for the Decal and refresh its renderer.
         /// </summary>
         /// <param name="value">DecalData to set.</param>
-        public void SetData(DecalData value)
+        public void SetData(ScriptableDecal value)
         {
             m_DecalData = value;
             RefreshInternal();

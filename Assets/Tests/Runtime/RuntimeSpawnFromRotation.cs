@@ -7,7 +7,7 @@ namespace kTools.Decals.Tests
     [AddComponentMenu("kTools/Tests/Decals/RuntimeSpawnFromRotation")]
     public class RuntimeSpawnFromRotation : MonoBehaviour
     {
-        public DecalData decalData;
+        public ScriptableDecal decalData;
         public Transform[] locations;
 
         void Start () 
