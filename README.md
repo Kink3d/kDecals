@@ -1,2 +1,2 @@
-# SimpleDecals
-A simple forward only decal system for Unity
+# kDecals
+Forward projector Decals for Unity
