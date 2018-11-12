@@ -63,9 +63,9 @@ VaryingsDecal VertexDecal (AttributesDecal v)
 //                      SAMPLING                      //
 // -------------------------------------------------- //
 
-float4 SampleDecal(VaryingsDecal IN, float4 defaultColor)
+float4 SampleDecal(VaryingsDecal IN, Texture2D decal, float4 defaultColor)
 {
-    fixed4 tex = _DecalTex.Sample(_Linear_Clamp_sampler, IN.uv0.xy / IN.uv0.w);
+    float4 tex = decal.Sample(_Linear_Clamp_sampler, IN.uv0.xy / IN.uv0.w);
     float4 col;
     if(_Axis == 2 || _Axis == 3) // Y
         col = lerp(defaultColor, tex, (1 - saturate(IN.uv0.z)) * abs(IN.normalOS.y));

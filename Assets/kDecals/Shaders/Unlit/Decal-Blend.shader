@@ -20,7 +20,7 @@
 
 			float4 FragmentDecalBlend (VaryingsDecal IN) : SV_Target
 			{
-				return SampleDecal(IN, float4(0,0,0,0));
+				return SampleDecal(IN, _DecalTex, float4(0,0,0,0));
 			}
 			
 			ENDCG

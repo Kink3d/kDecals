@@ -20,7 +20,7 @@
 
 			float4 FragmentDecalMultiply (VaryingsDecal IN) : SV_Target
 			{
-				return SampleDecal(IN, float4(1,1,1,1));
+				return SampleDecal(IN, _DecalTex, float4(1,1,1,1));
 			}
 			
 			ENDCG

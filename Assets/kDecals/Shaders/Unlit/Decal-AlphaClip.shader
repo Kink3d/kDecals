@@ -22,7 +22,7 @@
 
 			float4 FragmentDecalAlphaClip (VaryingsDecal IN) : SV_Target
 			{
-				float4 col = SampleDecal(IN, float4(0,0,0,0));
+				float4 col = SampleDecal(IN, _DecalTex, float4(0,0,0,0));
 				if(col.a < _Threshold)
 					discard;
 				return float4(col.rgb, 1);
