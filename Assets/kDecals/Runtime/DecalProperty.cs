@@ -3,22 +3,22 @@ using UnityEngine;
 
 namespace kTools.Decals
 {
+    // -------------------------------------------------- //
+    //                        ENUMS                       //
+    // -------------------------------------------------- //
+
+    [Serializable] public enum PropertyType { Texture, Color, Float, Vector }
+
     [Serializable]
     public class SerializableDecalProperty
     {
-        // -------------------------------------------------- //
-        //                        ENUMS                       //
-        // -------------------------------------------------- //
-
-        [Serializable] public enum Type { Texture, Color, Float, Vector }
-
         // -------------------------------------------------- //
         //                    PUBLIC FIELDS                   //
         // -------------------------------------------------- //
 
         [SerializeField] public string displayName;
         [SerializeField] public string referenceName;
-        [SerializeField] public Type type;
+        [SerializeField] public PropertyType type;
         [SerializeField] public Texture2D textureValue;
         [SerializeField] public Color colorValue;
         [SerializeField] public float floatValue;
@@ -36,16 +36,16 @@ namespace kTools.Decals
         {
             switch(type)
             {
-                case Type.Texture:
+                case PropertyType.Texture:
                     material.SetTexture(referenceName, textureValue);
                     break;
-                case Type.Color:
+                case PropertyType.Color:
                     material.SetColor(referenceName, colorValue);
                     break;
-                case Type.Float:
+                case PropertyType.Float:
                     material.SetFloat(referenceName, floatValue);
                     break;
-                case Type.Vector:
+                case PropertyType.Vector:
                     material.SetVector(referenceName, vectorValue);
                     break;
                 default:
@@ -64,16 +64,6 @@ namespace kTools.Decals
 
         [SerializeField] public string displayName;
         [SerializeField] public string referenceName;
-
-        // -------------------------------------------------- //
-        //                 ABSTRACT METHODS                   //
-        // -------------------------------------------------- //
-
-        /// <summary>
-        /// Set the DecalProperty on a Material.
-        /// </summary>
-        /// <param name="material">Material to set the DecalProperty on.</param>
-        public abstract void SetProperty(Material material);
     }
 
     [Serializable]
@@ -94,15 +84,6 @@ namespace kTools.Decals
             this.displayName = displayName;
             this.referenceName = referenceName;
             this.value = value;
-        }
-
-        /// <summary>
-        /// Set the DecalProperty on a Material.
-        /// </summary>
-        /// <param name="material">Material to set the DecalProperty on.</param>
-        public override void SetProperty(Material material)
-        {
-            material.SetTexture(referenceName, value);
         }
     }
 
@@ -125,19 +106,6 @@ namespace kTools.Decals
             this.referenceName = referenceName;
             this.value = value;
         }
-
-        // -------------------------------------------------- //
-        //                   PUBLIC METHODS                   //
-        // -------------------------------------------------- //
-
-        /// <summary>
-        /// Set the DecalProperty on a Material.
-        /// </summary>
-        /// <param name="material">Material to set the DecalProperty on.</param>
-        public override void SetProperty(Material material)
-        {
-            material.SetColor(referenceName, value);
-        }
     }
 
     [Serializable]
@@ -159,19 +127,6 @@ namespace kTools.Decals
             this.referenceName = referenceName;
             this.value = value;
         }
-
-        // -------------------------------------------------- //
-        //                   PUBLIC METHODS                   //
-        // -------------------------------------------------- //
-
-        /// <summary>
-        /// Set the DecalProperty on a Material.
-        /// </summary>
-        /// <param name="material">Material to set the DecalProperty on.</param>
-        public override void SetProperty(Material material)
-        {
-            material.SetFloat(referenceName, value);
-        }
     }
 
     [Serializable]
@@ -192,19 +147,6 @@ namespace kTools.Decals
             this.displayName = displayName;
             this.referenceName = referenceName;
             this.value = value;
-        }
-
-        // -------------------------------------------------- //
-        //                   PUBLIC METHODS                   //
-        // -------------------------------------------------- //
-
-        /// <summary>
-        /// Set the DecalProperty on a Material.
-        /// </summary>
-        /// <param name="material">Material to set the DecalProperty on.</param>
-        public override void SetProperty(Material material)
-        {
-            material.SetVector(referenceName, value);
         }
     }
 }

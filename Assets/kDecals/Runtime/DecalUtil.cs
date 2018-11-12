@@ -13,14 +13,21 @@ namespace kTools.Decals
         //                   GEOMETRY UTILS                   //
         // -------------------------------------------------- //
         
-        // Find the nearest face point to a Decal using Physics
+        /// <summary>
+        /// Get a direction vector from a Decal to the nearest Collider face.
+        /// </summary>
+        /// <param name="decal">Decal to use as vector source.</param>
         public static Vector3 GetDirectionToNearestFace(Decal decal)
         {
             Vector3 hitPoint = Vector3.zero;
             return GetDirectionToNearestFace(decal, out hitPoint);
         }
 
-        // Find the nearest face point to a Decal using Physics
+        /// <summary>
+        /// Get a direction vector from a Decal to the nearest Collider face.
+        /// </summary>
+        /// <param name="decal">Decal to use as vector source.</param>
+        /// <param name="hitPoint">The location of the hit on the Collider face</param>
         public static Vector3 GetDirectionToNearestFace(Decal decal, out Vector3 hitPoint)
         {
             Vector3 nearestVector = Vector3.zero;
@@ -62,7 +69,10 @@ namespace kTools.Decals
         //                    OBJECT UTILS                    //
         // -------------------------------------------------- //
 
-        // Safely destroy a Object
+        /// <summary>
+        /// Safely destroy an Object
+        /// </summary>
+        /// <param name="obj">Object to destroy.</param>
         public static void Destroy(UnityEngine.Object obj)
         {
             #if UNITY_EDITOR
@@ -76,7 +86,10 @@ namespace kTools.Decals
         //                     TYPE UTILS                     //
         // -------------------------------------------------- //
 
-        // Get all Types in the current Assembly that are subclass of the Type parentType
+        /// <summary>
+        /// Get all Types in the current Assembly that are subclass of a Type
+        /// </summary>
+        /// <param name="parentType">Type to return children of.</param>
         public static IEnumerable<Type> GetAllAssemblySubclassTypes(Type parentType)
         {
             return GetAllAssemblyTypes()
@@ -86,7 +99,9 @@ namespace kTools.Decals
                     );
         }
 
-        // Get all Types in current Assembly
+        /// <summary>
+        /// Get all Types in current Assembly
+        /// </summary>
         public static IEnumerable<Type> GetAllAssemblyTypes()
         {
             return AppDomain.CurrentDomain.GetAssemblies()

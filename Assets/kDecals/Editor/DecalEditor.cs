@@ -14,7 +14,7 @@ namespace kTools.DecalsEditor
         internal class Styles
         {
             public static GUIContent propertiesText = EditorGUIUtility.TrTextContent("Properties");
-            public static GUIContent decalDataText = EditorGUIUtility.TrTextContent("Decal Data");
+            public static GUIContent definitionText = EditorGUIUtility.TrTextContent("Definition");
             public static GUIContent toolsText = EditorGUIUtility.TrTextContent("Tools");
         }
 
@@ -50,7 +50,7 @@ namespace kTools.DecalsEditor
         {
             EditorGUILayout.LabelField(Styles.propertiesText, EditorStyles.boldLabel);
             EditorGUI.BeginChangeCheck();
-            var decalData = (ScriptableDecal)EditorGUILayout.ObjectField(Styles.decalDataText, m_ActualTarget.decalData, typeof(ScriptableDecal), false);
+            var decalData = (ScriptableDecal)EditorGUILayout.ObjectField(Styles.definitionText, m_ActualTarget.decalData, typeof(ScriptableDecal), false);
             if (EditorGUI.EndChangeCheck())
             {
                 m_ActualTarget.SetData(decalData);

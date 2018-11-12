@@ -5,7 +5,7 @@ using kTools.Decals;
 namespace kTools.DecalsEditor
 {
     [CustomEditor(typeof(ScriptableDecal))]
-    public class DecalDataEditor : Editor
+    public class ScriptableDecalEditor : Editor
     {
         // -------------------------------------------------- //
         //                    EDITOR STYLES                   //
@@ -87,13 +87,13 @@ namespace kTools.DecalsEditor
             EditorGUILayout.LabelField(Styles.propertiesText, EditorStyles.boldLabel);
             foreach(SerializableDecalProperty prop in m_ActualTarget.serializedProperties)
             {
-                if(prop.type == SerializableDecalProperty.Type.Texture)
+                if(prop.type == PropertyType.Texture)
                     prop.textureValue = (Texture2D)EditorGUILayout.ObjectField(prop.displayName, prop.textureValue, typeof(Texture2D), false);
-                else if(prop.type == SerializableDecalProperty.Type.Color)
+                else if(prop.type == PropertyType.Color)
                     prop.colorValue = EditorGUILayout.ColorField(prop.displayName, prop.colorValue);
-                else if(prop.type == SerializableDecalProperty.Type.Float)
+                else if(prop.type == PropertyType.Float)
                     prop.floatValue = EditorGUILayout.FloatField(prop.displayName, prop.floatValue);
-                else if(prop.type == SerializableDecalProperty.Type.Vector)
+                else if(prop.type == PropertyType.Vector)
                     prop.vectorValue = EditorGUILayout.Vector4Field(prop.displayName, prop.vectorValue);
                 else
                     Debug.LogError("Property is not a valid DecalProperty.");

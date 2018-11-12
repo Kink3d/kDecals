@@ -91,25 +91,25 @@ namespace kTools.Decals
                     if(context.properties[i] as TextureDecalProperty != null)
                     {
                         TextureDecalProperty textureProp = context.properties[i] as TextureDecalProperty;
-                        m_SerializedProperties[i].type = SerializableDecalProperty.Type.Texture;
+                        m_SerializedProperties[i].type = PropertyType.Texture;
                         m_SerializedProperties[i].textureValue = textureProp.value;
                     }
                     else if(context.properties[i] as ColorDecalProperty != null)
                     {
                         ColorDecalProperty colorProp = context.properties[i] as ColorDecalProperty;
-                        m_SerializedProperties[i].type = SerializableDecalProperty.Type.Color;
+                        m_SerializedProperties[i].type = PropertyType.Color;
                         m_SerializedProperties[i].colorValue = colorProp.value;
                     }
                     else if(context.properties[i] as FloatDecalProperty != null)
                     {
                         FloatDecalProperty floatProp = context.properties[i] as FloatDecalProperty;
-                        m_SerializedProperties[i].type = SerializableDecalProperty.Type.Float;
+                        m_SerializedProperties[i].type = PropertyType.Float;
                         m_SerializedProperties[i].floatValue = floatProp.value;
                     }
                     else if(context.properties[i] as VectorDecalProperty != null)
                     {
                         VectorDecalProperty vectorProp = context.properties[i] as VectorDecalProperty;
-                        m_SerializedProperties[i].type = SerializableDecalProperty.Type.Vector;
+                        m_SerializedProperties[i].type = PropertyType.Vector;
                         m_SerializedProperties[i].vectorValue = vectorProp.value;
                     }
                     else

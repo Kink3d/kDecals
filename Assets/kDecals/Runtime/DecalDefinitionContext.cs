@@ -11,8 +11,6 @@ namespace kTools.Decals
         //                   PRIVATE FIELDS                   //
         // -------------------------------------------------- //
 
-        public string name { get; set; }
-        public string path { get; set; }
         public string shader { get; set; }
 
         private List<DecalProperty> m_Properties;
