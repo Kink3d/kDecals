@@ -14,20 +14,26 @@
 			Offset -1, -1
 
 			CGPROGRAM
+			#pragma shader_feature _FOG
+			#pragma multi_compile_fog
+			
 			#pragma vertex VertexDecal
-			#pragma fragment FragmentDecalAlphaClip
-			#include "../../ShaderLibrary/DecalInput.hlsl"
+			#pragma fragment FragmentDecal
+			#include "../../ShaderLibrary/DecalInputUnlit.hlsl"
 
 			float _Threshold;
 
-			float4 FragmentDecalAlphaClip (VaryingsDecal IN) : SV_Target
+			void DefineDecalSurface(DecalData decalData, inout DecalSurfaceUnlit surface)
 			{
-				float4 col = SampleDecal(IN, _DecalTex, float4(0,0,0,0));
-				if(col.a < _Threshold)
+				float4 color = SampleDecal(decalData, _DecalTex, float4(0,0,0,0));
+				surface.Color = color.rgb;
+				surface.Alpha = color.a;
+
+				if(color.a < _Threshold)
 					discard;
-				return float4(col.rgb, 1);
 			}
-			
+
+			#include "../../ShaderLibrary/DecalPassUnlit.hlsl"
 			ENDCG
 		}
 	}
