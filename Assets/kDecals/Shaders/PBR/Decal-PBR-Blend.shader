@@ -1,4 +1,4 @@
-﻿Shader "Hidden/kDecals/PBR/Blend" 
+﻿Shader "Hidden/kDecals/Lit/PBR" 
 {
 	Properties 
 	{
@@ -14,7 +14,8 @@
 		_Specular ("Specular Color", Color) = (0,0,0,0)
 		_Smoothness ("Smoothness", Range(0, 1)) = 0.5
 		_EmissionTex ("Emission Map", 2D) = "white" {}
-		_EmissionColor ("Emission", Color) = (0,0,0,0)
+		_EmissionColor ("Emission Color", Color) = (0,0,0,0)
+		_Threshold ("Clip Threshold", Range(0, 1)) = 0.5
 	}
 	Subshader 
 	{
@@ -29,6 +30,7 @@
 			#pragma shader_feature _EMISSION
 			#pragma shader_feature _SPECGLOSSMAP
 			#pragma shader_feature _FOG
+			#pragma shader_feature _ALPHATEST
 			#pragma multi_compile_fog
 
 			#pragma target 3.0

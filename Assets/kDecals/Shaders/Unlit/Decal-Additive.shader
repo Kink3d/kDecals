@@ -29,7 +29,6 @@
 			}
 
 			#include "../../ShaderLibrary/DecalPassUnlit.hlsl"
-			
 			ENDCG
 		}
 	}

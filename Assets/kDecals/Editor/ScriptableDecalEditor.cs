@@ -95,6 +95,8 @@ namespace kTools.DecalsEditor
                     prop.floatValue = EditorGUILayout.FloatField(prop.displayName, prop.floatValue);
                 else if(prop.type == PropertyType.Vector)
                     prop.vectorValue = EditorGUILayout.Vector4Field(prop.displayName, prop.vectorValue);
+                else if(prop.type == PropertyType.Keyword)
+                    prop.boolValue = EditorGUILayout.Toggle(prop.displayName, prop.boolValue);
                 else
                     Debug.LogError("Property is not a valid DecalProperty.");
             }

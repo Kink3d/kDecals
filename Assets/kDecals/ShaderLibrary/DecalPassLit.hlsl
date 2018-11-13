@@ -123,8 +123,9 @@ inline FragmentCommonData SurfaceToCommonData (DecalSurfaceLit surface, DecalDat
      float4 tangentToWorld[3], float3 i_posWorld, float3 i_eyeVec)
 {
     // AlphaTest
-    #if defined(_ALPHATEST_ON)
-        clip (surface.Alpha - _Cutoff);
+    #ifdef _ALPHATEST
+        if(surface.Alpha < _Threshold)
+			discard;
     #endif
 
     // Convert to CommonData
@@ -175,8 +176,14 @@ float4 FragmentDecal (VaryingsDecal IN) : SV_Target
     UNITY_APPLY_FOG(IN.fogCoord, color.rgb);
 #endif
 
+    // Alpha
+    float alpha = commonData.alpha;
+#ifdef _ALPHATEST
+    alpha = 1;
+#endif
+
     // Finalize
-    return float4(color.rgb, commonData.alpha);
+    return float4(color.rgb, alpha);
 }
 
 #endif

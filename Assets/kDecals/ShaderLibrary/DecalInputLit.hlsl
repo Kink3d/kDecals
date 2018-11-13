@@ -26,6 +26,7 @@ Texture2D _EmissionTex;
 float _NormalScale;
 float4 _Specular;
 float _Smoothness;
+float _Threshold;
 
 // -------------------------------------------------- //
 //                       SURFACE                      //

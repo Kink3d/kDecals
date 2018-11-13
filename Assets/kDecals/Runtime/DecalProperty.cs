@@ -7,7 +7,7 @@ namespace kTools.Decals
     //                        ENUMS                       //
     // -------------------------------------------------- //
 
-    [Serializable] public enum PropertyType { Texture, Color, Float, Vector }
+    [Serializable] public enum PropertyType { Texture, Color, Float, Vector, Keyword }
 
     [Serializable]
     public class SerializableDecalProperty
@@ -23,6 +23,7 @@ namespace kTools.Decals
         [SerializeField] public Color colorValue;
         [SerializeField] public float floatValue;
         [SerializeField] public Vector4 vectorValue;
+        [SerializeField] public bool boolValue;
 
         // -------------------------------------------------- //
         //                   PUBLIC METHODS                   //
@@ -47,6 +48,12 @@ namespace kTools.Decals
                     break;
                 case PropertyType.Vector:
                     material.SetVector(referenceName, vectorValue);
+                    break;
+                case PropertyType.Keyword:
+                    if(boolValue == true)
+                        material.EnableKeyword(referenceName);
+                    else
+                        material.DisableKeyword(referenceName);
                     break;
                 default:
                     Debug.LogError("Not a valid Property type!");
@@ -143,6 +150,27 @@ namespace kTools.Decals
         // -------------------------------------------------- //
 
         public VectorDecalProperty(string displayName, string referenceName, Vector4 value)
+        {
+            this.displayName = displayName;
+            this.referenceName = referenceName;
+            this.value = value;
+        }
+    }
+
+    [Serializable]
+    public class KeywordDecalProperty : DecalProperty
+    {
+        // -------------------------------------------------- //
+        //                   PRIVATE FIELDS                   //
+        // -------------------------------------------------- //
+
+        [SerializeField] public bool value;
+
+        // -------------------------------------------------- //
+        //                    CONSTRUCTORS                    //
+        // -------------------------------------------------- //
+
+        public KeywordDecalProperty(string displayName, string referenceName, bool value)
         {
             this.displayName = displayName;
             this.referenceName = referenceName;

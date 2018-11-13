@@ -112,6 +112,12 @@ namespace kTools.Decals
                         m_SerializedProperties[i].type = PropertyType.Vector;
                         m_SerializedProperties[i].vectorValue = vectorProp.value;
                     }
+                    else if(context.properties[i] as KeywordDecalProperty != null)
+                    {
+                        KeywordDecalProperty keywordProp = context.properties[i] as KeywordDecalProperty;
+                        m_SerializedProperties[i].type = PropertyType.Keyword;
+                        m_SerializedProperties[i].boolValue = keywordProp.value;
+                    }
                     else
                         Debug.LogError("Not a valid Property type!");
                 }
