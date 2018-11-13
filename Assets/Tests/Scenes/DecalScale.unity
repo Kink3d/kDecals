@@ -157,7 +157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_DecalData: {fileID: 11400000, guid: f57daa49b6972474c8cdc55aaf3f0965, type: 2}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2050840084}
 --- !u!119 &20636950
 Projector:
   m_ObjectHideFlags: 0
@@ -173,36 +173,10 @@ Projector:
   m_AspectRatio: 0.5
   m_Orthographic: 1
   m_OrthographicSize: 0.5
-  m_Material: {fileID: 1703171347}
+  m_Material: {fileID: 2050840084}
   m_IgnoreLayers:
     serializedVersion: 2
     m_Bits: 0
---- !u!21 &53958203
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Hidden/kDecals/Unlit/Blend
-  m_Shader: {fileID: 4800000, guid: fc6629188256ca04c8db2aaed2913d5f, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _DecalTex:
-        m_Texture: {fileID: 2800000, guid: 2a1fe39ced6d0d645aa0f9d465dea7ee, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats:
-    - _Axis: 3
-    m_Colors: []
 --- !u!1 &170076733
 GameObject:
   m_ObjectHideFlags: 0
@@ -317,7 +291,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_DecalData: {fileID: 11400000, guid: f57daa49b6972474c8cdc55aaf3f0965, type: 2}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 1140988030}
 --- !u!119 &467597633
 Projector:
   m_ObjectHideFlags: 0
@@ -333,7 +307,7 @@ Projector:
   m_AspectRatio: 1.0000005
   m_Orthographic: 1
   m_OrthographicSize: 0.5
-  m_Material: {fileID: 53958203}
+  m_Material: {fileID: 1140988030}
   m_IgnoreLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -498,6 +472,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 912185474}
   m_CullTransparentMesh: 0
+--- !u!21 &1140988030
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Hidden/kDecals/Unlit/Blend
+  m_Shader: {fileID: 4800000, guid: fc6629188256ca04c8db2aaed2913d5f, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _DecalTex:
+        m_Texture: {fileID: 2800000, guid: 2a1fe39ced6d0d645aa0f9d465dea7ee, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Axis: 3
+    m_Colors: []
 --- !u!1 &1177640026
 GameObject:
   m_ObjectHideFlags: 0
@@ -714,7 +714,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_DecalData: {fileID: 11400000, guid: f57daa49b6972474c8cdc55aaf3f0965, type: 2}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 1699425032}
 --- !u!119 &1503228128
 Projector:
   m_ObjectHideFlags: 0
@@ -730,7 +730,7 @@ Projector:
   m_AspectRatio: 2.0000005
   m_Orthographic: 1
   m_OrthographicSize: 0.25
-  m_Material: {fileID: 1667446971}
+  m_Material: {fileID: 1699425032}
   m_IgnoreLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -901,7 +901,7 @@ MonoBehaviour:
   m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
---- !u!21 &1667446971
+--- !u!21 &1699425032
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
@@ -927,7 +927,7 @@ Material:
     m_Floats:
     - _Axis: 1
     m_Colors: []
---- !u!21 &1703171347
+--- !u!21 &2050840084
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0

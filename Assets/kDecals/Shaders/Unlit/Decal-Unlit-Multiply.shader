@@ -1,4 +1,4 @@
-﻿Shader "Hidden/kDecals/Unlit/Additive" 
+﻿Shader "Hidden/kDecals/Unlit/Multiply" 
 {
 	Properties 
 	{
@@ -10,7 +10,7 @@
 		Tags {"Queue"="Transparent"}
 		Pass 
 		{
-			Blend One One
+			Blend DstColor Zero
 			Offset -1, -1
 
 			CGPROGRAM
@@ -21,9 +21,11 @@
 			#pragma fragment FragmentDecal
 			#include "../../ShaderLibrary/DecalInputUnlit.hlsl"
 
+			#define FOG_COLOR half4(1,1,1,1)
+
 			void DefineDecalSurface(DecalData decalData, inout DecalSurfaceUnlit surface)
 			{
-				float4 color = SampleDecal(decalData, _DecalTex, float4(0,0,0,1));
+				float4 color = SampleDecal(decalData, _DecalTex, float4(1,1,1,1));
 				surface.Color = color.rgb;
 				surface.Alpha = color.a;
 			}

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6aee005232edea64fa9cfeff642bbb24, type: 3}
-  m_Name: PBR-Blend-Specular
+  m_Name: Lit-PBR-Specular
   m_EditorClassIdentifier: 
   m_DecalDefinitionType: kTools.Decals.PBRDecalDefinition, Assembly-CSharp, Version=0.0.0.0,
     Culture=neutral, PublicKeyToken=null
@@ -56,7 +56,7 @@ MonoBehaviour:
     colorValue: {r: 0, g: 0, b: 0, a: 0}
     floatValue: 0
     vectorValue: {x: 0, y: 0, z: 0, w: 0}
-    boolValue: 0
+    boolValue: 1
   - displayName: Albedo
     referenceName: _AlbedoTex
     type: 0

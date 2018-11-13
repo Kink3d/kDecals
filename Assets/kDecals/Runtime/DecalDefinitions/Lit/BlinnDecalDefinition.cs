@@ -3,14 +3,14 @@ using UnityEngine;
 
 namespace kTools.Decals
 {
-    [DecalDefinition("Lit/PBR")]
-    public class PBRDecalDefinition : DecalDefinition
+    [DecalDefinition("Lit/Blinn")]
+    public class BlinnDecalDefinition : DecalDefinition
     {
         public override void DefineDecal(out DecalDefinitionContext context)
         {
             context = new DecalDefinitionContext()
             {
-                shader = "Hidden/kDecals/Lit/PBR",
+                shader = "Hidden/kDecals/Lit/Blinn",
             };
 
             context.AddDecalProperty(new KeywordDecalProperty(

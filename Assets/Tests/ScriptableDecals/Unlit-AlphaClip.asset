@@ -17,6 +17,14 @@ MonoBehaviour:
   m_MaxInstances: 100
   m_Shader: Hidden/kDecals/Unlit/AlphaClip
   m_SerializedProperties:
+  - displayName: Fog
+    referenceName: _FOG
+    type: 4
+    textureValue: {fileID: 0}
+    colorValue: {r: 0, g: 0, b: 0, a: 0}
+    floatValue: 0
+    vectorValue: {x: 0, y: 0, z: 0, w: 0}
+    boolValue: 0
   - displayName: Decal
     referenceName: _DecalTex
     type: 0

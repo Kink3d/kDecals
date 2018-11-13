@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6aee005232edea64fa9cfeff642bbb24, type: 3}
-  m_Name: PBR-Blend-Normal
+  m_Name: Lit-PBR-Color
   m_EditorClassIdentifier: 
   m_DecalDefinitionType: kTools.Decals.PBRDecalDefinition, Assembly-CSharp, Version=0.0.0.0,
     Culture=neutral, PublicKeyToken=null
@@ -32,7 +32,7 @@ MonoBehaviour:
     colorValue: {r: 0, g: 0, b: 0, a: 0}
     floatValue: 0
     vectorValue: {x: 0, y: 0, z: 0, w: 0}
-    boolValue: 1
+    boolValue: 0
   - displayName: Emission
     referenceName: _EMISSION
     type: 4
@@ -56,7 +56,7 @@ MonoBehaviour:
     colorValue: {r: 0, g: 0, b: 0, a: 0}
     floatValue: 0
     vectorValue: {x: 0, y: 0, z: 0, w: 0}
-    boolValue: 0
+    boolValue: 1
   - displayName: Albedo
     referenceName: _AlbedoTex
     type: 0
@@ -69,14 +69,14 @@ MonoBehaviour:
     referenceName: _Color
     type: 1
     textureValue: {fileID: 0}
-    colorValue: {r: 1, g: 1, b: 1, a: 1}
+    colorValue: {r: 1, g: 0, b: 0, a: 1}
     floatValue: 0
     vectorValue: {x: 0, y: 0, z: 0, w: 0}
     boolValue: 0
   - displayName: Normal
     referenceName: _NormalTex
     type: 0
-    textureValue: {fileID: 2800000, guid: 0cbfeec2daa6bcf438cdf5d58d6c339f, type: 3}
+    textureValue: {fileID: 0}
     colorValue: {r: 0, g: 0, b: 0, a: 0}
     floatValue: 0
     vectorValue: {x: 0, y: 0, z: 0, w: 0}

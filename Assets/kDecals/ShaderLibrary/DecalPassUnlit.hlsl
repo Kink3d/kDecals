@@ -25,6 +25,10 @@ VaryingsDecal VertexDecal (AttributesDecal v)
     return o;
 }
 
+#ifndef FOG_COLOR
+    #define FOG_COLOR unity_FogColor
+#endif
+
 // -------------------------------------------------- //
 //                      FRAGMENT                      //
 // -------------------------------------------------- //
@@ -36,7 +40,8 @@ float4 FragmentDecal (VaryingsDecal IN) : SV_Target
 
     // Calculate Surface
     DecalSurfaceUnlit surface = InitializeDecalSurfaceUnlit();
-    DefineDecalSurface(decalData, surface);				
+    DefineDecalSurface(decalData, surface);
+    float3 color = surface.Color;
 
     // Dither
     UNITY_APPLY_DITHER_CROSSFADE(IN.positionCS.xy);
@@ -47,11 +52,11 @@ float4 FragmentDecal (VaryingsDecal IN) : SV_Target
 
     // Fog
 #ifdef _FOG
-    UNITY_APPLY_FOG(IN.fogCoord, color.rgb);
+    UNITY_APPLY_FOG_COLOR(IN.fogCoord, color.rgb, FOG_COLOR);
 #endif
 
     // Finalize
-    return float4(surface.Color, surface.Alpha);
+    return float4(color, surface.Alpha);
 }
 
 #endif

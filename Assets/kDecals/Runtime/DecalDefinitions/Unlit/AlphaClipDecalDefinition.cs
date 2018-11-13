@@ -10,6 +10,12 @@
                 shader = "Hidden/kDecals/Unlit/AlphaClip",
             };
 
+            context.AddDecalProperty(new KeywordDecalProperty(
+                "Fog",
+                "_FOG",
+                false
+            ));
+
             context.AddDecalProperty(new TextureDecalProperty(
                 "Decal",
                 "_DecalTex",

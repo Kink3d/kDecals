@@ -1,0 +1,139 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6aee005232edea64fa9cfeff642bbb24, type: 3}
+  m_Name: Lit-Blinn-Emission
+  m_EditorClassIdentifier: 
+  m_DecalDefinitionType: kTools.Decals.BlinnDecalDefinition, Assembly-CSharp, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
+  m_MaxInstances: 100
+  m_Shader: Hidden/kDecals/Lit/Blinn
+  m_SerializedProperties:
+  - displayName: Specular Map
+    referenceName: _SPECGLOSSMAP
+    type: 4
+    textureValue: {fileID: 0}
+    colorValue: {r: 0, g: 0, b: 0, a: 0}
+    floatValue: 0
+    vectorValue: {x: 0, y: 0, z: 0, w: 0}
+    boolValue: 0
+  - displayName: Normal Map
+    referenceName: _NORMALMAP
+    type: 4
+    textureValue: {fileID: 0}
+    colorValue: {r: 0, g: 0, b: 0, a: 0}
+    floatValue: 0
+    vectorValue: {x: 0, y: 0, z: 0, w: 0}
+    boolValue: 0
+  - displayName: Emission
+    referenceName: _EMISSION
+    type: 4
+    textureValue: {fileID: 0}
+    colorValue: {r: 0, g: 0, b: 0, a: 0}
+    floatValue: 0
+    vectorValue: {x: 0, y: 0, z: 0, w: 0}
+    boolValue: 1
+  - displayName: Alpha Clip
+    referenceName: _ALPHATEST
+    type: 4
+    textureValue: {fileID: 0}
+    colorValue: {r: 0, g: 0, b: 0, a: 0}
+    floatValue: 0
+    vectorValue: {x: 0, y: 0, z: 0, w: 0}
+    boolValue: 0
+  - displayName: Fog
+    referenceName: _FOG
+    type: 4
+    textureValue: {fileID: 0}
+    colorValue: {r: 0, g: 0, b: 0, a: 0}
+    floatValue: 0
+    vectorValue: {x: 0, y: 0, z: 0, w: 0}
+    boolValue: 1
+  - displayName: Albedo
+    referenceName: _AlbedoTex
+    type: 0
+    textureValue: {fileID: 2800000, guid: 142d8848d98ecd940a652d3dc19c4d03, type: 3}
+    colorValue: {r: 0, g: 0, b: 0, a: 0}
+    floatValue: 0
+    vectorValue: {x: 0, y: 0, z: 0, w: 0}
+    boolValue: 0
+  - displayName: Color
+    referenceName: _Color
+    type: 1
+    textureValue: {fileID: 0}
+    colorValue: {r: 1, g: 1, b: 1, a: 1}
+    floatValue: 0
+    vectorValue: {x: 0, y: 0, z: 0, w: 0}
+    boolValue: 0
+  - displayName: Normal
+    referenceName: _NormalTex
+    type: 0
+    textureValue: {fileID: 0}
+    colorValue: {r: 0, g: 0, b: 0, a: 0}
+    floatValue: 0
+    vectorValue: {x: 0, y: 0, z: 0, w: 0}
+    boolValue: 0
+  - displayName: Normal Scale
+    referenceName: _NormalScale
+    type: 2
+    textureValue: {fileID: 0}
+    colorValue: {r: 0, g: 0, b: 0, a: 0}
+    floatValue: 1
+    vectorValue: {x: 0, y: 0, z: 0, w: 0}
+    boolValue: 0
+  - displayName: Specular Map
+    referenceName: _SpecularTex
+    type: 0
+    textureValue: {fileID: 0}
+    colorValue: {r: 0, g: 0, b: 0, a: 0}
+    floatValue: 0
+    vectorValue: {x: 0, y: 0, z: 0, w: 0}
+    boolValue: 0
+  - displayName: Specular Color
+    referenceName: _Specular
+    type: 1
+    textureValue: {fileID: 0}
+    colorValue: {r: 0, g: 0, b: 0, a: 1}
+    floatValue: 0
+    vectorValue: {x: 0, y: 0, z: 0, w: 0}
+    boolValue: 0
+  - displayName: Smoothness
+    referenceName: _Smoothness
+    type: 2
+    textureValue: {fileID: 0}
+    colorValue: {r: 0, g: 0, b: 0, a: 0}
+    floatValue: 0.5
+    vectorValue: {x: 0, y: 0, z: 0, w: 0}
+    boolValue: 0
+  - displayName: Emission Map
+    referenceName: _EmissionTex
+    type: 0
+    textureValue: {fileID: 0}
+    colorValue: {r: 0, g: 0, b: 0, a: 0}
+    floatValue: 0
+    vectorValue: {x: 0, y: 0, z: 0, w: 0}
+    boolValue: 0
+  - displayName: Emission Color
+    referenceName: _EmissionColor
+    type: 1
+    textureValue: {fileID: 0}
+    colorValue: {r: 0.04401779, g: 1, b: 0, a: 1}
+    floatValue: 0
+    vectorValue: {x: 0, y: 0, z: 0, w: 0}
+    boolValue: 0
+  - displayName: Clip Threshold
+    referenceName: _Threshold
+    type: 2
+    textureValue: {fileID: 0}
+    colorValue: {r: 0, g: 0, b: 0, a: 0}
+    floatValue: 0.5
+    vectorValue: {x: 0, y: 0, z: 0, w: 0}
+    boolValue: 0
