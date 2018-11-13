@@ -30,10 +30,10 @@ struct AttributesDecal
 
     // Lighting
 #ifdef _LIGHTING
-    float4 texcoord0 : TEXCOORD1;
-    float4 texcoord1 : TEXCOORD1;
+    half4 texcoord0 : TEXCOORD1;
+    half4 texcoord1 : TEXCOORD1;
 #if defined(DYNAMICLIGHTMAP_ON) || defined(UNITY_PASS_META)
-    float2 texcoord2 : TEXCOORD2;
+    half4 texcoord2 : TEXCOORD2;
 #endif // defined(DYNAMICLIGHTMAP_ON) || defined(UNITY_PASS_META)
 #ifdef _TANGENT_TO_WORLD
     half4 tangent   : TANGENT;
@@ -58,11 +58,11 @@ struct VaryingsDecal
     // Lighting
 #ifdef _LIGHTING
     float4 tangentOS                        : TANGENT;
-    float4 uv1                              : TEXCOORD1;
+    half4 uv1                               : TEXCOORD1;
     float4 positionWS                       : TEXCOORD3;
     float4 viewDir                          : TEXCOORD4;
-    float4 tangentToWorldAndPackedData[3]   : TEXCOORD5;
-    float4 ambientOrLightmapUV              : TEXCOORD8;
+    float4 tangentToWorld[3]                : TEXCOORD5;
+    half4 ambientOrLightmapUV              : TEXCOORD8;
 #endif
 
     // Fog
@@ -107,10 +107,10 @@ DecalData PackVaryingsToDecalData(VaryingsDecal IN)
 float4 SampleDecal(DecalData decalData, Texture2D decalTexture, float4 defaultColor)
 {
     // Sample Decal texture
-    float4 tex = decalTexture.Sample(_Linear_Clamp_sampler, decalData.uv0.xy / decalData.uv0.w);
+    half4 tex = decalTexture.Sample(_Linear_Clamp_sampler, decalData.uv0.xy / decalData.uv0.w);
 
     // Clamp to projection
-    float4 col;
+    half4 col;
     if(_Axis == 2 || _Axis == 3) // Y
         col = lerp(defaultColor, tex, (1 - saturate(decalData.uv0.z)) * abs(decalData.normalOS.y));
     else if(_Axis == 4 || _Axis == 5) // Z

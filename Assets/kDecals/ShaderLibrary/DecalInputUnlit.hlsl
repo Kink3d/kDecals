@@ -19,14 +19,14 @@ Texture2D _DecalTex;
 
 struct DecalSurfaceUnlit
 {
-    float3 Color;
-    float Alpha;
+    half3 Color;
+    half Alpha;
 };
 
 DecalSurfaceUnlit InitializeDecalSurfaceUnlit()
 {
     DecalSurfaceUnlit surface;
-    surface.Color = float3(1,1,1);
+    surface.Color = half3(1,1,1);
     surface.Alpha = 1;
     return surface;
 }

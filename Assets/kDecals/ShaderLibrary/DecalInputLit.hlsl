@@ -23,10 +23,10 @@ Texture2D _AlbedoTex;
 Texture2D _NormalTex;
 Texture2D _SpecularTex;
 Texture2D _EmissionTex;
-float _NormalScale;
-float4 _Specular;
-float _Smoothness;
-float _Threshold;
+half _NormalScale;
+half4 _Specular;
+half _Smoothness;
+half _Threshold;
 
 // -------------------------------------------------- //
 //                       SURFACE                      //

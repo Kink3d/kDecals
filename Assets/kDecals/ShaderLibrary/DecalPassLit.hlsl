@@ -2,32 +2,6 @@
 #define DECAL_PASS_LIT_INCLUDED
 
 // -------------------------------------------------- //
-//                      PACKING                       //
-// -------------------------------------------------- //
-
-VertexInput PackAttributesToVertexInput(AttributesDecal IN)
-{
-    // Initialize
-    VertexInput o;
-    UNITY_INITIALIZE_OUTPUT(VertexInput, o);
-
-    // Copy data
-    o.vertex = IN.vertex;
-    o.normal = IN.normal;
-    o.uv0 = IN.texcoord0;
-    o.uv1 = IN.texcoord1;
-#if defined(DYNAMICLIGHTMAP_ON) || defined(UNITY_PASS_META)
-    o.uv2 = IN.texcoord2;
-#endif
-#ifdef _TANGENT_TO_WORLD
-    o.tangent = IN.tangent;
-#endif
-
-    // Finalize
-    return o;
-}
-
-// -------------------------------------------------- //
 //                   SURFACE UTILS                    //
 // -------------------------------------------------- //
 
@@ -67,6 +41,28 @@ half3 SampleEmission(DecalSurfaceLit surface)
 //                       VERTEX                       //
 // -------------------------------------------------- //
 
+VertexInput PackAttributesToVertexInput(AttributesDecal IN)
+{
+    // Initialize
+    VertexInput o;
+    UNITY_INITIALIZE_OUTPUT(VertexInput, o);
+
+    // Copy data
+    o.vertex = IN.vertex;
+    o.normal = IN.normal;
+    o.uv0 = IN.texcoord0;
+    o.uv1 = IN.texcoord1;
+#if defined(DYNAMICLIGHTMAP_ON) || defined(UNITY_PASS_META)
+    o.uv2 = IN.texcoord2;
+#endif
+#ifdef _TANGENT_TO_WORLD
+    o.tangent = IN.tangent;
+#endif
+
+    // Finalize
+    return o;
+}
+
 VaryingsDecal VertexDecal (AttributesDecal v)
 {
     // Initiailize
@@ -90,13 +86,13 @@ VaryingsDecal VertexDecal (AttributesDecal v)
 #ifdef _TANGENT_TO_WORLD
     float4 tangentWorld = float4(UnityObjectToWorldDir(o.tangentOS.xyz), o.tangentOS.w);
     float3x3 tangentToWorld = CreateTangentToWorldPerVertex(o.normalOS, tangentWorld.xyz, tangentWorld.w);
-    o.tangentToWorldAndPackedData[0].xyz = tangentToWorld[0];
-    o.tangentToWorldAndPackedData[1].xyz = tangentToWorld[1];
-    o.tangentToWorldAndPackedData[2].xyz = tangentToWorld[2];
+    o.tangentToWorld[0].xyz = tangentToWorld[0];
+    o.tangentToWorld[1].xyz = tangentToWorld[1];
+    o.tangentToWorld[2].xyz = tangentToWorld[2];
 #else
-    o.tangentToWorldAndPackedData[0].xyz = 0;
-    o.tangentToWorldAndPackedData[1].xyz = 0;
-    o.tangentToWorldAndPackedData[2].xyz = o.normalOS;
+    o.tangentToWorld[0].xyz = 0;
+    o.tangentToWorld[1].xyz = 0;
+    o.tangentToWorld[2].xyz = o.normalOS;
 #endif
 
     // Shadow Receiving
@@ -119,8 +115,8 @@ VaryingsDecal VertexDecal (AttributesDecal v)
 //                      FRAGMENT                      //
 // -------------------------------------------------- //
 
-inline FragmentCommonData SurfaceToCommonData (DecalSurfaceLit surface, DecalData decalData,
-     float4 tangentToWorld[3], float3 i_posWorld, float3 i_eyeVec)
+inline FragmentCommonData PackSurfaceToCommonData (DecalSurfaceLit surface, DecalData decalData,
+     float4 tangentToWorld[3], float3 positionWS, float3 viewDir)
 {
     // AlphaTest
     #ifdef _ALPHATEST
@@ -137,8 +133,8 @@ inline FragmentCommonData SurfaceToCommonData (DecalSurfaceLit surface, DecalDat
     o.smoothness = surface.Smoothness;
     o.alpha = surface.Alpha;
     o.oneMinusReflectivity = oneMinusReflectivity;
-    o.eyeVec = NormalizePerPixelNormal(i_eyeVec);
-    o.posWorld = i_posWorld;
+    o.eyeVec = NormalizePerPixelNormal(-viewDir);
+    o.posWorld = positionWS;
 
     return o;
 }
@@ -160,15 +156,15 @@ float4 FragmentDecal (VaryingsDecal IN) : SV_Target
     UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(IN);
 
     // Calculate CommonData
-    FragmentCommonData commonData = SurfaceToCommonData(surface, decalData, IN.tangentToWorldAndPackedData, IN.positionWS, IN.viewDir);
+    FragmentCommonData commonData = PackSurfaceToCommonData(surface, decalData, IN.tangentToWorld, IN.positionWS, IN.viewDir);
 
     // Lighting
     UnityLight mainLight = MainLight ();
     UNITY_LIGHT_ATTENUATION(atten, IN, commonData.posWorld);
-    float occlusion = 1;
+    half occlusion = 1;
     UnityGI gi = FragmentGI (commonData, occlusion, IN.ambientOrLightmapUV, atten, mainLight);
     half4 color = UNITY_BRDF_PBS (commonData.diffColor, commonData.specColor, commonData.oneMinusReflectivity, 
-        commonData.smoothness, commonData.normalWorld, -commonData.eyeVec, gi.light, gi.indirect);
+        commonData.smoothness, commonData.normalWorld, commonData.eyeVec, gi.light, gi.indirect);
     color.rgb += SampleEmission(surface);
 
     // Fog
@@ -177,13 +173,13 @@ float4 FragmentDecal (VaryingsDecal IN) : SV_Target
 #endif
 
     // Alpha
-    float alpha = commonData.alpha;
+    half alpha = commonData.alpha;
 #ifdef _ALPHATEST
     alpha = 1;
 #endif
 
     // Finalize
-    return float4(color.rgb, alpha);
+    return half4(color.rgb, alpha);
 }
 
 #endif
