@@ -1,0 +1,7 @@
+{
+    "name": "com.ktools.decals",
+    "description": "A forward projector Decal system for Unity.",
+    "version": "1.0.0",
+    "unity": "2018.2",
+    "displayName": "kDecals"
+}
