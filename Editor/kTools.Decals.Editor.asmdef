@@ -1,0 +1,17 @@
+{
+    "name": "kTools.Decals.Editor",
+    "references": [
+        "GUID:a20cc15f77b86f04b90c2f211865dd4d"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,10 @@
+{
+    "name": "com.kink3d.decals",
+    "description": "Forward projector Decals for Unity.",
+    "version": "2.0.0",
+    "unity": "2019.3",
+    "displayName": "kDecals",
+    "dependencies": {
+        "com.kink3d.pooling": "0.1.0"
+    }
+}
