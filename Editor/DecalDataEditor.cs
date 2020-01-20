@@ -35,6 +35,7 @@ namespace kTools.Decals.Editor
 #endregion
 
 #region Fields
+        const string kEditorPrefKey = "kDecals:DecalData:";
         DecalData m_Target;
         MaterialEditor m_MaterialEditor;
 
@@ -46,15 +47,6 @@ namespace kTools.Decals.Editor
         SerializedProperty m_PoolingEnabledProp;
         SerializedProperty m_InstanceCountProp;
         SerializedProperty m_ProjectionDepthProp;
-#endregion
-
-#region Constructors
-        public DecalDataEditor()
-        {
-            // Set data
-            m_PoolingOptionsFoldout = true;
-            m_ProjectionOptionsFoldout = true;
-        }
 #endregion
 
 #region State
@@ -93,26 +85,32 @@ namespace kTools.Decals.Editor
                 EditorGUILayout.HelpBox("Waiting for Asset import...", MessageType.Info);
                 return;
             }
+
+            // Get foldouts from EditorPrefs
+            m_PoolingOptionsFoldout = GetFoldoutState("PoolingOptions");
+            m_ProjectionOptionsFoldout = GetFoldoutState("ProjectionOptions");
             
             // Setup
             serializedObject.Update();
 
             // Pooling Options
-            m_PoolingOptionsFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(m_PoolingOptionsFoldout, Styles.PoolingOptions);
-            if(m_PoolingOptionsFoldout)
+            var poolingOptions = EditorGUILayout.BeginFoldoutHeaderGroup(m_PoolingOptionsFoldout, Styles.PoolingOptions);
+            if(poolingOptions)
             {
                 DrawPoolingOptions();
                 EditorGUILayout.Space();
             }
+            SetFoldoutState("PoolingOptions", m_PoolingOptionsFoldout, poolingOptions);
             EditorGUILayout.EndFoldoutHeaderGroup();
 
             // Projection Options
-            m_ProjectionOptionsFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(m_ProjectionOptionsFoldout, Styles.ProjectionOptions);
-            if(m_ProjectionOptionsFoldout)
+            var projectionOptions = EditorGUILayout.BeginFoldoutHeaderGroup(m_ProjectionOptionsFoldout, Styles.ProjectionOptions);
+            if(projectionOptions)
             {
                 DrawProjectionOptions();
                 EditorGUILayout.Space();
             }
+            SetFoldoutState("ProjectionOptions", m_ProjectionOptionsFoldout, projectionOptions);
             EditorGUILayout.EndFoldoutHeaderGroup();
 
             // Material Editor
@@ -146,6 +144,24 @@ namespace kTools.Decals.Editor
             EditorGUILayout.Space();
             m_MaterialEditor.DrawHeader();
             m_MaterialEditor.OnInspectorGUI();
+        }
+#endregion
+
+#region EditorPrefs
+        bool GetFoldoutState(string name)
+        {
+            // Get value from EditorPrefs
+            return EditorPrefs.GetBool($"{kEditorPrefKey}.{name}");
+        }
+
+        void SetFoldoutState(string name, bool field, bool value)
+        {
+            if(field == value)
+                return;
+
+            // Set value to EditorPrefs and field
+            EditorPrefs.SetBool($"{kEditorPrefKey}.{name}", value);
+            field = value;
         }
 #endregion
     }

@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Improve decal orientation
 - Expose projection depth to `DecalData`
 - Improve shader GUI
+- Serialize foldouts to EditorPrefs
 
 ## [1.0.0] - 2018-11-17
 ### Added

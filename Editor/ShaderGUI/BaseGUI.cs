@@ -44,7 +44,7 @@ namespace kTools.Decals.Editor
             public static readonly string AlphaClip = "_AlphaClip";
             public static readonly string Cutoff = "_Cutoff";
             public static readonly string SpecularHighlights = "_SpecularHighlights";
-            public static readonly string EnvironmentReflections = "_GlossyReflections";
+            public static readonly string EnvironmentReflections = "_EnvironmentReflections";
         }
 #endregion
 
@@ -71,6 +71,8 @@ namespace kTools.Decals.Editor
 #endregion
 
 #region Fields
+        const string kEditorPrefKey = "kDecals:BaseGUI:";
+
         // Foldouts
         bool m_SurfaceOptionsFoldout;
         bool m_SurfaceInputsFoldout;
@@ -85,18 +87,14 @@ namespace kTools.Decals.Editor
         MaterialProperty m_EnvironmentReflectionsProp;
 #endregion
 
-#region Constructors
-        public BaseGUI()
-        {
-            m_SurfaceOptionsFoldout = true;
-            m_SurfaceInputsFoldout = true;
-            m_AdvancedOptionsFoldout = true;
-        }
-#endregion
-
 #region GUI
         public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] properties)
         {
+            // Get foldouts from EditorPrefs
+            m_SurfaceOptionsFoldout = GetFoldoutState("SurfaceOptions");
+            m_SurfaceInputsFoldout = GetFoldoutState("SurfaceInputs");
+            m_AdvancedOptionsFoldout =  GetFoldoutState("AdvancedOptions");
+
             // Base properties
             m_WorkflowModeProp = FindProperty(PropertyNames.WorkflowMode, properties, false);
             m_BlendProp = FindProperty(PropertyNames.Blend, properties, false);
@@ -134,30 +132,33 @@ namespace kTools.Decals.Editor
         void DrawProperties(MaterialEditor materialEditor)
         {
             // Surface Options
-            m_SurfaceOptionsFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(m_SurfaceOptionsFoldout, Styles.SurfaceOptions);
-            if(m_SurfaceOptionsFoldout)
+            var surfaceOptions = EditorGUILayout.BeginFoldoutHeaderGroup(m_SurfaceOptionsFoldout, Styles.SurfaceOptions);
+            if(surfaceOptions)
             {
                 DrawSurfaceProperies(materialEditor);
                 EditorGUILayout.Space();
             }
+            SetFoldoutState("SurfaceOptions", m_SurfaceOptionsFoldout, surfaceOptions);
             EditorGUILayout.EndFoldoutHeaderGroup();
 
             // Surface Inputs
-            m_SurfaceInputsFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(m_SurfaceInputsFoldout, Styles.SurfaceInputs);
-            if(m_SurfaceInputsFoldout)
+            var surfaceInputs = EditorGUILayout.BeginFoldoutHeaderGroup(m_SurfaceInputsFoldout, Styles.SurfaceInputs);
+            if(surfaceInputs)
             {
                 DrawSurfaceInputs(materialEditor);
                 EditorGUILayout.Space();
             }
+            SetFoldoutState("SurfaceInputs", m_SurfaceInputsFoldout, surfaceInputs);
             EditorGUILayout.EndFoldoutHeaderGroup();
 
             // Advanced Options
-            m_AdvancedOptionsFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(m_AdvancedOptionsFoldout, Styles.AdvancedOptions);
-            if(m_AdvancedOptionsFoldout)
+            var advancedOptions = EditorGUILayout.BeginFoldoutHeaderGroup(m_AdvancedOptionsFoldout, Styles.AdvancedOptions);
+            if(advancedOptions)
             {
                 DrawAdvancedOptions(materialEditor);
                 EditorGUILayout.Space();
             }
+            SetFoldoutState("AdvancedOptions", m_AdvancedOptionsFoldout, advancedOptions);
             EditorGUILayout.EndFoldoutHeaderGroup();
         }
 
@@ -296,6 +297,24 @@ namespace kTools.Decals.Editor
                 material.SetKeyword("_ENVIRONMENTREFLECTIONS_OFF", material.GetFloat(m_EnvironmentReflectionsProp.name) == 0.0f);
             }
         }        
+#endregion
+
+#region EditorPrefs
+        bool GetFoldoutState(string name)
+        {
+            // Get value from EditorPrefs
+            return EditorPrefs.GetBool($"{kEditorPrefKey}.{name}");
+        }
+
+        void SetFoldoutState(string name, bool field, bool value)
+        {
+            if(field == value)
+                return;
+
+            // Set value to EditorPrefs and field
+            EditorPrefs.SetBool($"{kEditorPrefKey}.{name}", value);
+            field = value;
+        }
 #endregion
     }
 
