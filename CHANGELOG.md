@@ -4,9 +4,24 @@ All notable changes to this package are documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [2.0.0] - 2019-01-16
+## [2.0.0] - 2020-01-20
+### Added
+- `BaseGUI` for custom Decal shaders
+- Full Summary for all public API
+
 ### Changed
 - Moved to package
+- Refine `DecalSystem` API
+- Refine and consolidate shaders
+- Move pooling to use `kPooling`
+- Rename `ScriptableDecal` to `DecalData`
+- Serialize material as subasset of `DecalData`
+- Draw material GUI on `DecalData` editor
+- Move pooling properties to `DecalData`
+- Automatically create pools where appropriate
+- Improve decal orientation
+- Expose projection depth to `DecalData`
+- Improve shader GUI
 
 ## [1.0.0] - 2018-11-17
 ### Added

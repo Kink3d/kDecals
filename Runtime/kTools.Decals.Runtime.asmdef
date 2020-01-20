@@ -1,6 +1,8 @@
 {
     "name": "kTools.Decals.Runtime",
-    "references": [],
+    "references": [
+        "GUID:5b43c0c6ef930bc4a9f21e5f0d7107e4"
+    ],
     "includePlatforms": [
         "Android",
         "Editor",
