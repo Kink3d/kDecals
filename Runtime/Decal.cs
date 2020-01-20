@@ -20,11 +20,16 @@ namespace kTools.Decals
         const float kScaleMultiplier = 0.5f;
 
         Projector m_Projector;
+        DecalData m_PreviousDecalData;
         Vector3 m_PreviousScale;
 #endregion
 
 #region Properties
-        public DecalData decalData => m_DecalData;
+        public DecalData decalData
+        {
+            get => m_DecalData;
+            set => m_DecalData = value;
+        }
 
         public Projector projector
 		{
@@ -37,15 +42,11 @@ namespace kTools.Decals
 		}
 #endregion
 
-#region Initialization
-        /// <summary>
-        /// Initializes Decal with given DecalData.
-        /// </summary>
-        /// <param name="decalData">DecalData to set.</param>
-        public void Init(DecalData decalData)
+#region State
+        void OnEnable()
         {
             // Set data
-            m_DecalData = decalData;
+            m_PreviousDecalData = null;
             m_PreviousScale = Vector3.one;
 
             // Collapse Projector Inspector
@@ -54,18 +55,22 @@ namespace kTools.Decals
             #endif
 
             // Setup Projector
-            projector.material = decalData.material;
             projector.orthographic = true;
-			projector.nearClipPlane = Mathf.Max(decalData.projectionDepth, 0.01f);
+		    projector.nearClipPlane =  0.01f;
 			projector.farClipPlane = 0.0f;
             projector.orthographicSize = 1.0f * kScaleMultiplier;
             projector.aspectRatio = 1.0f;
         }
-#endregion
 
-#region State
         void Update()
         {
+            // Capture decalData changes
+            if(m_DecalData != m_PreviousDecalData)
+            {
+                UpdateDecalData();
+                m_PreviousDecalData = decalData;
+            }
+
             // Capture scale changes
             if(transform.lossyScale != m_PreviousScale)
             {
@@ -77,6 +82,25 @@ namespace kTools.Decals
                 // Track previous scale
                 m_PreviousScale = scale;
             }
+        }
+#endregion
+
+#region DecalData
+        void UpdateDecalData()
+        {
+            // Handle null DecalData
+            if(m_DecalData == null)
+            {
+                projector.material = null;
+                projector.nearClipPlane = 0.01f;
+                projector.farClipPlane = 0.0f;
+                return;
+            }
+
+            // Setup Projector
+            projector.material = decalData.material;
+			projector.nearClipPlane = Mathf.Max(decalData.projectionDepth, 0.01f);
+			projector.farClipPlane = 0.0f;
         }
 #endregion
 
@@ -94,6 +118,25 @@ namespace kTools.Decals
             transform.LookAt(-direction);
             transform.localScale = scale;
         }
+#endregion
+
+#region AssetMenu
+#if UNITY_EDITOR
+        // Add a menu item to Decals
+        [UnityEditor.MenuItem("GameObject/kTools/Decal", false, 10)]
+        static void CreateDecalObject(UnityEditor.MenuCommand menuCommand)
+        {
+            // Create Decal
+            GameObject go = new GameObject("New Decal", typeof(Decal));
+            
+            // Transform
+            UnityEditor.GameObjectUtility.SetParentAndAlign(go, menuCommand.context as GameObject);
+            
+            // Undo and Selection
+            UnityEditor.Undo.RegisterCreatedObjectUndo(go, "Create " + go.name);
+            UnityEditor.Selection.activeObject = go;
+        }
+#endif
 #endregion
 
 #region Gizmos

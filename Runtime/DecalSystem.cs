@@ -136,7 +136,7 @@ namespace kTools.Decals
             var name = decalData.name;
             var obj = new GameObject(name, typeof(Decal));
             var decal = obj.GetComponent<Decal>();
-            decal.Init(decalData);
+            decal.decalData = decalData;
             return decal;
         }
 #endregion
