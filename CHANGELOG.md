@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Serialize foldouts to EditorPrefs
 - Converted to Universal render pipeline
 - Removed requirements for `Projector` component
+- Updated README
 
 ## [1.0.0] - 2018-11-17
 ### Added
