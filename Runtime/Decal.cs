@@ -5,9 +5,7 @@ namespace kTools.Decals
     /// <summary>
     /// Decal Object component.
     /// </summary>
-    [ExecuteInEditMode]
-    [AddComponentMenu("kTools/Decal")]
-    [RequireComponent(typeof(Projector))]
+    [AddComponentMenu("kTools/Decal"), ExecuteInEditMode]
     public sealed class Decal : MonoBehaviour
     {
 #region Serialized Fields
@@ -17,90 +15,74 @@ namespace kTools.Decals
 
 #region Fields
         const string kGizmoPath = "Packages/com.kink3d.decals/Gizmos/Decal.png";
-        const float kScaleMultiplier = 0.5f;
+        const float kDefaultScale = 0.5f;
 
-        Projector m_Projector;
+        Matrix4x4 m_Matrix;
+        Plane[] m_ClipPlanes;
         DecalData m_PreviousDecalData;
-        Vector3 m_PreviousScale;
+#endregion
+
+#region Constructors
+        public Decal()
+        {
+            m_ClipPlanes = new Plane[6];
+        }
 #endregion
 
 #region Properties
+        /// <summary>Data object providing settings and inputs for this Decal.</summary>
         public DecalData decalData
         {
             get => m_DecalData;
             set => m_DecalData = value;
         }
 
-        public Projector projector
-		{
-			get 
-			{
-				if(m_Projector == null)
-					m_Projector = GetComponent<Projector>();
-				return m_Projector;
-			}
-		}
+        /// <summary>Decal projection matrix.</summary>
+        public Matrix4x4 matrix => m_Matrix;
+
+        /// <summary>Clipping planes used for culling Decal.</summary>
+        public Plane[] clipPlanes => m_ClipPlanes;
 #endregion
 
 #region State
         void OnEnable()
         {
-            // Set data
-            m_PreviousDecalData = null;
-            m_PreviousScale = Vector3.one;
+            // Registration
+            DecalSystem.RegisterDecal(this);
+        }
 
-            // Collapse Projector Inspector
-            #if UNITY_EDITOR
-			UnityEditorInternal.InternalEditorUtility.SetIsInspectorExpanded(projector, false);
-            #endif
-
-            // Setup Projector
-            projector.orthographic = true;
-		    projector.nearClipPlane =  0.01f;
-			projector.farClipPlane = 0.0f;
-            projector.orthographicSize = 1.0f * kScaleMultiplier;
-            projector.aspectRatio = 1.0f;
+        void OnDisable()
+        {
+            // Registration
+            DecalSystem.UnregisterDecal(this);
         }
 
         void Update()
         {
-            // Capture decalData changes
-            if(m_DecalData != m_PreviousDecalData)
+            if(decalData == null)
+                return;
+            
+            // Track when DecalData changes
+            bool decalDataChanged = false;
+            if(decalData != m_PreviousDecalData)
             {
-                UpdateDecalData();
+                decalDataChanged = true;
                 m_PreviousDecalData = decalData;
             }
 
-            // Capture scale changes
-            if(transform.lossyScale != m_PreviousScale)
+            // Update depth when DecalData.depth changes
+            if(decalData.depth != transform.localScale.z)
             {
-                // Scale Projector
-                var scale = transform.lossyScale;
-                projector.orthographicSize = scale.y * kScaleMultiplier;
-			    projector.aspectRatio = scale.x / scale.y;
-
-                // Track previous scale
-                m_PreviousScale = scale;
-            }
-        }
-#endregion
-
-#region DecalData
-        void UpdateDecalData()
-        {
-            // Handle null DecalData
-            if(m_DecalData == null)
-            {
-                projector.material = null;
-                projector.nearClipPlane = 0.01f;
-                projector.farClipPlane = 0.0f;
-                return;
+                var localScale = transform.localScale;
+                transform.localScale = new Vector3(localScale.x, localScale.y, decalData.depth);
             }
 
-            // Setup Projector
-            projector.material = decalData.material;
-			projector.nearClipPlane = Mathf.Max(decalData.projectionDepth, 0.01f);
-			projector.farClipPlane = 0.0f;
+            // Update projection when decalData or Transform changes
+            if(decalDataChanged || transform.hasChanged)
+            {
+                UpdateProjectionMatrix();
+                UpdateCullingPlanes();
+            }
         }
 #endregion
 
@@ -115,8 +97,62 @@ namespace kTools.Decals
         {
             // Set Transform values
             transform.position = position;
-            transform.LookAt(-direction);
+            transform.LookAt(direction);
             transform.localScale = scale;
+        }
+#endregion
+
+#region Projection
+        void UpdateProjectionMatrix()
+        {
+            // Setup
+            var nearClip = Mathf.Max(transform.localScale.z, Mathf.Epsilon);
+            var farClip = 0.0f;
+
+            // Get Matrix
+            m_Matrix = Matrix4x4.Ortho(-kDefaultScale, kDefaultScale, -kDefaultScale, kDefaultScale, nearClip, farClip);
+            
+            // Offset
+            m_Matrix.m02 += 0.5f * m_Matrix.m32;
+            m_Matrix.m03 += 0.5f * m_Matrix.m33;
+            m_Matrix.m12 += 0.5f * m_Matrix.m32;
+            m_Matrix.m13 += 0.5f * m_Matrix.m33;
+
+            // Scaling
+            var zScale = 1.0f / (farClip - nearClip);
+            m_Matrix.m00 *= 0.5f;
+            m_Matrix.m11 *= 0.5f;
+            m_Matrix.m22 = zScale * transform.localScale.z;
+            m_Matrix.m23 = -zScale * transform.localScale.z;
+
+            // Transformation
+            m_Matrix = m_Matrix * transform.worldToLocalMatrix;
+        }
+
+        void UpdateCullingPlanes()
+        {
+            // Create plane vertices
+            var vertices = new Vector3[8];
+            vertices[0].x = vertices[1].x = vertices[4].x = vertices[5].x = -kDefaultScale;
+            vertices[2].x = vertices[3].x = vertices[6].x = vertices[7].x = kDefaultScale;
+            vertices[0].y = vertices[2].y = vertices[4].y = vertices[6].y = kDefaultScale;
+            vertices[1].y = vertices[3].y = vertices[5].y = vertices[7].y = -kDefaultScale;
+			vertices[0].z = vertices[1].z = vertices[2].z = vertices[3].z = transform.localScale.z;
+			vertices[7].z = vertices[4].z = vertices[6].z = vertices[5].z = 0.0f;
+
+            // Transform vertices to World Space
+			for (int i = 0; i < 8; i++)
+			{
+				vertices[i] = transform.TransformPoint(vertices[i]);
+			}
+
+            // Create clip planes
+            m_ClipPlanes[0] = new Plane(vertices[0], vertices[1], vertices[4]);
+            m_ClipPlanes[1] = new Plane(vertices[3], vertices[2], vertices[7]);
+            m_ClipPlanes[2] = new Plane(vertices[2], vertices[0], vertices[6]);
+            m_ClipPlanes[3] = new Plane(vertices[1], vertices[3], vertices[5]);
+            m_ClipPlanes[4] = new Plane(vertices[0], vertices[2], vertices[1]);
+            m_ClipPlanes[5] = new Plane(vertices[4], vertices[5], vertices[6]);
         }
 #endregion
 

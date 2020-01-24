@@ -14,28 +14,28 @@ namespace kTools.Decals.Editor
 
         class PropertyNames
         {
-            public static readonly string BaseTex = "_BaseTex";
-            public static readonly string Color = "_Color";
+            public static readonly string BaseMap = "_BaseMap";
+            public static readonly string BaseColor = "_BaseColor";
         }
 #endregion
 
 #region Fields
-        MaterialProperty m_BaseTexProp;
-        MaterialProperty m_ColorProp;
+        MaterialProperty m_BaseMapProp;
+        MaterialProperty m_BaseColorProp;
 #endregion
 
 #region GUI
         public override void GetProperties(MaterialProperty[] properties)
         {
             // Find properties
-            m_BaseTexProp = FindProperty(PropertyNames.BaseTex, properties, false);
-            m_ColorProp = FindProperty(PropertyNames.Color, properties, false);
+            m_BaseMapProp = FindProperty(PropertyNames.BaseMap, properties, false);
+            m_BaseColorProp = FindProperty(PropertyNames.BaseColor, properties, false);
         }
 
         public override void DrawSurfaceInputs(MaterialEditor materialEditor)
         {
             // Color
-            materialEditor.TexturePropertySingleLine(Labels.Color, m_BaseTexProp, m_ColorProp);
+            materialEditor.TexturePropertySingleLine(Labels.Color, m_BaseMapProp, m_BaseColorProp);
         }
 #endregion
     }
