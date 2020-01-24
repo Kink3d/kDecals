@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using kTools.Pooling;
 
 namespace kTools.Decals
@@ -8,6 +9,21 @@ namespace kTools.Decals
     /// </summary>
     public static class DecalSystem
     {
+#region Fields
+        static readonly List<Decal> m_Decals;
+#endregion
+
+#region Constructors
+        static DecalSystem()
+        {
+            m_Decals = new List<Decal>();
+        }
+#endregion
+
+#region Properties
+        internal static List<Decal> decals => m_Decals;
+#endregion
+
 #region Pool
         /// <summary>
         /// Create Pool for Decals using DecalData as key.
@@ -138,6 +154,26 @@ namespace kTools.Decals
             var decal = obj.GetComponent<Decal>();
             decal.decalData = decalData;
             return decal;
+        }
+#endregion
+
+#region Registration
+        internal static void RegisterDecal(Decal decal)
+        {
+            if(m_Decals.Contains(decal))
+                return;
+
+            // Track Decal
+            m_Decals.Add(decal);
+        }
+
+        internal static void UnregisterDecal(Decal decal)
+        {
+            if(!m_Decals.Contains(decal))
+                return;
+
+            // Untrack Decal
+            m_Decals.Remove(decal);
         }
 #endregion
 

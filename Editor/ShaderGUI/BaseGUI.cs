@@ -35,6 +35,9 @@ namespace kTools.Decals.Editor
 
             public static readonly GUIContent EnvironmentReflections = new GUIContent("Environment Reflections",
                 "When enabled, the Material samples reflections from the nearest Reflection Probes or Lighting Probe.");
+
+            public static readonly GUIContent Priority = new GUIContent("Priority",
+                "Determines the chronological rendering order for a Material. High values are rendered first.");
         }
 
         struct PropertyNames
@@ -45,6 +48,7 @@ namespace kTools.Decals.Editor
             public static readonly string Cutoff = "_Cutoff";
             public static readonly string SpecularHighlights = "_SpecularHighlights";
             public static readonly string EnvironmentReflections = "_EnvironmentReflections";
+            public static readonly string QueueOffset = "_QueueOffset";
         }
 #endregion
 
@@ -72,6 +76,7 @@ namespace kTools.Decals.Editor
 
 #region Fields
         const string kEditorPrefKey = "kDecals:BaseGUI:";
+        const int kQueueOffsetRange = 50;
 
         // Foldouts
         bool m_SurfaceOptionsFoldout;
@@ -85,6 +90,7 @@ namespace kTools.Decals.Editor
         MaterialProperty m_CutoffProp;
         MaterialProperty m_SpecularHighlightsProp;
         MaterialProperty m_EnvironmentReflectionsProp;
+        MaterialProperty m_QueueOffsetProp;
 #endregion
 
 #region GUI
@@ -102,6 +108,7 @@ namespace kTools.Decals.Editor
             m_CutoffProp = FindProperty(PropertyNames.Cutoff, properties, false);
             m_SpecularHighlightsProp = FindProperty(PropertyNames.SpecularHighlights, properties, false);
             m_EnvironmentReflectionsProp = FindProperty(PropertyNames.EnvironmentReflections, properties, false);
+            m_QueueOffsetProp = FindProperty(PropertyNames.QueueOffset, properties, false);
 
             // Leaf properties
             GetProperties(properties);
@@ -225,6 +232,17 @@ namespace kTools.Decals.Editor
             {
                 materialEditor.ShaderProperty(m_EnvironmentReflectionsProp, Styles.EnvironmentReflections);
             }
+            
+            // QueueOffset
+            if(material.HasProperty(PropertyNames.QueueOffset))
+            {
+                EditorGUI.BeginChangeCheck();
+                var queueOffset = EditorGUILayout.IntSlider(Styles.Priority, (int)m_QueueOffsetProp.floatValue, -kQueueOffsetRange, kQueueOffsetRange);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    m_QueueOffsetProp.floatValue = queueOffset;
+                }
+            }
         }
 #endregion
 
@@ -249,6 +267,15 @@ namespace kTools.Decals.Editor
                 material.SetKeyword("_SPECULAR_SETUP", material.IsSpecularWorkflow());
             }
 
+            // RenderQueue
+            var queueOffset = 0;
+            if(material.HasProperty("_QueueOffset"))
+            {
+                queueOffset = kQueueOffsetRange - (int) material.GetFloat("_QueueOffset");
+            }
+            var queue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+            material.renderQueue = queue + queueOffset;
+
             // BlendMode
             if(material.HasProperty(PropertyNames.Blend))
             {
@@ -258,21 +285,28 @@ namespace kTools.Decals.Editor
                     case BlendMode.Alpha:
                         material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
                         material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                        material.EnableKeyword("_BLEND_ALPHA");
                         material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
                         break;
                     case BlendMode.Premultiply:
                         material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
                         material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                        material.SetColor("_ZeroColor", new Color(0, 0, 0, 0));
+                        material.DisableKeyword("_BLEND_ALPHA");
                         material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
                         break;
                     case BlendMode.Additive:
                         material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
                         material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.One);
+                        material.SetColor("_ZeroColor", Color.black);
+                        material.DisableKeyword("_BLEND_ALPHA");
                         material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
                         break;
                     case BlendMode.Multiply:
                         material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.DstColor);
                         material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+                        material.SetColor("_ZeroColor", Color.white);
+                        material.DisableKeyword("_BLEND_ALPHA");
                         material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
                         material.EnableKeyword("_ALPHAMODULATE_ON");
                         break;

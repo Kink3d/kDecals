@@ -46,7 +46,22 @@ namespace kTools.Decals
         int m_InstanceCount;
 
         [SerializeField]
-        float m_ProjectionDepth;
+        float m_Depth;
+
+        [SerializeField]
+        float m_DepthFalloff;
+
+        [SerializeField]
+        float m_Angle;
+
+        [SerializeField]
+        float m_AngleFalloff;
+
+        [SerializeField]
+        int m_LayerMask;
+
+        [SerializeField]
+        int m_SortingOrder;
 #endregion
 
 #region Fields
@@ -59,15 +74,45 @@ namespace kTools.Decals
             // Set data
             m_PoolingEnabled = false;
             m_InstanceCount = 32;
+            m_Depth = 1.0f;
+            m_DepthFalloff = 0.5f;
+            m_Angle = 90.0f;
+            m_AngleFalloff = 0.5f;
+            m_LayerMask = -1;
+            m_SortingOrder = 0;
         }
 #endregion
 
 #region Properties
+        /// <summary>True if Decal asset has been processed.</summary>
         public bool isImported => m_IsImported;
+
+        /// <summary>Material used for Decal rendering.</summary>
         public Material material => m_Material;
+
+        /// <summary>If enabled all Decals created via DecalSystem will be pre-generated and taken from a Pool.</summary>
         public bool poolingEnabled => m_PoolingEnabled;
+
+        /// <summary>How many instances of this Decal will be created in the Pool.</summary>
         public int instanceCount => m_InstanceCount;
-        public float projectionDepth => m_ProjectionDepth;
+
+        /// <summary>How far the decal projection draw on Z axis.</summary>
+        public float depth => m_Depth;
+
+        /// <summary>How much the decal should blend transparency towards its Depth value.</summary>
+        public float depthFalloff => m_DepthFalloff;
+
+        /// <summary>Maximum angle between surface and Decal forward vector.</summary>
+        public float angle => m_Angle;
+
+        /// <summary>How much the Decal should blend transparency towards its Angle value.</summary>
+        public float angleFalloff => m_AngleFalloff;
+
+        /// <summary>Which layers the Decal is applied to.</summary>
+        public LayerMask layerMask => m_LayerMask;
+
+        /// <summary>Decals with higher values are drawn on top of ones with lower values.</summary>
+        public int sortingOrder => m_SortingOrder;
 #endregion
 
 #region Asset Processing

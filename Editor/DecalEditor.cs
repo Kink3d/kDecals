@@ -5,7 +5,7 @@ namespace kTools.Decals.Editor
 {
     using Editor = UnityEditor.Editor;
 
-    [CustomEditor(typeof(Decal))]
+    [CustomEditor(typeof(Decal)), CanEditMultipleObjects]
     sealed class DecalEditor : Editor
     {
 #region Structs

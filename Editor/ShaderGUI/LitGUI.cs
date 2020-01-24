@@ -32,35 +32,35 @@ namespace kTools.Decals.Editor
 
         struct PropertyNames
         {
-            public static readonly string BaseTex = "_BaseTex";
-            public static readonly string Color = "_Color";
+            public static readonly string BaseMap = "_BaseMap";
+            public static readonly string BaseColor = "_BaseColor";
             public static readonly string Metallic = "_Metallic";
             public static readonly string SpecColor = "_SpecColor";
-            public static readonly string MetallicGlossTex = "_MetallicGlossTex";
-            public static readonly string SpecGlossTex = "_SpecGlossTex";
-            public static readonly string Glossiness = "_Glossiness";
-            public static readonly string BumpTex = "_BumpTex";
+            public static readonly string MetallicGlossMap = "_MetallicGlossMap";
+            public static readonly string SpecGlossMap = "_SpecGlossMap";
+            public static readonly string Smoothness = "_Smoothness";
+            public static readonly string BumpMap = "_BumpMap";
             public static readonly string BumpScale = "_BumpScale";
-            public static readonly string OcclusionTex = "_OcclusionTex";
+            public static readonly string OcclusionMap = "_OcclusionMap";
             public static readonly string OcclusionStrength = "_OcclusionStrength";
-            public static readonly string EmissionTex = "_EmissionTex";
+            public static readonly string EmissionMap = "_EmissionMap";
             public static readonly string EmissionColor = "_EmissionColor";
         }
 #endregion
 
 #region Fields
-        MaterialProperty m_BaseTexProp;
-        MaterialProperty m_ColorProp;
+        MaterialProperty m_BaseMapProp;
+        MaterialProperty m_BaseColorProp;
         MaterialProperty m_MetallicProp;
         MaterialProperty m_SpecColorProp;
-        MaterialProperty m_MetallicGlossTexProp;
-        MaterialProperty m_SpecGlossTexProp;
-        MaterialProperty m_GlossinessProp;
-        MaterialProperty m_BumpTexProp;
+        MaterialProperty m_MetallicGlossMapProp;
+        MaterialProperty m_SpecGlossMapProp;
+        MaterialProperty m_SmoothnessProp;
+        MaterialProperty m_BumpMapProp;
         MaterialProperty m_BumpScaleProp;
-        MaterialProperty m_OcclusionTexProp;
+        MaterialProperty m_OcclusionMapProp;
         MaterialProperty m_OcclusionStrengthProp;
-        MaterialProperty m_EmissionTexProp;
+        MaterialProperty m_EmissionMapProp;
         MaterialProperty m_EmissionColorProp;
 #endregion
 
@@ -68,18 +68,18 @@ namespace kTools.Decals.Editor
         public override void GetProperties(MaterialProperty[] properties)
         {
             // Find properties
-            m_BaseTexProp = FindProperty(PropertyNames.BaseTex, properties, false);
-            m_ColorProp = FindProperty(PropertyNames.Color, properties, false);
+            m_BaseMapProp = FindProperty(PropertyNames.BaseMap, properties, false);
+            m_BaseColorProp = FindProperty(PropertyNames.BaseColor, properties, false);
             m_MetallicProp = FindProperty(PropertyNames.Metallic, properties);
             m_SpecColorProp = FindProperty(PropertyNames.SpecColor, properties, false);
-            m_MetallicGlossTexProp = FindProperty(PropertyNames.MetallicGlossTex, properties);
-            m_SpecGlossTexProp = FindProperty(PropertyNames.SpecGlossTex, properties, false);
-            m_GlossinessProp = FindProperty(PropertyNames.Glossiness, properties, false);
-            m_BumpTexProp = FindProperty(PropertyNames.BumpTex, properties, false);
+            m_MetallicGlossMapProp = FindProperty(PropertyNames.MetallicGlossMap, properties);
+            m_SpecGlossMapProp = FindProperty(PropertyNames.SpecGlossMap, properties, false);
+            m_SmoothnessProp = FindProperty(PropertyNames.Smoothness, properties, false);
+            m_BumpMapProp = FindProperty(PropertyNames.BumpMap, properties, false);
             m_BumpScaleProp = FindProperty(PropertyNames.BumpScale, properties, false);
-            m_OcclusionTexProp = FindProperty(PropertyNames.OcclusionTex, properties, false);
+            m_OcclusionMapProp = FindProperty(PropertyNames.OcclusionMap, properties, false);
             m_OcclusionStrengthProp = FindProperty(PropertyNames.OcclusionStrength, properties, false);
-            m_EmissionTexProp = FindProperty(PropertyNames.EmissionTex, properties, false);
+            m_EmissionMapProp = FindProperty(PropertyNames.EmissionMap, properties, false);
             m_EmissionColorProp = FindProperty(PropertyNames.EmissionColor, properties, false);
         }
 
@@ -89,46 +89,46 @@ namespace kTools.Decals.Editor
             var material = materialEditor.target as Material;
 
             // Color
-            materialEditor.TexturePropertySingleLine(Labels.Color, m_BaseTexProp, m_ColorProp);
+            materialEditor.TexturePropertySingleLine(Labels.Color, m_BaseMapProp, m_BaseColorProp);
 
             // MetallicSpecular
             bool hasGlossMap = false;
             if (material.IsSpecularWorkflow())
             {
-                hasGlossMap = m_SpecGlossTexProp.textureValue != null;
-                materialEditor.TexturePropertySingleLine(Labels.Specular, m_SpecGlossTexProp, hasGlossMap ? null : m_SpecColorProp);
+                hasGlossMap = m_SpecGlossMapProp.textureValue != null;
+                materialEditor.TexturePropertySingleLine(Labels.Specular, m_SpecGlossMapProp, hasGlossMap ? null : m_SpecColorProp);
             }
             else
             {
-                hasGlossMap = m_MetallicGlossTexProp.textureValue != null;
-                materialEditor.TexturePropertySingleLine(Labels.Metallic, m_MetallicGlossTexProp, hasGlossMap ? null : m_MetallicProp);
+                hasGlossMap = m_MetallicGlossMapProp.textureValue != null;
+                materialEditor.TexturePropertySingleLine(Labels.Metallic, m_MetallicGlossMapProp, hasGlossMap ? null : m_MetallicProp);
             }
 
             // Smoothness
             EditorGUI.BeginChangeCheck();
             EditorGUI.indentLevel += 2;
-            var smoothness = EditorGUILayout.Slider(Labels.Smoothness, m_GlossinessProp.floatValue, 0f, 1f);
+            var smoothness = EditorGUILayout.Slider(Labels.Smoothness, m_SmoothnessProp.floatValue, 0f, 1f);
             EditorGUI.indentLevel -= 2;
             if (EditorGUI.EndChangeCheck())
             {
-                m_GlossinessProp.floatValue = smoothness;
+                m_SmoothnessProp.floatValue = smoothness;
             }
 
             // Normal
-            materialEditor.TexturePropertySingleLine(Labels.Normal, m_BumpTexProp, m_BumpScaleProp);
+            materialEditor.TexturePropertySingleLine(Labels.Normal, m_BumpMapProp, m_BumpScaleProp);
 
             // Occlusion
-            materialEditor.TexturePropertySingleLine(Labels.Occlusion, m_OcclusionTexProp, 
-                m_OcclusionTexProp.textureValue != null ? m_OcclusionStrengthProp : null);
+            materialEditor.TexturePropertySingleLine(Labels.Occlusion, m_OcclusionMapProp, 
+                m_OcclusionMapProp.textureValue != null ? m_OcclusionStrengthProp : null);
 
             // Emission
-            var hadEmissionTexture = m_EmissionTexProp.textureValue != null;
-            materialEditor.TexturePropertyWithHDRColor(Labels.Emission, m_EmissionTexProp,
+            var hadEmissionTexture = m_EmissionMapProp.textureValue != null;
+            materialEditor.TexturePropertyWithHDRColor(Labels.Emission, m_EmissionMapProp,
                 m_EmissionColorProp, false);
 
             // If texture was assigned and color was black set color to white
             var brightness = m_EmissionColorProp.colorValue.maxColorComponent;
-            if (m_EmissionTexProp.textureValue != null && !hadEmissionTexture && brightness <= 0f)
+            if (m_EmissionMapProp.textureValue != null && !hadEmissionTexture && brightness <= 0f)
                 m_EmissionColorProp.colorValue = Color.white;
         }
 #endregion
@@ -140,13 +140,18 @@ namespace kTools.Decals.Editor
             var isSpecularWorkFlow = (WorkflowMode) material.GetFloat("_WorkflowMode") == WorkflowMode.Specular;
             var hasGlossMap = false;
             if (isSpecularWorkFlow)
-                hasGlossMap = material.GetTexture(PropertyNames.SpecGlossTex) != null;
+                hasGlossMap = material.GetTexture(PropertyNames.SpecGlossMap) != null;
             else
-                hasGlossMap = material.GetTexture(PropertyNames.MetallicGlossTex) != null;
+                hasGlossMap = material.GetTexture(PropertyNames.MetallicGlossMap) != null;
             material.SetKeyword("_METALLICSPECGLOSSMAP", hasGlossMap);
 
             // Normal
-            material.SetKeyword("_NORMALMAP", material.GetTexture(PropertyNames.BumpTex) != null);
+            material.SetKeyword("_NORMALMAP", material.GetTexture(PropertyNames.BumpMap) != null);
+
+            // Emission
+            bool hasEmissionMap = material.GetTexture(PropertyNames.EmissionMap) != null;
+            Color emissionColor = material.GetColor(PropertyNames.EmissionColor);
+            material.SetKeyword("_EMISSION", hasEmissionMap || emissionColor != Color.black);
         }
 #endregion
     }

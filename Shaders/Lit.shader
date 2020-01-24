@@ -11,20 +11,20 @@
 		_Cutoff("Alpha Cutoff", Range(0.0, 1.0)) = 0.5
 
 		// Surface Inputs
-		_Color("Color", Color) = (1.0, 1.0, 1.0, 1.0)
-        _BaseTex("Albedo", 2D) = "white" {}
+		_BaseMap("Albedo", 2D) = "white" {}
+		_BaseColor("Color", Color) = (1.0, 1.0, 1.0, 1.0)
 		_Metallic("Metallic", Range(0.0, 1.0)) = 0.0
-        _MetallicGlossTex("Metallic", 2D) = "white" {}
+        _MetallicGlossMap("Metallic", 2D) = "white" {}
         _SpecColor("Specular", Color) = (0.2, 0.2, 0.2)
-        _SpecGlossTex("Specular", 2D) = "white" {}
-		_Glossiness("Smoothness", Range(0.0, 1.0)) = 0.5
+        _SpecGlossMap("Specular", 2D) = "white" {}
+		_Smoothness("Smoothness", Range(0.0, 1.0)) = 0.5
         _GlossMapScale("Smoothness Scale", Range(0.0, 1.0)) = 1.0
-        _BumpTex("Normal Map", 2D) = "bump" {}
+        _BumpMap("Normal Map", 2D) = "bump" {}
 		_BumpScale("Scale", Float) = 1.0
 		_OcclusionStrength("Strength", Range(0.0, 1.0)) = 1.0
-        _OcclusionTex("Occlusion", 2D) = "white" {}
+        _OcclusionMap("Occlusion", 2D) = "white" {}
         _EmissionColor("Color", Color) = (0,0,0)
-        _EmissionTex("Emission", 2D) = "white" {}
+        _EmissionMap("Emission", 2D) = "white" {}
 		
 		// Advanced Options
 		[ToggleOff] _SpecularHighlights("Specular Highlights", Float) = 1.0
@@ -32,56 +32,61 @@
 	}
 	Subshader 
 	{
-		Tags {"Queue"="Transparent"}
+		Tags { "RenderType"="Transparent" "RenderPipeline" = "UniversalPipeline" }
+		Blend[_SrcBlend][_DstBlend]
+		ZWrite Off
+		Offset -1, -1
+
 		Pass 
 		{
-			// Render State
-			Blend[_SrcBlend][_DstBlend]
-			ZWrite Off
-			Offset -1, -1
+			HLSLPROGRAM
+			// Required to compile gles 2.0 with standard srp library
+            #pragma prefer_hlslcc gles
+            #pragma exclude_renderers d3d11_9x
+			#pragma target 2.0
 
-			CGPROGRAM
-			#pragma target 3.0
-			#pragma vertex Vertex
-			#pragma fragment Fragment
-
-			// Variants
+			// -------------------------------------
+            // Material Keywords
+			#pragma shader_feature _BLEND_ALPHA
             #pragma shader_feature _ALPHATEST_ON
             #pragma shader_feature _ALPHAPREMULTIPLY_ON
 			#pragma shader_feature _METALLICSPECGLOSSMAP
             #pragma shader_feature _SPECULARHIGHLIGHTS_OFF
             #pragma shader_feature _ENVIRONMENTREFLECTIONS_OFF
             #pragma shader_feature _SPECULAR_SETUP
+			#pragma shader_feature _EMISSION
 			#pragma shader_feature _NORMALMAP
 
-			// Includes
-			#include "Packages/com.kink3d.decals/ShaderLibrary/Lit.hlsl"
+			// -------------------------------------
+            // Universal Pipeline keywords
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS_CASCADE
+            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
+            #pragma multi_compile _ _ADDITIONAL_LIGHT_SHADOWS
+            #pragma multi_compile _ _SHADOWS_SOFT
+            #pragma multi_compile _ _MIXED_LIGHTING_SUBTRACTIVE
 
-			// Fragment
-			half4 Fragment(Varyings input) : SV_Target
-			{
-				// ColorAlpha
-				half4 colorAlpha = SampleDecalTexture(_BaseTex, input.positionPS);
-				half3 color = colorAlpha.rgb * _Color.rgb;
-				half alpha = colorAlpha.a * _Color.a;
-				
-				// MetallicSpecular
-				half4 specGloss = SampleMetallicSpecGloss(input.positionPS);
-				half3 specularColor = specGloss.rgb;
-				half smoothness = specGloss.a;
+            // -------------------------------------
+            // Unity defined keywords
+            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
+            #pragma multi_compile _ LIGHTMAP_ON
+            #pragma multi_compile_fog
 
-				half3 normal = UnpackScaleNormal(SampleDecalTexture(_BumpTex, input.positionPS), _BumpScale);
-				half occlusion = SampleDecalTexture(_OcclusionTex, input.positionPS) * _OcclusionStrength;
-				half3 emission = SampleDecalTexture(_EmissionTex, input.positionPS) * _EmissionColor;				
+            //--------------------------------------
+            // GPU Instancing
+            #pragma multi_compile_instancing
 
-				// AlphaClip
-				half cutoff = _Cutoff;
+			#pragma vertex LitPassVertex
+            #pragma fragment LitPassFragment
 
-				return FragmentLit (input, color, specularColor, smoothness, normal, 
-    				emission, occlusion, alpha, cutoff);
-			}
-			ENDCG
+			// -------------------------------------
+            // Includes
+			#include "Packages/com.kink3d.decals/ShaderLibrary/LitInput.hlsl"
+			#include "Packages/com.kink3d.decals/ShaderLibrary/LitPass.hlsl"
+
+			ENDHLSL
 		}
 	}
 	CustomEditor "kTools.Decals.Editor.LitGUI"
+	FallBack "Hidden/Universal Render Pipeline/FallbackError"
 }
