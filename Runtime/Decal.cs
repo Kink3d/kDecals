@@ -93,12 +93,15 @@ namespace kTools.Decals
         /// <param name="position">World space position for Decal.</param>
         /// <param name="direction">World space forward direction for Decal.</param>
         /// <param name="scale">Local space scale for Decal.</param>
-        public void SetTransform(Vector3 position, Vector3 direction, Vector3 scale)
+        public void SetTransform(Vector3 position, Vector3 direction, Vector2 scale)
         {
+            // Setup
+            var depth = decalData != null ? decalData.depth : 1;
+
             // Set Transform values
             transform.position = position;
-            transform.LookAt(direction);
-            transform.localScale = scale;
+            transform.LookAt(transform.position + direction.normalized);
+            transform.localScale = new Vector3(scale.x, scale.y, depth);
         }
 #endregion
 
