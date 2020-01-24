@@ -21,7 +21,8 @@ namespace kTools.Decals
 #endregion
 
 #region Properties
-        internal static List<Decal> decals => m_Decals;
+        /// <summary>All currently active Decals.</summary>
+        public static List<Decal> decals => m_Decals;
 #endregion
 
 #region Pool
@@ -91,7 +92,7 @@ namespace kTools.Decals
         /// <param name="direction">World space forward direction for Decal.</param>
         /// <param name="scale">Local space scale for Decal.</param>
         /// <returns></returns>
-        public static Decal GetDecal(DecalData decalData, Vector3 position, Vector3 direction, Vector3 scale)
+        public static Decal GetDecal(DecalData decalData, Vector3 position, Vector3 direction, Vector2 scale)
         {
             var decal = GetDecal(decalData);
             decal.SetTransform(position, direction, scale);

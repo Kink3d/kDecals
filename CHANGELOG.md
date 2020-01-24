@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Angle and angle falloff controls
 - Layer masking
 - Sorting order
+- Editor tests
 
 ### Changed
 - Moved to package
