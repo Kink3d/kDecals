@@ -175,7 +175,8 @@ namespace kTools.Decals.Editor
 
             // Layer Mask
             EditorGUI.BeginChangeCheck();
-            LayerMask tempMask = EditorGUILayout.MaskField(Styles.LayerMask, (LayerMask)m_LayerMaskProp.intValue, InternalEditorUtility.layers);
+            LayerMask tempMask = EditorGUILayout.MaskField(Styles.LayerMask, InternalEditorUtility.LayerMaskToConcatenatedLayersMask((LayerMask)m_LayerMaskProp.intValue), InternalEditorUtility.layers);
+            tempMask = InternalEditorUtility.ConcatenatedLayersMaskToLayerMask(tempMask);
             if(EditorGUI.EndChangeCheck())
             {
                 m_LayerMaskProp.intValue = (int)tempMask;
