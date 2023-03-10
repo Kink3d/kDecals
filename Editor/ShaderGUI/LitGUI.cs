@@ -130,6 +130,9 @@ namespace kTools.Decals.Editor
             var brightness = m_EmissionColorProp.colorValue.maxColorComponent;
             if (m_EmissionMapProp.textureValue != null && !hadEmissionTexture && brightness <= 0f)
                 m_EmissionColorProp.colorValue = Color.white;
+
+            // Scale & Offset
+            materialEditor.TextureScaleOffsetProperty(m_BaseMapProp);
         }
 #endregion
 

@@ -128,10 +128,14 @@ half3 SampleEmission(float4 positionPS)
 
 inline void InitializeStandardLitSurfaceData(float4 positionPS, out SurfaceData outSurfaceData)
 {
-    half4 albedoAlpha = SAMPLE_DECAL2D(_BaseMap, positionPS);
+    // Apply Scale & Offset
+    float4 uv = positionPS;
+    uv.xy = TRANSFORM_TEX(uv, _BaseMap);
+
+    half4 albedoAlpha = SAMPLE_DECAL2D(_BaseMap, uv);
     outSurfaceData.alpha = Alpha(albedoAlpha.a, _BaseColor, _Cutoff);
 
-    half4 specGloss = SampleMetallicSpecGloss(positionPS, albedoAlpha.a);
+    half4 specGloss = SampleMetallicSpecGloss(uv, albedoAlpha.a);
     outSurfaceData.albedo = albedoAlpha.rgb * _BaseColor.rgb;
 
 #if _SPECULAR_SETUP
@@ -143,9 +147,9 @@ inline void InitializeStandardLitSurfaceData(float4 positionPS, out SurfaceData 
 #endif
 
     outSurfaceData.smoothness = specGloss.a;
-    outSurfaceData.normalTS = SampleNormal(positionPS);
-    outSurfaceData.occlusion = SampleOcclusion(positionPS);
-    outSurfaceData.emission = SampleEmission(positionPS);
+    outSurfaceData.normalTS = SampleNormal(uv);
+    outSurfaceData.occlusion = SampleOcclusion(uv);
+    outSurfaceData.emission = SampleEmission(uv);
 
     // TODO: Support ClearCoat
     outSurfaceData.clearCoatMask = 0;

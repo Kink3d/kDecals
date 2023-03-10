@@ -36,6 +36,9 @@ namespace kTools.Decals.Editor
         {
             // Color
             materialEditor.TexturePropertySingleLine(Labels.Color, m_BaseMapProp, m_BaseColorProp);
+
+            // Scale & Offset
+            materialEditor.TextureScaleOffsetProperty(m_BaseMapProp);
         }
 #endregion
     }
