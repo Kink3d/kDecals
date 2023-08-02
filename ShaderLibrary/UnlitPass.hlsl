@@ -51,6 +51,9 @@ half4 frag(Varyings input) : SV_Target
     UNITY_SETUP_INSTANCE_ID(input);
     UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 
+    if(ClampProjection(input.positionPS, input.normalWS))
+        discard;
+
     // Apply Scale & Offset
     float4 uv = input.positionPS;
     uv.xy = TRANSFORM_TEX(uv, _BaseMap);
@@ -65,8 +68,7 @@ half4 frag(Varyings input) : SV_Target
     #endif
 
     half4 finalColor = half4(color, alpha);
-    finalColor.rgb = MixFog(finalColor.rgb, input.fogCoord);
-    CLAMP_PROJECTION(finalColor, input.positionPS, input.normalWS);
+    finalColor.rgb = MixFog(finalColor.rgb, input.fogCoord);    
     return finalColor;
 }
 

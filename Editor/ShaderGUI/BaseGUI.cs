@@ -355,21 +355,18 @@ namespace kTools.Decals.Editor
                     case BlendMode.Premultiply:
                         material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
                         material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                        material.SetColor("_ZeroColor", new Color(0, 0, 0, 0));
                         material.DisableKeyword("_BLEND_ALPHA");
                         material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
                         break;
                     case BlendMode.Additive:
                         material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
                         material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.One);
-                        material.SetColor("_ZeroColor", Color.black);
                         material.DisableKeyword("_BLEND_ALPHA");
                         material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
                         break;
                     case BlendMode.Multiply:
                         material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.DstColor);
                         material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-                        material.SetColor("_ZeroColor", Color.white);
                         material.DisableKeyword("_BLEND_ALPHA");
                         material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
                         material.EnableKeyword("_ALPHAMODULATE_ON");
