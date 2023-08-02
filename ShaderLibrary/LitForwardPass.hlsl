@@ -1,5 +1,5 @@
-#ifndef DECAL_LIT_PASS_INCLUDED
-#define DECAL_LIT_PASS_INCLUDED
+#ifndef DECAL_LIT_FORWARD_PASS_INCLUDED
+#define DECAL_LIT_FORWARD_PASS_INCLUDED
 
 // -------------------------------------
 // Includes

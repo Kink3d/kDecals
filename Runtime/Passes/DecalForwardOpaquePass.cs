@@ -9,6 +9,9 @@ namespace kTools.Decals
     sealed class DecalForwardOpaquePass : DecalPass
     {
         public override string passName => "Decal Forward Opaque";
+        public override string passTag => "DecalForward";
+
+        public bool forwardOnly { get; set; }
 
         public DecalForwardOpaquePass()
         {
@@ -18,8 +21,15 @@ namespace kTools.Decals
 
         public override void FilterDecals(ref List<Decal> decals)
         {
+            bool Filter(DecalData decalData)
+            {
+                return forwardOnly ?
+                    (!decalData.isTransparent && !decalData.supportsDeferred) :
+                    (!decalData.isTransparent);
+            }
+
             decals = DecalSystem.decals
-                .Where(x => x.decalData? !x.decalData.isTransparent : false)
+                .Where(x => x.decalData? Filter(x.decalData) : false)
                 .OrderBy(x => x.decalData? x.decalData.sortingOrder : 0)
                 .ToList();
         }

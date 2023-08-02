@@ -9,6 +9,7 @@ namespace kTools.Decals
     sealed class DecalForwardTransparentPass : DecalPass
     {
         public override string passName => "Decal Forward Transparent";
+        public override string passTag => "DecalForward";
 
         public DecalForwardTransparentPass()
         {

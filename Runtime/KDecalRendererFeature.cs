@@ -1,4 +1,5 @@
-﻿using UnityEngine.Rendering.Universal;
+﻿using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 namespace kTools.Decals
 {
@@ -9,6 +10,7 @@ namespace kTools.Decals
         static KDecalRendererFeature s_Instance;
         readonly DecalForwardOpaquePass m_ForwardOpaquePass;
         readonly DecalForwardTransparentPass m_ForwardTransparentPass;
+        readonly DecalGBufferPass m_GBufferPass;
 #endregion
 
 #region Constructors
@@ -17,6 +19,7 @@ namespace kTools.Decals
             s_Instance = this;
             m_ForwardOpaquePass = new DecalForwardOpaquePass();
             m_ForwardTransparentPass = new DecalForwardTransparentPass();
+            m_GBufferPass = new DecalGBufferPass();
         }
 #endregion
 
@@ -30,7 +33,19 @@ namespace kTools.Decals
 #region RenderPass
         public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
         {
+            var universalRenderer = renderer as UniversalRenderer;
+            if (universalRenderer == null)
+                return;
+
             // Enqueue passes
+            var forwardOnly = false;
+            if(universalRenderer.renderingMode == RenderingMode.Deferred)
+            {
+                renderer.EnqueuePass(m_GBufferPass);
+                forwardOnly = true;
+            }
+            
+            m_ForwardOpaquePass.forwardOnly = forwardOnly;
             renderer.EnqueuePass(m_ForwardOpaquePass);
             renderer.EnqueuePass(m_ForwardTransparentPass);
         }

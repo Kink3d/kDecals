@@ -18,6 +18,7 @@ namespace kTools.Decals
         };
         
         public abstract string passName { get; }
+        public abstract string passTag { get; }
 
         public abstract void FilterDecals(ref List<Decal> decals);
         
@@ -139,10 +140,24 @@ namespace kTools.Decals
             {
                 drawingSettings.SetShaderPassName(i, new ShaderTagId(s_ShaderTags[i]));
             }
+
+            // Get Material data
+            var material = decal.decalData.material;
+            var passIndex = 0;
+            var passCount = material.passCount;
+            for(int i = 0; i < passCount; i++)
+            {
+                var tagValue = material.shader.FindPassTagValue(i, new ShaderTagId("LightMode"));
+                if(tagValue.name == passTag)
+                {
+                    passIndex = i;
+                    break;
+                }
+            }
             
-            // Material
-            drawingSettings.overrideMaterial = decal.decalData.material;
-            drawingSettings.overrideMaterialPassIndex = 0;
+            // Override Material data
+            drawingSettings.overrideMaterial = material;
+            drawingSettings.overrideMaterialPassIndex = passIndex;
             return drawingSettings;
         }
         

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace kTools.Decals
 {
@@ -116,6 +117,23 @@ namespace kTools.Decals
 
         /// <summary>Is this Decal a transparent surface?</summary>
         public bool isTransparent => material.HasProperty("_Surface") ? material.GetFloat("_Surface") == 1 : true;
+
+        /// <summary> Does this Decal support deferred rendering? </summary>
+        public bool supportsDeferred
+        {
+            get
+            {
+                var passCount = material.passCount;
+                for(int i = 0; i < passCount; i++)
+                {
+                    var tagValue = material.shader.FindPassTagValue(i, new ShaderTagId("LightMode"));
+                    if(tagValue.name == "DecalGBuffer")
+                        return true;
+                }
+
+                return false;
+            }
+        }
 #endregion
 
 #region Asset Processing
