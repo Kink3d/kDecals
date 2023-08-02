@@ -1,13 +1,13 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
 namespace kTools.Decals
 {
-    sealed class DecalRenderPass : ScriptableRenderPass
+    abstract class DecalPass : ScriptableRenderPass
     {
-#region Fields
         const float kErrorMargin = 0.1f;
 
         static readonly string[] s_ShaderTags = new string[]
@@ -16,27 +16,22 @@ namespace kTools.Decals
             "LightweightForward",
             "SRPDefaultUnlit",
         };
-#endregion
+        
+        public abstract string passName { get; }
 
-#region Constructors
-        public DecalRenderPass()
-        {
-            // Set data
-            renderPassEvent = RenderPassEvent.AfterRenderingTransparents;
-        }
-#endregion
-
-#region Execution
+        public abstract void FilterDecals(ref List<Decal> decals);
+        
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
             // Profiling command
-            CommandBuffer cmd = CommandBufferPool.Get("Decals");
-            using (new ProfilingSample(cmd, "Decals"))
+            CommandBuffer cmd = CommandBufferPool.Get(passName);
+            using (new ProfilingSample(cmd, passName))
             {
                 ExecuteCommand(context, cmd);
 
                 // Sorting
-                var decals = DecalSystem.decals.OrderBy(x => x.decalData? x.decalData.sortingOrder : 0);
+                var decals = ListPool<Decal>.Get();
+                FilterDecals(ref decals);
 
                 foreach(var decal in decals)
                 {
@@ -54,12 +49,13 @@ namespace kTools.Decals
                     // Render
                     RenderDecal(context, decal, cullingResults, ref renderingData);
                 }
+
+                ListPool<Decal>.Release(decals);
             }
+
             ExecuteCommand(context, cmd);
         }
-#endregion
-
-#region Culling
+        
         bool Culling(ScriptableRenderContext context, Decal decal, ref RenderingData renderingData, out CullingResults cullingResults)
         {
             // Setup
@@ -102,9 +98,7 @@ namespace kTools.Decals
             cullingResults = context.Cull(ref cullingParameters);
             return true;
         }
-#endregion
-
-#region ShaderUniforms
+        
         void SetShaderUniforms(ScriptableRenderContext context, Decal decal, CommandBuffer cmd)
         {
             // Set Shader globals
@@ -115,9 +109,7 @@ namespace kTools.Decals
             cmd.SetGlobalFloat("decal_AngleFalloff", decal.decalData.angleFalloff);
             ExecuteCommand(context, cmd);
         }
-#endregion
-
-#region Rendering
+        
         void RenderDecal(ScriptableRenderContext context, Decal decal, CullingResults cullingResults, ref RenderingData renderingData)
         {
             // Create Settings
@@ -153,14 +145,11 @@ namespace kTools.Decals
             drawingSettings.overrideMaterialPassIndex = 0;
             return drawingSettings;
         }
-#endregion
-
-#region CommandBufer
+        
         void ExecuteCommand(ScriptableRenderContext context, CommandBuffer cmd)
         {
             context.ExecuteCommandBuffer(cmd);
             cmd.Clear();
         }
-#endregion
     }
 }

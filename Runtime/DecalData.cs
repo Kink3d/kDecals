@@ -113,6 +113,9 @@ namespace kTools.Decals
 
         /// <summary>Decals with higher values are drawn on top of ones with lower values.</summary>
         public int sortingOrder => m_SortingOrder;
+
+        /// <summary>Is this Decal a transparent surface?</summary>
+        public bool isTransparent => material.HasProperty("_Surface") ? material.GetFloat("_Surface") == 1 : true;
 #endregion
 
 #region Asset Processing

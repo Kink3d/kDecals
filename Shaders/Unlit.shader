@@ -3,6 +3,7 @@
 	Properties 
 	{
 		// Surface Options
+		[HideInInspector] _Surface("__surface", Float) = 1.0
 		[HideInInspector] _Blend("__blend", Float) = 0.0
         [HideInInspector] _SrcBlend("__src", Float) = 1.0
         [HideInInspector] _DstBlend("__dst", Float) = 0.0
@@ -15,7 +16,7 @@
 	}
 	Subshader 
 	{
-		Tags { "RenderType"="Transparent" "RenderPipeline" = "UniversalPipeline" }
+		Tags { "RenderPipeline" = "UniversalPipeline" }
 		Blend[_SrcBlend][_DstBlend]
 		ZWrite Off
 		Offset -1, -1

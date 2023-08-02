@@ -18,6 +18,9 @@ namespace kTools.Decals.Editor
             public static readonly GUIContent AdvancedOptions = new GUIContent("Advanced Options");
 
             // Properies
+            public static readonly GUIContent SurfaceType = new GUIContent("Surface Type", 
+                "Select a surface type for your texture. Choose between Opaque or Transparent.");
+
             public static readonly GUIContent WorkflowMode = new GUIContent("Workflow Mode",
                 "Select a workflow that fits your textures. Choose between Metallic or Specular.");
 
@@ -42,6 +45,7 @@ namespace kTools.Decals.Editor
 
         struct PropertyNames
         {
+            public static readonly string SurfaceType = "_Surface";
             public static readonly string WorkflowMode = "_WorkflowMode";
             public static readonly string Blend = "_Blend";
             public static readonly string AlphaClip = "_AlphaClip";
@@ -53,6 +57,15 @@ namespace kTools.Decals.Editor
 #endregion
 
 #region Enumerations
+        /// <summary>
+        /// Surface type enumeration for shaders.
+        /// </summary>
+        public enum SurfaceType
+        {
+            Opaque,
+            Transparent
+        }
+
         /// <summary>
         /// Blend mode enumeration for shaders.
         /// </summary>
@@ -84,6 +97,7 @@ namespace kTools.Decals.Editor
         bool m_AdvancedOptionsFoldout;
 
         // Properties
+        MaterialProperty m_SurfaceTypeProp;
         MaterialProperty m_WorkflowModeProp;
         MaterialProperty m_BlendProp;
         MaterialProperty m_AlphaClipProp;
@@ -102,6 +116,7 @@ namespace kTools.Decals.Editor
             m_AdvancedOptionsFoldout =  GetFoldoutState("AdvancedOptions");
 
             // Base properties
+            m_SurfaceTypeProp = FindProperty(PropertyNames.SurfaceType, properties, false);
             m_WorkflowModeProp = FindProperty(PropertyNames.WorkflowMode, properties, false);
             m_BlendProp = FindProperty(PropertyNames.Blend, properties, false);
             m_AlphaClipProp = FindProperty(PropertyNames.AlphaClip, properties, false);
@@ -186,15 +201,30 @@ namespace kTools.Decals.Editor
                 }
             }
 
-            // Blend Mode
-            if(material.HasProperty(PropertyNames.Blend))
+            // Surface Type
+            if(material.HasProperty(PropertyNames.SurfaceType))
             {
                 EditorGUI.BeginChangeCheck();
-                var blend = EditorGUILayout.Popup(Styles.BlendingMode, (int)m_BlendProp.floatValue, Enum.GetNames(typeof(BlendMode)));
+                var surfaceType = EditorGUILayout.Popup(Styles.SurfaceType, (int)m_SurfaceTypeProp.floatValue, Enum.GetNames(typeof(SurfaceType)));
                 if (EditorGUI.EndChangeCheck())
                 {
-                    materialEditor.RegisterPropertyChangeUndo(Styles.BlendingMode.text);
-                    m_BlendProp.floatValue = blend;
+                    materialEditor.RegisterPropertyChangeUndo(Styles.SurfaceType.text);
+                    m_SurfaceTypeProp.floatValue = surfaceType;
+                }
+            }
+
+            // Blend Mode
+            if ((m_SurfaceTypeProp != null) && ((SurfaceType)m_SurfaceTypeProp.floatValue == SurfaceType.Transparent))
+            {
+                if(material.HasProperty(PropertyNames.Blend))
+                {
+                    EditorGUI.BeginChangeCheck();
+                    var blend = EditorGUILayout.Popup(Styles.BlendingMode, (int)m_BlendProp.floatValue, Enum.GetNames(typeof(BlendMode)));
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        materialEditor.RegisterPropertyChangeUndo(Styles.BlendingMode.text);
+                        m_BlendProp.floatValue = blend;
+                    }
                 }
             }
 
@@ -276,10 +306,44 @@ namespace kTools.Decals.Editor
             var queue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
             material.renderQueue = queue + queueOffset;
 
-            // BlendMode
-            if(material.HasProperty(PropertyNames.Blend))
+            var surfaceType = SurfaceType.Transparent;
+            if (material.HasProperty(PropertyNames.SurfaceType))
             {
-                BlendMode blend = (BlendMode)material.GetFloat(m_BlendProp.name);
+                surfaceType = (SurfaceType)material.GetFloat(PropertyNames.SurfaceType);
+            }
+
+            var alphaClip = false;
+            if(material.HasProperty(PropertyNames.AlphaClip))
+            {
+                alphaClip = material.GetFloat(m_AlphaClipProp.name) == 1;
+                material.SetKeyword("_ALPHATEST_ON", alphaClip);
+            }
+
+            // BlendMode
+            if(surfaceType == SurfaceType.Opaque)
+            {
+                material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+                material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+                material.DisableKeyword("_BLEND_ALPHA");
+                material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+
+                if(alphaClip)
+                {
+                    material.SetOverrideTag("RenderType", "TransparentCutout");
+                }
+                else
+                {
+                    material.SetOverrideTag("RenderType", "Opaque");
+                }
+            }
+            else
+            {
+                var blend = BlendMode.Alpha;
+                if(material.HasProperty(PropertyNames.Blend))
+                {
+                    blend = (BlendMode)material.GetFloat(m_BlendProp.name);
+                }
+
                 switch (blend)
                 {
                     case BlendMode.Alpha:
@@ -291,32 +355,23 @@ namespace kTools.Decals.Editor
                     case BlendMode.Premultiply:
                         material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
                         material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                        material.SetColor("_ZeroColor", new Color(0, 0, 0, 0));
                         material.DisableKeyword("_BLEND_ALPHA");
                         material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
                         break;
                     case BlendMode.Additive:
                         material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
                         material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.One);
-                        material.SetColor("_ZeroColor", Color.black);
                         material.DisableKeyword("_BLEND_ALPHA");
                         material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
                         break;
                     case BlendMode.Multiply:
                         material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.DstColor);
                         material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-                        material.SetColor("_ZeroColor", Color.white);
                         material.DisableKeyword("_BLEND_ALPHA");
                         material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
                         material.EnableKeyword("_ALPHAMODULATE_ON");
                         break;
                 }
-            }
-
-            // AlphaClip
-            if(material.HasProperty(PropertyNames.AlphaClip))
-            {
-                material.SetKeyword("_ALPHATEST_ON", material.GetFloat(m_AlphaClipProp.name) == 1);
             }
             
             // Highlights

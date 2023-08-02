@@ -9,14 +9,11 @@ half decal_DepthFalloff;
 half decal_Angle;
 half decal_AngleFalloff;
 
-half4 _ZeroColor;
-
 SAMPLER(_Linear_Clamp_sampler);
 
 // -------------------------------------
 // Macros
 #define SAMPLE_DECAL2D(texture, positionPS) SAMPLE_TEXTURE2D(texture, _Linear_Clamp_sampler, positionPS.xy / positionPS.w);
-#define CLAMP_PROJECTION(color, positionPS, normalWS) color = ClampProjection(color, positionPS, normalWS);
 
 // -------------------------------------
 // Projection
@@ -25,7 +22,7 @@ float4 TransformObjectToProjection(float4 positionOS)
     return mul(decal_Projection, mul(UNITY_MATRIX_M, positionOS));
 }
 
-half4 ClampProjection(half4 color, float4 positionPS, float3 normalWS)
+bool ClampProjection(float4 positionPS, float3 normalWS)
 {
     // Clamp outside bounds (positionPS.x > 1 || positionPS.x < 0 || positionPS.y > 1 || positionPS.y < 0)
     float2 d = abs(positionPS.xy * 2 - 1) - 1;
@@ -46,18 +43,10 @@ half4 ClampProjection(half4 color, float4 positionPS, float3 normalWS)
     half rangedAngle = (angleR - decal_Angle) / (3.14 - decal_Angle);
     half angleBlend = smoothstep(0, decal_AngleFalloff, rangedAngle);
     half blend = depthBlend * angleBlend;
-
-    // return pow(angleBlend, 2.2);
-
-    // BlendZeroColor
-    half4 blendZeroColor = _ZeroColor;
-    #if defined(_BLEND_ALPHA)
-        blendZeroColor = half4(color.rgb, 0);
-    #endif
     
     // Finalize
-    half blendFactor = boundsClamp * zClamp * angleClamp * blend;
-    return lerp(blendZeroColor, color, saturate(blendFactor));
+    half value = boundsClamp * zClamp * angleClamp * blend;
+    return value <= 0.001;
 }
 
 #endif
