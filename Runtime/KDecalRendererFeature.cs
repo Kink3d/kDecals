@@ -7,14 +7,16 @@ namespace kTools.Decals
     {
 #region Fields
         static KDecalRendererFeature s_Instance;
-        readonly DecalRenderPass m_RenderPass;
+        readonly DecalForwardOpaquePass m_ForwardOpaquePass;
+        readonly DecalForwardTransparentPass m_ForwardTransparentPass;
 #endregion
 
 #region Constructors
         public KDecalRendererFeature()
         {
             s_Instance = this;
-            m_RenderPass = new DecalRenderPass();
+            m_ForwardOpaquePass = new DecalForwardOpaquePass();
+            m_ForwardTransparentPass = new DecalForwardTransparentPass();
         }
 #endregion
 
@@ -29,7 +31,8 @@ namespace kTools.Decals
         public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
         {
             // Enqueue passes
-            renderer.EnqueuePass(m_RenderPass);
+            renderer.EnqueuePass(m_ForwardOpaquePass);
+            renderer.EnqueuePass(m_ForwardTransparentPass);
         }
 #endregion
     }
