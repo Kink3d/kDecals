@@ -42,6 +42,8 @@ namespace kTools.Decals
             m_ColorAttachment = colorAttachment;
         }
 
+        public bool enablePerChannelDecals { get; set; }
+
         public override void OnCameraSetup(CommandBuffer cmd, ref RenderingData renderingData)
         {
             m_Renderer = renderingData.cameraData.renderer as UniversalRenderer;

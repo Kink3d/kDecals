@@ -1,7 +1,9 @@
 {
     "name": "kTools.Decals.Editor",
+    "rootNamespace": "",
     "references": [
-        "GUID:a20cc15f77b86f04b90c2f211865dd4d"
+        "GUID:a20cc15f77b86f04b90c2f211865dd4d",
+        "GUID:15fc0a57446b3144c949da3e2b9737a9"
     ],
     "includePlatforms": [
         "Editor"
