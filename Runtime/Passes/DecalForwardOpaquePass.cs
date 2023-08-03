@@ -11,7 +11,7 @@ namespace kTools.Decals
         public override string passName => "Decal Forward Opaque";
         public override string passTag => "DecalForward";
 
-        public bool forwardOnly { get; set; }
+        public RenderingMode renderingMode { get; set; }
 
         public DecalForwardOpaquePass()
         {
@@ -23,7 +23,7 @@ namespace kTools.Decals
         {
             bool Filter(DecalData decalData)
             {
-                return forwardOnly ?
+                return renderingMode == RenderingMode.Deferred ?
                     (!decalData.isTransparent && !decalData.supportsDeferred) :
                     (!decalData.isTransparent);
             }

@@ -1,4 +1,5 @@
-﻿using UnityEngine.Rendering;
+﻿using System.Reflection;
+using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
 namespace kTools.Decals
@@ -37,15 +38,17 @@ namespace kTools.Decals
             if (universalRenderer == null)
                 return;
 
+            // Calculate Rendering Mode
+            var field = typeof(UniversalRenderer).GetField("m_RenderingMode", BindingFlags.Instance | BindingFlags.NonPublic);
+            var renderingMode = (RenderingMode)field.GetValue(universalRenderer);
+
             // Enqueue passes
-            var forwardOnly = false;
-            if(universalRenderer.renderingMode == RenderingMode.Deferred)
+            if(renderingMode == RenderingMode.Deferred)
             {
                 renderer.EnqueuePass(m_GBufferPass);
-                forwardOnly = true;
             }
             
-            m_ForwardOpaquePass.forwardOnly = forwardOnly;
+            m_ForwardOpaquePass.renderingMode = renderingMode;
             renderer.EnqueuePass(m_ForwardOpaquePass);
             renderer.EnqueuePass(m_ForwardTransparentPass);
         }
