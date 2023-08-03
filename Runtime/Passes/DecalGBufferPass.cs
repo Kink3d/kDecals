@@ -64,7 +64,7 @@ namespace kTools.Decals
         public override void FilterDecals(ref List<Decal> decals)
         {
             decals = DecalSystem.decals
-                .Where(x => x.decalData? (!x.decalData.isTransparent && x.decalData.supportsDeferred) : false)
+                .Where(x => x.decalData? (!x.decalData.isTransparent && x.decalData.supportsDeferred && !x.decalData.forceForward) : false)
                 .OrderBy(x => x.decalData? x.decalData.sortingOrder : 0)
                 .ToList();
         }

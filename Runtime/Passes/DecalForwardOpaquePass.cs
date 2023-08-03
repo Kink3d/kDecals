@@ -24,7 +24,7 @@ namespace kTools.Decals
             bool Filter(DecalData decalData)
             {
                 return renderingMode == RenderingMode.Deferred ?
-                    (!decalData.isTransparent && !decalData.supportsDeferred) :
+                    (!decalData.isTransparent && (!decalData.supportsDeferred || decalData.forceForward)) :
                     (!decalData.isTransparent);
             }
 

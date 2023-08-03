@@ -63,6 +63,9 @@ namespace kTools.Decals
 
         [SerializeField]
         int m_SortingOrder;
+
+        [SerializeField]
+        bool m_ForceForward;
         
         [SerializeField]
         bool m_AffectAlbedo;
@@ -138,6 +141,9 @@ namespace kTools.Decals
 
         /// <summary>Decals with higher values are drawn on top of ones with lower values.</summary>
         public int sortingOrder => m_SortingOrder;
+
+        /// <summary>Should this Decal be rendered in Forward?</summary>
+        public bool forceForward => m_ForceForward;
 
         /// <summary>Should Decals write to Abledo? (Deferred mode only)</summary>
         public bool affectAlbedo => m_AffectAlbedo;

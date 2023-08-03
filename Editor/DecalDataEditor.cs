@@ -46,6 +46,9 @@ namespace kTools.Decals.Editor
                 "Decals with higher values are drawn on top of ones with lower values.");
 
             // Deferred
+            public static readonly GUIContent ForceForward = new GUIContent("Force Forward",
+                "Should this Decal be rendered in Forward?");
+            
             public static readonly GUIContent AffectAlbedo = new GUIContent("Affect Albedo",
                 "Should Decals write to Abledo? (Deferred mode only)");
 
@@ -75,6 +78,7 @@ namespace kTools.Decals.Editor
             public static readonly string AngleFalloff = "m_AngleFalloff";
             public static readonly string LayerMask = "m_LayerMask";
             public static readonly string SortingOrder = "m_SortingOrder";
+            public static readonly string ForceForward = "m_ForceForward";
             public static readonly string AffectAlbedo = "m_AffectAlbedo";
             public static readonly string AffectSpecular = "m_AffectSpecular";
             public static readonly string AffectSmoothness = "m_AffectSmoothness";
@@ -103,6 +107,7 @@ namespace kTools.Decals.Editor
         SerializedProperty m_AngleFalloffProp;
         SerializedProperty m_LayerMaskProp;
         SerializedProperty m_SortingOrderProp;
+        SerializedProperty m_ForceForwardProp;
         SerializedProperty m_AffectAlbedoProp;
         SerializedProperty m_AffectSpecularProp;
         SerializedProperty m_AffectSmoothnessProp;
@@ -128,6 +133,7 @@ namespace kTools.Decals.Editor
             m_AngleFalloffProp = serializedObject.FindProperty(PropertyNames.AngleFalloff);
             m_LayerMaskProp = serializedObject.FindProperty(PropertyNames.LayerMask);
             m_SortingOrderProp = serializedObject.FindProperty(PropertyNames.SortingOrder);
+            m_ForceForwardProp = serializedObject.FindProperty(PropertyNames.ForceForward);
             m_AffectAlbedoProp = serializedObject.FindProperty(PropertyNames.AffectAlbedo);
             m_AffectSpecularProp = serializedObject.FindProperty(PropertyNames.AffectSpecular);
             m_AffectSmoothnessProp = serializedObject.FindProperty(PropertyNames.AffectSmoothness);
@@ -248,6 +254,7 @@ namespace kTools.Decals.Editor
             var renderingMode = (RenderingMode)field.GetValue(renderer);
 
             var isDeferred = renderingMode == RenderingMode.Deferred;
+            var isForceForward = m_ForceForwardProp.boolValue;
             var isEnablePerChannelDecals = isDeferred && settings.enablePerChannelDecals;
             var isAllowedToUpdateGBuffers = isDeferred && settings.enablePerChannelDecals && settings.gBufferUpdateFrequency != UpdateFrequency.Never;
 
@@ -255,12 +262,17 @@ namespace kTools.Decals.Editor
             {
                 EditorGUILayout.HelpBox("Enable deferred rendering on the active UniversalRenderer to use these features.", MessageType.Info);
             }
-            else if(!isEnablePerChannelDecals)
+            else if(!isForceForward && !isEnablePerChannelDecals)
             {
                 EditorGUILayout.HelpBox("Enable per-channel Decals in Project Settings/kDecals to use these features.", MessageType.Info);
             }
 
-            using (var disabledScope = new EditorGUI.DisabledGroupScope(!isDeferred || !isEnablePerChannelDecals))
+            using (var disabledScope = new EditorGUI.DisabledGroupScope(!isDeferred))
+            {
+                EditorGUILayout.PropertyField(m_ForceForwardProp, Styles.ForceForward);
+            }
+
+            using (var disabledScope = new EditorGUI.DisabledGroupScope(!isDeferred || isForceForward || !isEnablePerChannelDecals))
             {
                 EditorGUILayout.PropertyField(m_AffectAlbedoProp, Styles.AffectAlbedo);
                 EditorGUILayout.PropertyField(m_AffectSpecularProp, Styles.AffectSpecular);
@@ -269,12 +281,12 @@ namespace kTools.Decals.Editor
                 EditorGUILayout.PropertyField(m_AffectOcclusionProp, Styles.AffectOcclusion);
             }
 
-            if(isDeferred && isEnablePerChannelDecals && !isAllowedToUpdateGBuffers)
+            if(isDeferred && !isForceForward && isEnablePerChannelDecals && !isAllowedToUpdateGBuffers)
             {
                 EditorGUILayout.HelpBox("Set GBuffer Update Frequency to something other than Never in Project Settings/kDecals to use this feature.", MessageType.Info);
             }
 
-            using (var disabledScope = new EditorGUI.DisabledGroupScope(!isDeferred || !isAllowedToUpdateGBuffers))
+            using (var disabledScope = new EditorGUI.DisabledGroupScope(!isDeferred || isForceForward || !isAllowedToUpdateGBuffers))
             {
                 EditorGUILayout.PropertyField(m_UpdateGBuffersProp, Styles.UpdateGBuffers);
             }
