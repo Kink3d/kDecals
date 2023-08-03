@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace kTools.Decals
 {
@@ -62,6 +63,27 @@ namespace kTools.Decals
 
         [SerializeField]
         int m_SortingOrder;
+
+        [SerializeField]
+        bool m_ForceForward;
+        
+        [SerializeField]
+        bool m_AffectAlbedo;
+
+        [SerializeField]
+        bool m_AffectSpecular;
+
+        [SerializeField]
+        bool m_AffectSmoothness;
+
+        [SerializeField]
+        bool m_AffectNormal;
+
+        [SerializeField]
+        bool m_AffectOcclusion;
+
+        [SerializeField]
+        bool m_UpdateGBuffers;
 #endregion
 
 #region Fields
@@ -80,6 +102,12 @@ namespace kTools.Decals
             m_AngleFalloff = 0.5f;
             m_LayerMask = -1;
             m_SortingOrder = 0;
+            m_AffectAlbedo = true;
+            m_AffectSpecular = true;
+            m_AffectSmoothness = true;
+            m_AffectNormal = true;
+            m_AffectOcclusion = true;
+            m_UpdateGBuffers = false;
         }
 #endregion
 
@@ -114,8 +142,46 @@ namespace kTools.Decals
         /// <summary>Decals with higher values are drawn on top of ones with lower values.</summary>
         public int sortingOrder => m_SortingOrder;
 
+        /// <summary>Should this Decal be rendered in Forward?</summary>
+        public bool forceForward => m_ForceForward;
+
+        /// <summary>Should Decals write to Abledo? (Deferred mode only)</summary>
+        public bool affectAlbedo => m_AffectAlbedo;
+
+        /// <summary>Should Decals write to Specular? (Deferred mode only)</summary>
+        public bool affectSpecular => m_AffectSpecular;
+
+        /// <summary>Should Decals write to Smoothness? (Deferred mode only)</summary>
+        public bool affectSmoothness => m_AffectSmoothness;
+
+        /// <summary>Should Decals write to Normal? (Deferred mode only)</summary>
+        public bool affectNormal => m_AffectNormal;
+
+        /// <summary>Should Decals write to Occlusion? (Deferred mode only)</summary>
+        public bool affectOcclusion => m_AffectOcclusion;
+
+        /// <summary>Should GBuffer copies update after this Decal is drawn?</summary>
+        public bool updateGBuffers => m_UpdateGBuffers;
+
         /// <summary>Is this Decal a transparent surface?</summary>
         public bool isTransparent => material.HasProperty("_Surface") ? material.GetFloat("_Surface") == 1 : true;
+
+        /// <summary> Does this Decal support deferred rendering? </summary>
+        public bool supportsDeferred
+        {
+            get
+            {
+                var passCount = material.passCount;
+                for(int i = 0; i < passCount; i++)
+                {
+                    var tagValue = material.shader.FindPassTagValue(i, new ShaderTagId("LightMode"));
+                    if(tagValue.name == "DecalGBuffer")
+                        return true;
+                }
+
+                return false;
+            }
+        }
 #endregion
 
 #region Asset Processing

@@ -38,8 +38,10 @@
 		ZWrite Off
 		Offset -1, -1
 
-		Pass 
+		Pass // 0: Forward
 		{
+            Tags { "LightMode" = "DecalForward" }
+
 			HLSLPROGRAM
 			// Required to compile gles 2.0 with standard srp library
             #pragma prefer_hlslcc gles
@@ -83,7 +85,59 @@
 			// -------------------------------------
             // Includes
 			#include "Packages/com.kink3d.decals/ShaderLibrary/LitInput.hlsl"
-			#include "Packages/com.kink3d.decals/ShaderLibrary/LitPass.hlsl"
+			#include "Packages/com.kink3d.decals/ShaderLibrary/LitForwardPass.hlsl"
+
+			ENDHLSL
+		}
+
+        Pass // 1: GBuffer
+		{
+            Tags { "LightMode" = "DecalGBuffer" }
+
+			HLSLPROGRAM
+            #pragma prefer_hlslcc gles
+            #pragma exclude_renderers gles gles3 glcore
+            #pragma target 4.5
+
+			// -------------------------------------
+            // Material Keywords
+			#pragma shader_feature _BLEND_ALPHA
+            #pragma shader_feature _ALPHATEST_ON
+            #pragma shader_feature _ALPHAPREMULTIPLY_ON
+			#pragma shader_feature _METALLICSPECGLOSSMAP
+            #pragma shader_feature _SPECULARHIGHLIGHTS_OFF
+            #pragma shader_feature _ENVIRONMENTREFLECTIONS_OFF
+            #pragma shader_feature _SPECULAR_SETUP
+			#pragma shader_feature _EMISSION
+			#pragma shader_feature _NORMALMAP
+            #pragma shader_feature _DECAL_PER_CHANNEL
+
+			// -------------------------------------
+            // Universal Pipeline keywords
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS_CASCADE
+            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
+            #pragma multi_compile _ _ADDITIONAL_LIGHT_SHADOWS
+            #pragma multi_compile _ _SHADOWS_SOFT
+            #pragma multi_compile _ _MIXED_LIGHTING_SUBTRACTIVE
+
+            // -------------------------------------
+            // Unity defined keywords
+            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
+            #pragma multi_compile _ LIGHTMAP_ON
+            #pragma multi_compile_fog
+
+            //--------------------------------------
+            // GPU Instancing
+            #pragma multi_compile_instancing
+
+			#pragma vertex LitGBufferPassVertex
+            #pragma fragment LitGBufferPassFragment
+
+			// -------------------------------------
+            // Includes
+			#include "Packages/com.kink3d.decals/ShaderLibrary/LitInput.hlsl"
+			#include "Packages/com.kink3d.decals/ShaderLibrary/LitGBufferPass.hlsl"
 
 			ENDHLSL
 		}
