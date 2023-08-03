@@ -13,7 +13,7 @@ namespace kTools.Decals
 
         public RenderingMode renderingMode { get; set; }
 
-        public DecalForwardOpaquePass()
+        public DecalForwardOpaquePass() : base()
         {
             // Set data
             renderPassEvent = RenderPassEvent.AfterRenderingOpaques;

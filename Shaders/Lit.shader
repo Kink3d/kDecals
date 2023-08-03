@@ -110,6 +110,7 @@
             #pragma shader_feature _SPECULAR_SETUP
 			#pragma shader_feature _EMISSION
 			#pragma shader_feature _NORMALMAP
+            #pragma shader_feature _DECAL_PER_CHANNEL
 
 			// -------------------------------------
             // Universal Pipeline keywords

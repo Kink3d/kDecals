@@ -9,6 +9,18 @@
 // -------------------------------------
 // GBuffer Uniforms
 
+#ifdef _DECAL_PER_CHANNEL
+TEXTURE2D(_GBuffer0Copy);
+TEXTURE2D(_GBuffer1Copy);
+TEXTURE2D(_GBuffer2Copy);
+TEXTURE2D(_GBuffer3Copy);
+
+SAMPLER(sampler_GBuffer0Copy);
+SAMPLER(sampler_GBuffer1Copy);
+SAMPLER(sampler_GBuffer2Copy);
+SAMPLER(sampler_GBuffer3Copy);
+#endif
+
 // -------------------------------------
 // Structs
 struct Attributes
@@ -153,6 +165,29 @@ FragmentOutput EncodeSurfaceDataToGbuffer(SurfaceData surfaceData, InputData inp
     half3 normal = packedNormalWS;
     half occlusion = surfaceData.occlusion;
     half mFlags = PackMaterialFlags(materialFlags);
+
+    #ifdef _DECAL_PER_CHANNEL
+    // Unpack Flags
+    int flags = decal_DeferredFlags;
+    bool affectAlbedo = fmod(flags, 2) == 1;
+    bool affectSpecular = fmod(flags, 4) >= 2;
+    bool affectSmoothness = fmod(flags, 8) >= 4;
+    bool affectNormal = fmod(flags, 16) >= 8;
+    bool affectOcclusion = fmod(flags, 32) >= 16;
+
+    // Sample GBuffer Copies
+    half4 gbuffer0 = SAMPLE_TEXTURE2D(_GBuffer0Copy, sampler_GBuffer0Copy, positionSS);
+    half4 gbuffer1 = SAMPLE_TEXTURE2D(_GBuffer1Copy, sampler_GBuffer1Copy, positionSS);
+    half4 gbuffer2 = SAMPLE_TEXTURE2D(_GBuffer2Copy, sampler_GBuffer2Copy, positionSS);
+    half4 gbuffer3 = SAMPLE_TEXTURE2D(_GBuffer3Copy, sampler_GBuffer3Copy, positionSS);
+    
+    // Disable Channels
+    albedo = lerp(gbuffer0.rgb, albedo, (affectAlbedo ? 1 : 0));
+    specular = lerp(gbuffer1.rgb, specular, (affectSpecular ? 1 : 0));
+    smoothness = lerp(gbuffer2.a, smoothness, (affectSmoothness ? 1 : 0));
+    normal = lerp(gbuffer2.rgb, normal, (affectNormal ? 1 : 0));
+    occlusion = lerp(gbuffer1.a, occlusion, (affectOcclusion ? 1 : 0));
+    #endif
 
     // Write to GBuffer
     FragmentOutput output;

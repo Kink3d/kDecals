@@ -8,6 +8,7 @@ float3 decal_Direction;
 half decal_DepthFalloff;
 half decal_Angle;
 half decal_AngleFalloff;
+float decal_DeferredFlags;
 
 SAMPLER(_Linear_Clamp_sampler);
 

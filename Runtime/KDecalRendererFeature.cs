@@ -12,6 +12,7 @@ namespace kTools.Decals
         static KDecalRendererFeature s_Instance;
         readonly DecalForwardOpaquePass m_ForwardOpaquePass;
         readonly DecalForwardTransparentPass m_ForwardTransparentPass;
+        readonly DecalGBufferCopyPass m_GBufferCopyPass;
         readonly DecalGBufferPass m_GBufferPass;
         
         public KDecalRendererFeature()
@@ -19,6 +20,7 @@ namespace kTools.Decals
             s_Instance = this;
             m_ForwardOpaquePass = new DecalForwardOpaquePass();
             m_ForwardTransparentPass = new DecalForwardTransparentPass();
+            m_GBufferCopyPass = new DecalGBufferCopyPass();
             m_GBufferPass = new DecalGBufferPass();
         }
         
@@ -45,6 +47,11 @@ namespace kTools.Decals
             // Enqueue passes
             if(renderingMode == RenderingMode.Deferred)
             {
+                if(settings.enablePerChannelDecals)
+                {
+                    renderer.EnqueuePass(m_GBufferCopyPass);
+                }
+
                 renderer.EnqueuePass(m_GBufferPass);
             }
             
