@@ -236,6 +236,9 @@ namespace kTools.Decals
 
         public void CleanupRenderTextures(CommandBuffer cmd)
         {
+            if(m_GBufferCopyAttachments == null)
+                return;
+
             // Release GBuffer Copies if they exist
             var length = m_GBufferCopyAttachments.Length;
             for(int i = 0; i < length; i++)

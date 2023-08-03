@@ -14,6 +14,7 @@ namespace kTools.Decals
         public override string passTag => "DecalGBuffer";
 
         private UniversalRenderer m_Renderer;
+        private RenderTargetIdentifier m_DepthIdentifier;
 
         public DecalGBufferPass() : base()
         {
@@ -28,13 +29,19 @@ namespace kTools.Decals
 
             SetupGBufferResources(renderingData);
             SetupGBufferCopyResources(renderingData, cmd, false);
+
+            // For some reason cameraDepthIdentifier is unbound now
+            // Just bind it manually here
+            var depth = new RenderTargetHandle();
+            depth.Init("_CameraDepthAttachment");
+            m_DepthIdentifier = depth.Identifier();
         }
 
         public override void Configure(CommandBuffer cmd, RenderTextureDescriptor cameraTextureDescriptor)
         {
             // We must explicitely specify we don't want any clear to avoid unwanted side-effects.
             // ScriptableRenderer will implicitely force a clear the first time the camera color/depth targets are bound.
-            ConfigureTarget(gbufferAttachmentIdentifiers, depthAttachment);
+            ConfigureTarget(gbufferAttachmentIdentifiers, m_DepthIdentifier);
             ConfigureGBufferFormats();
             ConfigureClear(ClearFlag.None, Color.black);
         }
