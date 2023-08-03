@@ -14,6 +14,9 @@ namespace kTools.Decals.Editor
         {
             public static readonly GUIContent EnablePerChannelDecals = new GUIContent("Enable Per Channel Decals",
                 "If true, deferred Decals can write to individual GBuffer channels. Increases overhead as this requires duplicating all GBuffers");
+
+            public static readonly GUIContent GBufferUpdateFrequency = new GUIContent("GBuffer Update Frequency",
+                "Sets how often the copied GBuffers should be updated. This affects the underlying values when blending per-channel Decals.\nNever: Decals are never in the underlying values\nPer Decal: Individual Decals can be written on a case by case basis\nAlways: GBuffers are updated after every Decal (not recommended)");
         }
         
         public DecalSettingsProvider(string path, SettingsScope scope = SettingsScope.Project)
@@ -35,6 +38,7 @@ namespace kTools.Decals.Editor
             EditorGUIUtility.labelWidth = previousLabelWidth * 2;
 
             EditorGUILayout.PropertyField(m_Settings.FindProperty("m_EnablePerChannelDecals"), Styles.EnablePerChannelDecals);
+            EditorGUILayout.PropertyField(m_Settings.FindProperty("m_GBufferUpdateFrequency"), Styles.GBufferUpdateFrequency);
             m_Settings?.ApplyModifiedProperties();
 
             EditorGUIUtility.labelWidth = previousLabelWidth;

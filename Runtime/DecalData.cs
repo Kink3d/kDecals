@@ -78,6 +78,9 @@ namespace kTools.Decals
 
         [SerializeField]
         bool m_AffectOcclusion;
+
+        [SerializeField]
+        bool m_UpdateGBuffers;
 #endregion
 
 #region Fields
@@ -101,6 +104,7 @@ namespace kTools.Decals
             m_AffectSmoothness = true;
             m_AffectNormal = true;
             m_AffectOcclusion = true;
+            m_UpdateGBuffers = false;
         }
 #endregion
 
@@ -149,6 +153,9 @@ namespace kTools.Decals
 
         /// <summary>Should Decals write to Occlusion? (Deferred mode only)</summary>
         public bool affectOcclusion => m_AffectOcclusion;
+
+        /// <summary>Should GBuffer copies update after this Decal is drawn?</summary>
+        public bool updateGBuffers => m_UpdateGBuffers;
 
         /// <summary>Is this Decal a transparent surface?</summary>
         public bool isTransparent => material.HasProperty("_Surface") ? material.GetFloat("_Surface") == 1 : true;

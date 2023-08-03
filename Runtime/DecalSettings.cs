@@ -5,6 +5,13 @@ using UnityEngine;
 
 namespace kTools.Decals
 {
+    public enum UpdateFrequency
+    {
+        Never = 0,
+        PerDecal = 1,
+        Always = 2,
+    }
+
     public sealed class DecalSettings : ScriptableObject
     {
         private const string kDirectory = "kDecals/Resources";
@@ -13,15 +20,25 @@ namespace kTools.Decals
         [SerializeField]
         private bool m_EnablePerChannelDecals;
 
+        [SerializeField]
+        private UpdateFrequency m_GBufferUpdateFrequency;
+
         public DecalSettings()
         {
             m_EnablePerChannelDecals = false;
+            m_GBufferUpdateFrequency = UpdateFrequency.Never;
         }
 
         public bool enablePerChannelDecals
         {
             get => m_EnablePerChannelDecals;
             set => m_EnablePerChannelDecals = value;
+        }
+
+        public UpdateFrequency gBufferUpdateFrequency
+        {
+            get => m_GBufferUpdateFrequency;
+            set => m_GBufferUpdateFrequency = value;
         }
 
         public static DecalSettings GetOrCreateSettings()

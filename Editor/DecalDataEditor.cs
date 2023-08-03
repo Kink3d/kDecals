@@ -60,6 +60,9 @@ namespace kTools.Decals.Editor
 
             public static readonly GUIContent AffectOcclusion = new GUIContent("Affect Occlusion",
                 "Should Decals write to Occlusion? (Deferred mode only)");
+
+            public static readonly GUIContent UpdateGBuffers = new GUIContent("Update GBuffers",
+                "Should GBuffer copies update after this Decal is drawn?");
         }
 
         struct PropertyNames
@@ -77,6 +80,7 @@ namespace kTools.Decals.Editor
             public static readonly string AffectSmoothness = "m_AffectSmoothness";
             public static readonly string AffectNormal = "m_AffectNormal";
             public static readonly string AffectOcclusion = "m_AffectOcclusion";
+            public static readonly string UpdateGBuffers = "m_UpdateGBuffers";
         }
 #endregion
 
@@ -104,6 +108,7 @@ namespace kTools.Decals.Editor
         SerializedProperty m_AffectSmoothnessProp;
         SerializedProperty m_AffectNormalProp;
         SerializedProperty m_AffectOcclusionProp;
+        SerializedProperty m_UpdateGBuffersProp;
 #endregion
 
 #region State
@@ -128,6 +133,7 @@ namespace kTools.Decals.Editor
             m_AffectSmoothnessProp = serializedObject.FindProperty(PropertyNames.AffectSmoothness);
             m_AffectNormalProp = serializedObject.FindProperty(PropertyNames.AffectNormal);
             m_AffectOcclusionProp = serializedObject.FindProperty(PropertyNames.AffectOcclusion);
+            m_UpdateGBuffersProp = serializedObject.FindProperty(PropertyNames.UpdateGBuffers);
 
             // Create Editors
             m_MaterialEditor = Editor.CreateEditor(m_Target.material) as MaterialEditor;
@@ -242,15 +248,16 @@ namespace kTools.Decals.Editor
             var renderingMode = (RenderingMode)field.GetValue(renderer);
 
             var isDeferred = renderingMode == RenderingMode.Deferred;
-            var isEnablePerChannelDecals = settings.enablePerChannelDecals;
+            var isEnablePerChannelDecals = isDeferred && settings.enablePerChannelDecals;
+            var isAllowedToUpdateGBuffers = isDeferred && settings.enablePerChannelDecals && settings.gBufferUpdateFrequency != UpdateFrequency.Never;
 
             if(!isDeferred)
             {
-                EditorGUILayout.HelpBox("Enable deferred rendering on the active UniversalRenderer to use these features.", MessageType.Warning);
+                EditorGUILayout.HelpBox("Enable deferred rendering on the active UniversalRenderer to use these features.", MessageType.Info);
             }
-            else if(!settings.enablePerChannelDecals)
+            else if(!isEnablePerChannelDecals)
             {
-                EditorGUILayout.HelpBox("Enable per-channel Decals in Project Settings/kDecals to use these features.", MessageType.Warning);
+                EditorGUILayout.HelpBox("Enable per-channel Decals in Project Settings/kDecals to use these features.", MessageType.Info);
             }
 
             using (var disabledScope = new EditorGUI.DisabledGroupScope(!isDeferred || !isEnablePerChannelDecals))
@@ -260,6 +267,16 @@ namespace kTools.Decals.Editor
                 EditorGUILayout.PropertyField(m_AffectSmoothnessProp, Styles.AffectSmoothness);
                 EditorGUILayout.PropertyField(m_AffectNormalProp, Styles.AffectNormal);
                 EditorGUILayout.PropertyField(m_AffectOcclusionProp, Styles.AffectOcclusion);
+            }
+
+            if(isDeferred && isEnablePerChannelDecals && !isAllowedToUpdateGBuffers)
+            {
+                EditorGUILayout.HelpBox("Set GBuffer Update Frequency to something other than Never in Project Settings/kDecals to use this feature.", MessageType.Info);
+            }
+
+            using (var disabledScope = new EditorGUI.DisabledGroupScope(!isDeferred || !isAllowedToUpdateGBuffers))
+            {
+                EditorGUILayout.PropertyField(m_UpdateGBuffersProp, Styles.UpdateGBuffers);
             }
         }
 

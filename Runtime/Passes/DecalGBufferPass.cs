@@ -38,6 +38,23 @@ namespace kTools.Decals
             ConfigureGBufferFormats();
             ConfigureClear(ClearFlag.None, Color.black);
         }
+
+        public override void OnAfterRenderDecal(ScriptableRenderContext context, Decal decal, CommandBuffer cmd, ref RenderingData renderingData)
+        {
+            if(settings.gBufferUpdateFrequency == UpdateFrequency.Never ||
+                settings.gBufferUpdateFrequency == UpdateFrequency.PerDecal && !decal.decalData.updateGBuffers)
+                return;
+
+            var length = gBufferCopyAttachments.Length;
+            for(int i = 0; i < length; i++)
+            {
+                var identifier = gBufferCopyAttachments[i].Identifier();
+                cmd.SetGlobalTexture("_SourceTex", gbufferAttachmentIdentifiers[i]);
+                cmd.Blit(gbufferAttachmentIdentifiers[i], identifier, blitMaterial, 0);
+            }
+
+            cmd.SetRenderTarget(gbufferAttachmentIdentifiers, depthAttachment);
+        }
         
         public override void OnCameraCleanup(CommandBuffer cmd)
         {

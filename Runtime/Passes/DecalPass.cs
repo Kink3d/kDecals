@@ -63,6 +63,7 @@ namespace kTools.Decals
 
 
         public abstract void FilterDecals(ref List<Decal> decals);
+        public virtual void OnAfterRenderDecal(ScriptableRenderContext context, Decal decal, CommandBuffer command, ref RenderingData renderingData) {}
 
         public override void OnCameraSetup(CommandBuffer cmd, ref RenderingData renderingData)
         {
@@ -103,6 +104,7 @@ namespace kTools.Decals
 
                     // Render
                     RenderDecal(context, decal, cullingResults, ref renderingData);
+                    OnAfterRenderDecal(context, decal, cmd, ref renderingData);
                 }
 
                 ListPool<Decal>.Release(decals);
