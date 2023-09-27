@@ -30,6 +30,17 @@ namespace kTools.Decals
             "_GBuffer6"
         };
 
+        static readonly string[] kGBufferCopyNames = new string[]
+        {
+            "_GBuffer0Copy",
+            "_GBuffer1Copy",
+            "_GBuffer2Copy",
+            "_GBuffer3Copy",
+            "_GBuffer4Copy",
+            "_GBuffer5Copy",
+            "_GBuffer6Copy"
+        };
+
         private int GBufferAlbedoIndex => 0;
         private int GBufferSpecularMetallicIndex => 1;
         private int GBufferNormalSmoothnessIndex => 2;
@@ -44,9 +55,12 @@ namespace kTools.Decals
         private GraphicsFormat[] m_GBufferFormats;
         private Material m_BlitMaterial;
 
+        private System.Reflection.PropertyInfo m_RenderTargetFormatProp;
+
         public DecalPass()
         {
             m_ColorAttachment = colorAttachment;
+            m_RenderTargetFormatProp = typeof(ScriptableRenderPass).GetProperty("renderTargetFormat", BindingFlags.Instance | BindingFlags.NonPublic);
         }
         
         public abstract string passName { get; }
@@ -255,9 +269,12 @@ namespace kTools.Decals
         internal void SetupGBufferResources(RenderingData renderingData)
         {
             var gbufferSliceCount = 4;
-            m_GBufferAttachments = new RenderTargetHandle[gbufferSliceCount];
-            m_GbufferAttachmentIdentifiers = new RenderTargetIdentifier[gbufferSliceCount];
-            m_GBufferFormats = new GraphicsFormat[gbufferSliceCount];
+            if (m_GBufferAttachments?.Length != gbufferSliceCount)
+            {
+                m_GBufferAttachments = new RenderTargetHandle[gbufferSliceCount];
+                m_GbufferAttachmentIdentifiers = new RenderTargetIdentifier[gbufferSliceCount];
+                m_GBufferFormats = new GraphicsFormat[gbufferSliceCount];
+            }
 
             for (int i = 0; i < gbufferSliceCount; i++)
             {
@@ -286,11 +303,15 @@ namespace kTools.Decals
                 return;
 
             var length = m_GBufferAttachments.Length;
-            m_GBufferCopyAttachments = new RenderTargetHandle[length];
+            if (m_GBufferCopyAttachments?.Length != length)
+                m_GBufferCopyAttachments = new RenderTargetHandle[length];
             for(int i = 0; i < length; i++)
             {
-                m_GBufferCopyAttachments[i] = new RenderTargetHandle();
-                m_GBufferCopyAttachments[i].Init($"_GBuffer{i}Copy");
+                if(m_GBufferCopyAttachments[i] == null)
+                {
+                    m_GBufferCopyAttachments[i] = new RenderTargetHandle();
+                    m_GBufferCopyAttachments[i].Init(kGBufferCopyNames[i]);
+                }
 
                 if(createTextures)
                 {
@@ -305,13 +326,11 @@ namespace kTools.Decals
         // Of course the field it sets is also internal so we need to use reflection...
         internal void ConfigureGBufferFormats()
         {
-            var property = typeof(ScriptableRenderPass).GetProperty("renderTargetFormat", BindingFlags.Instance | BindingFlags.NonPublic);
-            var formats = (GraphicsFormat[])property.GetValue(this);
+            GraphicsFormat[] formats = (GraphicsFormat[])m_RenderTargetFormatProp.GetValue(this);
             for(int i = 0; i < m_GBufferFormats.Length; i++)
             {
                 formats[i] = m_GBufferFormats[i];
             }
-            property.SetValue(this, formats);
         }
 
         // Copy of DeferredLights.GetGBufferFormat since its internal
