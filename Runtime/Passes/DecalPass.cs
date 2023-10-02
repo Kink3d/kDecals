@@ -125,6 +125,7 @@ namespace kTools.Decals
             }
 
             ExecuteCommand(context, cmd);
+            CommandBufferPool.Release(cmd);
         }
         
         bool Culling(ScriptableRenderContext context, Decal decal, ref RenderingData renderingData, out CullingResults cullingResults)
