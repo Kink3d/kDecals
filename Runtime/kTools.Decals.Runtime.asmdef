@@ -1,9 +1,12 @@
 {
     "name": "kTools.Decals.Runtime",
+    "rootNamespace": "",
     "references": [
         "GUID:5b43c0c6ef930bc4a9f21e5f0d7107e4",
         "GUID:15fc0a57446b3144c949da3e2b9737a9",
-        "GUID:df380645f10b7bc4b97d4f5eb6303d95"
+        "GUID:df380645f10b7bc4b97d4f5eb6303d95",
+        "GUID:7bc295bcaa777430493a3246f93b9288",
+        "GUID:e0cd26848372d4e5c891c569017e11f1"
     ],
     "includePlatforms": [
         "Android",
