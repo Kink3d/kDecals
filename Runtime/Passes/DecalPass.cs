@@ -12,13 +12,6 @@ namespace kTools.Decals
     {
         const float kErrorMargin = 0.1f;
 
-        static readonly string[] s_ShaderTags = new string[]
-        {
-            "UniversalForward",
-            "LightweightForward",
-            "SRPDefaultUnlit",
-        };
-
         static readonly string[] kGBufferNames = new string[]
         {
             "_GBuffer0",
@@ -40,6 +33,9 @@ namespace kTools.Decals
             "_GBuffer5Copy",
             "_GBuffer6Copy"
         };
+
+        private ShaderTagId m_LightMode;
+        private ShaderTagId[] m_ShaderTags;
 
         private int GBufferAlbedoIndex => 0;
         private int GBufferSpecularMetallicIndex => 1;
@@ -223,10 +219,23 @@ namespace kTools.Decals
                 enableInstancing = true,
             };
 
-            // Shader Tags
-            for (int i = 0; i < s_ShaderTags.Length; ++i)
+            if(m_LightMode == null)
+                m_LightMode = new ShaderTagId("LightMode");
+
+            if(m_ShaderTags == null)
             {
-                drawingSettings.SetShaderPassName(i, new ShaderTagId(s_ShaderTags[i]));
+                m_ShaderTags = new ShaderTagId[]
+                {
+                    new ShaderTagId("UniversalForward"),
+                    new ShaderTagId("LightweightForward"),
+                    new ShaderTagId("SRPDefaultUnlit"),
+                };
+            }
+
+            // Shader Tags
+            for (int i = 0; i < m_ShaderTags.Length; ++i)
+            {
+                drawingSettings.SetShaderPassName(i, m_ShaderTags[i]);
             }
 
             // Get Material data
@@ -235,7 +244,7 @@ namespace kTools.Decals
             var passCount = material.passCount;
             for(int i = 0; i < passCount; i++)
             {
-                var tagValue = material.shader.FindPassTagValue(i, new ShaderTagId("LightMode"));
+                var tagValue = material.shader.FindPassTagValue(i, m_LightMode);
                 if(tagValue.name == passTag)
                 {
                     passIndex = i;
