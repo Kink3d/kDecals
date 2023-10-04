@@ -14,6 +14,8 @@ namespace kTools.Decals
         readonly DecalForwardTransparentPass m_ForwardTransparentPass;
         readonly DecalGBufferCopyPass m_GBufferCopyPass;
         readonly DecalGBufferPass m_GBufferPass;
+        readonly System.Reflection.FieldInfo m_RenderingModeInfo;
+        private UniversalRenderer m_Renderer;
         
         public KDecalRendererFeature()
         {
@@ -22,11 +24,18 @@ namespace kTools.Decals
             m_ForwardTransparentPass = new DecalForwardTransparentPass();
             m_GBufferCopyPass = new DecalGBufferCopyPass();
             m_GBufferPass = new DecalGBufferPass();
+            m_RenderingModeInfo = typeof(UniversalRenderer).GetField("m_RenderingMode", BindingFlags.Instance | BindingFlags.NonPublic);
         }
         
         public override void Create()
         {
             name = "kDecals";
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            m_Renderer = null;
+            base.Dispose(disposing);
         }
         
         public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
@@ -35,17 +44,21 @@ namespace kTools.Decals
             if (universalRenderer == null)
                 return;
 
-            // Calculate Rendering Mode
-            var field = typeof(UniversalRenderer).GetField("m_RenderingMode", BindingFlags.Instance | BindingFlags.NonPublic);
-            var renderingMode = (RenderingMode)field.GetValue(universalRenderer);
+            if (m_Renderer != universalRenderer)
+            {
+                m_Renderer = universalRenderer;
+
+                // Calculate Rendering Mode
+                var renderingMode = (RenderingMode)m_RenderingModeInfo.GetValue(universalRenderer);
+                m_ForwardOpaquePass.renderingMode = renderingMode;
+            }
 
             // Set pass flags
             var settings = DecalSettings.GetOrCreateSettings();
             m_GBufferPass.enablePerChannelDecals = settings.enablePerChannelDecals;
-            m_ForwardOpaquePass.renderingMode = renderingMode;
 
             // Enqueue passes
-            if(renderingMode == RenderingMode.Deferred)
+            if(m_ForwardOpaquePass.renderingMode == RenderingMode.Deferred)
             {
                 if(settings.enablePerChannelDecals)
                 {

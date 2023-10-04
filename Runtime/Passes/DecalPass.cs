@@ -12,13 +12,6 @@ namespace kTools.Decals
     {
         const float kErrorMargin = 0.1f;
 
-        static readonly string[] s_ShaderTags = new string[]
-        {
-            "UniversalForward",
-            "LightweightForward",
-            "SRPDefaultUnlit",
-        };
-
         static readonly string[] kGBufferNames = new string[]
         {
             "_GBuffer0",
@@ -29,6 +22,20 @@ namespace kTools.Decals
             "_GBuffer5",
             "_GBuffer6"
         };
+
+        static readonly string[] kGBufferCopyNames = new string[]
+        {
+            "_GBuffer0Copy",
+            "_GBuffer1Copy",
+            "_GBuffer2Copy",
+            "_GBuffer3Copy",
+            "_GBuffer4Copy",
+            "_GBuffer5Copy",
+            "_GBuffer6Copy"
+        };
+
+        private ShaderTagId m_LightMode;
+        private ShaderTagId[] m_ShaderTags;
 
         private int GBufferAlbedoIndex => 0;
         private int GBufferSpecularMetallicIndex => 1;
@@ -44,9 +51,12 @@ namespace kTools.Decals
         private GraphicsFormat[] m_GBufferFormats;
         private Material m_BlitMaterial;
 
+        private System.Reflection.PropertyInfo m_RenderTargetFormatProp;
+
         public DecalPass()
         {
             m_ColorAttachment = colorAttachment;
+            m_RenderTargetFormatProp = typeof(ScriptableRenderPass).GetProperty("renderTargetFormat", BindingFlags.Instance | BindingFlags.NonPublic);
         }
         
         public abstract string passName { get; }
@@ -111,6 +121,7 @@ namespace kTools.Decals
             }
 
             ExecuteCommand(context, cmd);
+            CommandBufferPool.Release(cmd);
         }
         
         bool Culling(ScriptableRenderContext context, Decal decal, ref RenderingData renderingData, out CullingResults cullingResults)
@@ -208,10 +219,23 @@ namespace kTools.Decals
                 enableInstancing = true,
             };
 
-            // Shader Tags
-            for (int i = 0; i < s_ShaderTags.Length; ++i)
+            if(m_LightMode == null)
+                m_LightMode = new ShaderTagId("LightMode");
+
+            if(m_ShaderTags == null)
             {
-                drawingSettings.SetShaderPassName(i, new ShaderTagId(s_ShaderTags[i]));
+                m_ShaderTags = new ShaderTagId[]
+                {
+                    new ShaderTagId("UniversalForward"),
+                    new ShaderTagId("LightweightForward"),
+                    new ShaderTagId("SRPDefaultUnlit"),
+                };
+            }
+
+            // Shader Tags
+            for (int i = 0; i < m_ShaderTags.Length; ++i)
+            {
+                drawingSettings.SetShaderPassName(i, m_ShaderTags[i]);
             }
 
             // Get Material data
@@ -220,7 +244,7 @@ namespace kTools.Decals
             var passCount = material.passCount;
             for(int i = 0; i < passCount; i++)
             {
-                var tagValue = material.shader.FindPassTagValue(i, new ShaderTagId("LightMode"));
+                var tagValue = material.shader.FindPassTagValue(i, m_LightMode);
                 if(tagValue.name == passTag)
                 {
                     passIndex = i;
@@ -255,9 +279,12 @@ namespace kTools.Decals
         internal void SetupGBufferResources(RenderingData renderingData)
         {
             var gbufferSliceCount = 4;
-            m_GBufferAttachments = new RenderTargetHandle[gbufferSliceCount];
-            m_GbufferAttachmentIdentifiers = new RenderTargetIdentifier[gbufferSliceCount];
-            m_GBufferFormats = new GraphicsFormat[gbufferSliceCount];
+            if (m_GBufferAttachments?.Length != gbufferSliceCount)
+            {
+                m_GBufferAttachments = new RenderTargetHandle[gbufferSliceCount];
+                m_GbufferAttachmentIdentifiers = new RenderTargetIdentifier[gbufferSliceCount];
+                m_GBufferFormats = new GraphicsFormat[gbufferSliceCount];
+            }
 
             for (int i = 0; i < gbufferSliceCount; i++)
             {
@@ -286,11 +313,15 @@ namespace kTools.Decals
                 return;
 
             var length = m_GBufferAttachments.Length;
-            m_GBufferCopyAttachments = new RenderTargetHandle[length];
+            if (m_GBufferCopyAttachments?.Length != length)
+                m_GBufferCopyAttachments = new RenderTargetHandle[length];
             for(int i = 0; i < length; i++)
             {
-                m_GBufferCopyAttachments[i] = new RenderTargetHandle();
-                m_GBufferCopyAttachments[i].Init($"_GBuffer{i}Copy");
+                if(m_GBufferCopyAttachments[i] == null)
+                {
+                    m_GBufferCopyAttachments[i] = new RenderTargetHandle();
+                    m_GBufferCopyAttachments[i].Init(kGBufferCopyNames[i]);
+                }
 
                 if(createTextures)
                 {
@@ -305,13 +336,11 @@ namespace kTools.Decals
         // Of course the field it sets is also internal so we need to use reflection...
         internal void ConfigureGBufferFormats()
         {
-            var property = typeof(ScriptableRenderPass).GetProperty("renderTargetFormat", BindingFlags.Instance | BindingFlags.NonPublic);
-            var formats = (GraphicsFormat[])property.GetValue(this);
+            GraphicsFormat[] formats = (GraphicsFormat[])m_RenderTargetFormatProp.GetValue(this);
             for(int i = 0; i < m_GBufferFormats.Length; i++)
             {
                 formats[i] = m_GBufferFormats[i];
             }
-            property.SetValue(this, formats);
         }
 
         // Copy of DeferredLights.GetGBufferFormat since its internal
