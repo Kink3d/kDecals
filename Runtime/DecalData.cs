@@ -26,6 +26,11 @@ namespace kTools.Decals
     }
 #endif
 #endregion
+
+    public static class DecalUtils
+    {
+        public static ShaderTagId LightModeTagId = new ShaderTagId("LightMode");
+    }
     
     /// <summary>
     /// DecalData ScriptableObject
@@ -166,8 +171,6 @@ namespace kTools.Decals
         /// <summary>Is this Decal a transparent surface?</summary>
         public bool isTransparent => material.HasProperty("_Surface") ? material.GetFloat("_Surface") == 1 : true;
 
-        static readonly ShaderTagId s_LightMode = new ShaderTagId("LightMode");
-
         /// <summary> Does this Decal support deferred rendering? </summary>
         public bool supportsDeferred
         {
@@ -176,7 +179,7 @@ namespace kTools.Decals
                 var passCount = material.passCount;
                 for(int i = 0; i < passCount; i++)
                 {
-                    var tagValue = material.shader.FindPassTagValue(i, s_LightMode);
+                    var tagValue = material.shader.FindPassTagValue(i, DecalUtils.LightModeTagId);
                     if(tagValue.name == "DecalGBuffer")
                         return true;
                 }

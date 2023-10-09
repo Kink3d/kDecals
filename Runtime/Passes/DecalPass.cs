@@ -33,8 +33,7 @@ namespace kTools.Decals
             "_GBuffer5Copy",
             "_GBuffer6Copy"
         };
-
-        private ShaderTagId m_LightMode;
+        
         private ShaderTagId[] m_ShaderTags;
 
         private int GBufferAlbedoIndex => 0;
@@ -219,9 +218,6 @@ namespace kTools.Decals
                 enableInstancing = true,
             };
 
-            if(m_LightMode == null)
-                m_LightMode = new ShaderTagId("LightMode");
-
             if(m_ShaderTags == null)
             {
                 m_ShaderTags = new ShaderTagId[]
@@ -244,7 +240,7 @@ namespace kTools.Decals
             var passCount = material.passCount;
             for(int i = 0; i < passCount; i++)
             {
-                var tagValue = material.shader.FindPassTagValue(i, m_LightMode);
+                var tagValue = material.shader.FindPassTagValue(i, DecalUtils.LightModeTagId);
                 if(tagValue.name == passTag)
                 {
                     passIndex = i;
