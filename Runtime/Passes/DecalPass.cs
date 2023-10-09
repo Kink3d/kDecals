@@ -316,8 +316,9 @@ namespace kTools.Decals
                 if(m_GBufferCopyAttachments[i] == null)
                 {
                     m_GBufferCopyAttachments[i] = new RenderTargetHandle();
-                    m_GBufferCopyAttachments[i].Init(kGBufferCopyNames[i]);
                 }
+
+                m_GBufferCopyAttachments[i].Init(kGBufferCopyNames[i]);
 
                 if(createTextures)
                 {
