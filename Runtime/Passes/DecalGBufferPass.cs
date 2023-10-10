@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using Cathei.LinqGen;
 
 namespace kTools.Decals
 {
@@ -69,10 +70,14 @@ namespace kTools.Decals
 
         public override void FilterDecals(ref List<Decal> decals)
         {
-            decals = DecalSystem.decals
+            var items = DecalSystem.decals.Gen()
                 .Where(x => x.decalData? (!x.decalData.isTransparent && x.decalData.supportsDeferred && !x.decalData.forceForward) : false)
-                .OrderBy(x => x.decalData? x.decalData.sortingOrder : 0)
-                .ToList();
+                .OrderBy(x => x.decalData? x.decalData.sortingOrder : 0);
+
+            foreach (var item in items)
+            {
+                decals.Add(item);
+            }
         }
     }
 }

@@ -95,6 +95,7 @@ namespace kTools.Decals
 
                 // Sorting
                 var decals = ListPool<Decal>.Get();
+                decals.Clear();
                 FilterDecals(ref decals);
 
                 foreach(var decal in decals)

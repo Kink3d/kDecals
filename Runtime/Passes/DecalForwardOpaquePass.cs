@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using Cathei.LinqGen;
 
 namespace kTools.Decals
 {
@@ -21,17 +22,28 @@ namespace kTools.Decals
 
         public override void FilterDecals(ref List<Decal> decals)
         {
-            bool Filter(DecalData decalData)
+            if (renderingMode == RenderingMode.Deferred)
             {
-                return renderingMode == RenderingMode.Deferred ?
-                    (!decalData.isTransparent && (!decalData.supportsDeferred || decalData.forceForward)) :
-                    (!decalData.isTransparent);
-            }
+                var items = DecalSystem.decals.Gen()
+                    .Where(x => x.decalData? (!x.decalData.isTransparent && (!x.decalData.supportsDeferred || x.decalData.forceForward)) : false)
+                    .OrderBy(x => x.decalData? x.decalData.sortingOrder : 0);
 
-            decals = DecalSystem.decals
-                .Where(x => x.decalData? Filter(x.decalData) : false)
-                .OrderBy(x => x.decalData? x.decalData.sortingOrder : 0)
-                .ToList();
+                foreach (var item in items)
+                {
+                    decals.Add(item);
+                }
+            }
+            else
+            {
+                var items = DecalSystem.decals.Gen()
+                    .Where(x=> x.decalData? (!x.decalData.isTransparent) : false)
+                    .OrderBy(x => x.decalData? x.decalData.sortingOrder : 0);
+
+                foreach (var item in items)
+                {
+                    decals.Add(item);
+                }
+            }
         }
     }
 }
