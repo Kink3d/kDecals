@@ -181,7 +181,7 @@ namespace kTools.Decals
                 for(int i = 0; i < passCount; i++)
                 {
                     var tagValue = material.shader.FindPassTagValue(i, DecalUtils.LightModeTagId);
-                    if (tagValue == DecalUtils.DecalGBufferTagId)
+                    if(tagValue == DecalUtils.DecalGBufferTagId)
                         return true;
                 }
 
