@@ -30,6 +30,7 @@ namespace kTools.Decals
     public static class DecalUtils
     {
         public static ShaderTagId LightModeTagId = new ShaderTagId("LightMode");
+        public static ShaderTagId DecalGBufferTagId = new ShaderTagId("DecalGBuffer");
     }
     
     /// <summary>
@@ -180,7 +181,7 @@ namespace kTools.Decals
                 for(int i = 0; i < passCount; i++)
                 {
                     var tagValue = material.shader.FindPassTagValue(i, DecalUtils.LightModeTagId);
-                    if(tagValue.name == "DecalGBuffer")
+                    if (tagValue == DecalUtils.DecalGBufferTagId)
                         return true;
                 }
 

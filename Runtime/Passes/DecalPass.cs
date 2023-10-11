@@ -35,6 +35,7 @@ namespace kTools.Decals
         };
         
         private ShaderTagId[] m_ShaderTags;
+        private ShaderTagId m_PassTagId;
 
         private int GBufferAlbedoIndex => 0;
         private int GBufferSpecularMetallicIndex => 1;
@@ -228,6 +229,9 @@ namespace kTools.Decals
                 };
             }
 
+            if(m_PassTagId == null)
+                m_PassTagId = new ShaderTagId(passTag);
+
             // Shader Tags
             for (int i = 0; i < m_ShaderTags.Length; ++i)
             {
@@ -241,7 +245,7 @@ namespace kTools.Decals
             for(int i = 0; i < passCount; i++)
             {
                 var tagValue = material.shader.FindPassTagValue(i, DecalUtils.LightModeTagId);
-                if(tagValue.name == passTag)
+                if(tagValue == m_PassTagId)
                 {
                     passIndex = i;
                     break;
