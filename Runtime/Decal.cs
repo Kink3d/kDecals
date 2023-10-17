@@ -8,6 +8,8 @@ namespace kTools.Decals
     [AddComponentMenu("kTools/Decal"), ExecuteInEditMode]
     public sealed class Decal : MonoBehaviour
     {
+        static Vector3[] s_VectorPlanes = new Vector3[8];
+
 #region Serialized Fields
         [SerializeField]
         DecalData m_DecalData;
@@ -135,7 +137,7 @@ namespace kTools.Decals
         void UpdateCullingPlanes()
         {
             // Create plane vertices
-            var vertices = new Vector3[8];
+            var vertices = s_VectorPlanes;
             vertices[0].x = vertices[1].x = vertices[4].x = vertices[5].x = -kDefaultScale;
             vertices[2].x = vertices[3].x = vertices[6].x = vertices[7].x = kDefaultScale;
             vertices[0].y = vertices[2].y = vertices[4].y = vertices[6].y = kDefaultScale;
