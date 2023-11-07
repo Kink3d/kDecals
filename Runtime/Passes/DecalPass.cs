@@ -33,8 +33,11 @@ namespace kTools.Decals
             "_GBuffer5Copy",
             "_GBuffer6Copy"
         };
-        
+
+        private static Plane[] s_Planes = new Plane[6];
+
         private ShaderTagId[] m_ShaderTags;
+        private ShaderTagId m_PassTagId;
 
         private int GBufferAlbedoIndex => 0;
         private int GBufferSpecularMetallicIndex => 1;
@@ -105,7 +108,7 @@ namespace kTools.Decals
 
                     // Culling
                     var cullingResults = new CullingResults();
-                    if(!Culling(context, decal, ref renderingData, out cullingResults))
+                    if(!Culling(context, decal, ref renderingData, ref cullingResults))
                         continue;
 
                     // Shader Uniforms
@@ -124,12 +127,11 @@ namespace kTools.Decals
             CommandBufferPool.Release(cmd);
         }
         
-        bool Culling(ScriptableRenderContext context, Decal decal, ref RenderingData renderingData, out CullingResults cullingResults)
+        bool Culling(ScriptableRenderContext context, Decal decal, ref RenderingData renderingData, ref CullingResults cullingResults)
         {
             // Setup
             var camera = renderingData.cameraData.camera;
             var localScale = decal.transform.lossyScale;
-            cullingResults = new CullingResults();
 
             // Never draw in Preview
             if(camera.cameraType == CameraType.Preview)
@@ -146,7 +148,8 @@ namespace kTools.Decals
             var bounds = new Bounds(decal.transform.position, boundsScale);
             
             // Test against frustum planes
-            var planes = GeometryUtility.CalculateFrustumPlanes(camera);
+            Plane[] planes = s_Planes;
+            GeometryUtility.CalculateFrustumPlanes(camera, planes);
             if(!GeometryUtility.TestPlanesAABB(planes, bounds))
                 return false;
             
@@ -229,6 +232,9 @@ namespace kTools.Decals
                 };
             }
 
+            if(m_PassTagId == null)
+                m_PassTagId = new ShaderTagId(passTag);
+
             // Shader Tags
             for (int i = 0; i < m_ShaderTags.Length; ++i)
             {
@@ -242,7 +248,7 @@ namespace kTools.Decals
             for(int i = 0; i < passCount; i++)
             {
                 var tagValue = material.shader.FindPassTagValue(i, DecalUtils.LightModeTagId);
-                if(tagValue.name == passTag)
+                if(tagValue == m_PassTagId)
                 {
                     passIndex = i;
                     break;
