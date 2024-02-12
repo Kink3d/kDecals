@@ -59,9 +59,9 @@ struct Varyings
 
     DECLARE_LIGHTMAP_OR_SH(lightmapUV, vertexSH, 1);
 
-// #ifdef _ADDITIONAL_LIGHTS
+#ifdef _ADDITIONAL_LIGHTS
     float3 positionWS               : TEXCOORD2;
-// #endif
+#endif
 
 #ifdef _NORMALMAP
     float4 normalWS                 : TEXCOORD3;    // xyz: normal, w: viewDir.x
@@ -89,9 +89,9 @@ void InitializeInputData(Varyings input, half3 normalTS, out InputData inputData
 {
     inputData = (InputData)0;
 
-// #ifdef _ADDITIONAL_LIGHTS
+#ifdef _ADDITIONAL_LIGHTS
     inputData.positionWS = input.positionWS;
-// #endif
+#endif
 
 #ifdef _NORMALMAP
     half3 viewDirWS = half3(input.normalWS.w, input.tangentWS.w, input.bitangentWS.w);

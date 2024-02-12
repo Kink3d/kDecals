@@ -68,6 +68,7 @@ namespace kTools.Decals
             set => m_Mesh = value;
         }
 
+        /// <summary>Submesh index for Mesh Decals.</summary>
         public int subMeshIndex
         {
             get => m_SubmeshIndex;
