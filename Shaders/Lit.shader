@@ -47,6 +47,10 @@
             #pragma prefer_hlslcc gles
             #pragma exclude_renderers d3d11_9x
 			#pragma target 2.0
+            
+            // -------------------------------------
+            // Decal Keywords
+            #pragma multi_compile _DECALTYPE_MESH _DECALTYPE_PROJECTION
 
 			// -------------------------------------
             // Material Keywords
@@ -98,6 +102,10 @@
             #pragma prefer_hlslcc gles
             #pragma exclude_renderers gles gles3 glcore
             #pragma target 4.5
+
+            // -------------------------------------
+            // Decal Keywords
+            #pragma multi_compile _DECALTYPE_MESH _DECALTYPE_PROJECTION
 
 			// -------------------------------------
             // Material Keywords

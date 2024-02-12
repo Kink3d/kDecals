@@ -58,7 +58,7 @@ half4 frag(Varyings input) : SV_Target
     float4 uv = input.positionPS;
     uv.xy = TRANSFORM_TEX(uv, _BaseMap);
 
-    half4 texColor = SAMPLE_DECAL2D(_BaseMap, uv);
+    half4 texColor = SAMPLE_DECAL2D(_BaseMap, sampler_BaseMap, uv);
     half3 color = texColor.rgb * _BaseColor.rgb;
     half alpha = texColor.a * _BaseColor.a;
     AlphaDiscard(alpha, _Cutoff);

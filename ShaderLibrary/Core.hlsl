@@ -10,11 +10,13 @@ half decal_Angle;
 half decal_AngleFalloff;
 float decal_DeferredFlags;
 
-SAMPLER(_Linear_Clamp_sampler);
-
 // -------------------------------------
 // Macros
-#define SAMPLE_DECAL2D(texture, positionPS) SAMPLE_TEXTURE2D(texture, _Linear_Clamp_sampler, positionPS.xy / positionPS.w);
+#ifdef _DECALTYPE_PROJECTION
+#define SAMPLE_DECAL2D(texture, sampler, positionPS) SAMPLE_TEXTURE2D(texture, sampler, positionPS.xy / positionPS.w);
+#else
+#define SAMPLE_DECAL2D(texture, sampler, uv) SAMPLE_TEXTURE2D(texture, sampler, uv);
+#endif
 
 // -------------------------------------
 // Projection

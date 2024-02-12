@@ -114,8 +114,22 @@ namespace kTools.Decals
                     SetShaderUniforms(context, decal, cmd);
                     SetShaderKeywords(context, decal, cmd);
 
+                    // Update PassTag
+                    m_PassTagId = new ShaderTagId(passTag);
+
                     // Render
-                    RenderDecal(context, decal, cullingResults, ref renderingData);
+                    switch(decal.decalType)
+                    {
+                        case DecalType.Projection:
+                            RenderProjectionDecal(context, decal, cullingResults, ref renderingData);
+                            break;
+                        case DecalType.Mesh:
+                            RenderMeshDecal(cmd, decal);
+                            break;
+                        default:
+                            throw new System.Exception($"Unknown DecalType ({decal.decalType})");
+                    }
+
                     OnAfterRenderDecal(context, decal, cmd, ref renderingData);
                 }
 
@@ -128,6 +142,10 @@ namespace kTools.Decals
         
         bool Culling(ScriptableRenderContext context, Decal decal, ref RenderingData renderingData, ref CullingResults cullingResults)
         {
+            // Allow URP to automatically cull Mesh Decals
+            if(decal.decalType == DecalType.Mesh)
+                return true;
+
             // Setup
             var camera = renderingData.cameraData.camera;
             var localScale = decal.transform.lossyScale;
@@ -193,11 +211,12 @@ namespace kTools.Decals
         {
             var settings = DecalSettings.GetOrCreateSettings();
             SetKeyword(cmd, "_DECAL_PER_CHANNEL", settings.enablePerChannelDecals);
+            SetKeyword(cmd, "_DECALTYPE_PROJECTION", decal.decalType == DecalType.Projection);
 
             ExecuteCommand(context, cmd);
         }
         
-        void RenderDecal(ScriptableRenderContext context, Decal decal, CullingResults cullingResults, ref RenderingData renderingData)
+        void RenderProjectionDecal(ScriptableRenderContext context, Decal decal, CullingResults cullingResults, ref RenderingData renderingData)
         {
             // Create Settings
             var drawingSettings = GetDrawingSettings(decal, ref renderingData);
@@ -206,6 +225,24 @@ namespace kTools.Decals
             
             // Draw Renderers
 			context.DrawRenderers(cullingResults, ref drawingSettings, ref filteringSettings, ref renderStateBlock);
+        }
+
+        void RenderMeshDecal(CommandBuffer cmd, Decal decal)
+        {
+            var mesh = decal.mesh;
+            if(mesh == null)
+                return;
+
+            var submeshCount = mesh.subMeshCount;
+            if(decal.subMeshIndex >= submeshCount)
+                return;
+            
+            // Get Drawing data
+            var matrix = decal.transform.localToWorldMatrix;
+            var material = decal.decalData.material;
+            var passIndex = GetPassIndex(decal);
+            
+            cmd.DrawMesh(mesh, matrix, material, decal.subMeshIndex, passIndex);
         }
 
         DrawingSettings GetDrawingSettings(Decal decal, ref RenderingData renderingData)
@@ -231,33 +268,32 @@ namespace kTools.Decals
                 };
             }
 
-            if(m_PassTagId == null)
-                m_PassTagId = new ShaderTagId(passTag);
-
             // Shader Tags
             for (int i = 0; i < m_ShaderTags.Length; ++i)
             {
                 drawingSettings.SetShaderPassName(i, m_ShaderTags[i]);
             }
+            
+            // Override Material data
+            drawingSettings.overrideMaterial = decal.decalData.material;
+            drawingSettings.overrideMaterialPassIndex = GetPassIndex(decal);
+            return drawingSettings;
+        }
 
-            // Get Material data
+        private int GetPassIndex(Decal decal)
+        {
             var material = decal.decalData.material;
-            var passIndex = 0;
             var passCount = material.passCount;
             for(int i = 0; i < passCount; i++)
             {
                 var tagValue = material.shader.FindPassTagValue(i, DecalUtils.LightModeTagId);
                 if(tagValue == m_PassTagId)
                 {
-                    passIndex = i;
-                    break;
+                    return i;
                 }
             }
-            
-            // Override Material data
-            drawingSettings.overrideMaterial = material;
-            drawingSettings.overrideMaterialPassIndex = passIndex;
-            return drawingSettings;
+
+            return 0;
         }
 
         public void CleanupRenderTextures(CommandBuffer cmd)

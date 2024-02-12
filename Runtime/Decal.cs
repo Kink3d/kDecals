@@ -2,6 +2,12 @@
 
 namespace kTools.Decals
 {
+    public enum DecalType
+    {
+        Projection,
+        Mesh
+    }
+    
     /// <summary>
     /// Decal Object component.
     /// </summary>
@@ -12,7 +18,16 @@ namespace kTools.Decals
 
 #region Serialized Fields
         [SerializeField]
+        DecalType m_DecalType;
+
+        [SerializeField]
         DecalData m_DecalData;
+
+        [SerializeField]
+        Mesh m_Mesh;
+
+        [SerializeField]
+        int m_SubmeshIndex = 0;
 #endregion
 
 #region Fields
@@ -32,6 +47,13 @@ namespace kTools.Decals
 #endregion
 
 #region Properties
+        /// <summary>Decal Type defines how this Decal should be rendered.</summary>
+        public DecalType decalType
+        {
+            get => m_DecalType;
+            set => m_DecalType = value;
+        }
+
         /// <summary>Data object providing settings and inputs for this Decal.</summary>
         public DecalData decalData
         {
@@ -39,10 +61,23 @@ namespace kTools.Decals
             set => m_DecalData = value;
         }
 
+        /// <summary>Mesh for Decal.</summary>
+        public Mesh mesh
+        {
+            get => m_Mesh;
+            set => m_Mesh = value;
+        }
+
+        public int subMeshIndex
+        {
+            get => m_SubmeshIndex;
+            set => m_SubmeshIndex = value;
+        }
+
         /// <summary>Decal projection matrix.</summary>
         public Matrix4x4 matrix => m_Matrix;
 
-        /// <summary>Clipping planes used for culling Decal.</summary>
+        /// <summary>Clipping planes used for culling projection Decals.</summary>
         public Plane[] clipPlanes => m_ClipPlanes;
 #endregion
 
@@ -64,27 +99,26 @@ namespace kTools.Decals
             if(decalData == null)
                 return;
             
-            // Track when DecalData changes
-            bool decalDataChanged = false;
+            if(decalType == DecalType.Projection)
+            {
+                UpdateProjectionDecal();
+            }
+        }
+
+        bool HasDecalDataChanged()
+        {
             if(decalData != m_PreviousDecalData)
             {
-                decalDataChanged = true;
                 m_PreviousDecalData = decalData;
+                return true;
             }
 
-            // Update depth when DecalData.depth changes
-            if(decalData.depth != transform.localScale.z)
-            {
-                var localScale = transform.localScale;
-                transform.localScale = new Vector3(localScale.x, localScale.y, decalData.depth);
-            }
+            return false;
+        }
 
-            // Update projection when decalData or Transform changes
-            if(decalDataChanged || transform.hasChanged)
-            {
-                UpdateProjectionMatrix();
-                UpdateCullingPlanes();
-            }
+        bool HasDepthChanged()
+        {
+            return decalData.depth != transform.localScale.z;
         }
 #endregion
 
@@ -108,6 +142,21 @@ namespace kTools.Decals
 #endregion
 
 #region Projection
+        void UpdateProjectionDecal()
+        {
+            if(HasDepthChanged())
+            {
+                var localScale = transform.localScale;
+                transform.localScale = new Vector3(localScale.x, localScale.y, decalData.depth);
+            }
+
+            if(HasDecalDataChanged() || transform.hasChanged)
+            {
+                UpdateProjectionMatrix();
+                UpdateCullingPlanes();
+            }
+        }
+
         void UpdateProjectionMatrix()
         {
             // Setup
