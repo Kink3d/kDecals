@@ -234,17 +234,40 @@ namespace kTools.Decals
 #if UNITY_EDITOR
         void OnDrawGizmos()
         {
+            Gizmos.DrawIcon(transform.position, kGizmoPath, true);
+
+            switch(decalType)
+            {
+                case DecalType.Projection:
+                    DrawProjectionGizmos();
+                    break;
+                case DecalType.Mesh:
+                    DrawMeshGizmos();
+                    break;
+                default:
+                    throw new System.Exception($"Unknown DecalType ({decalType})");
+            }
+        }
+
+        void DrawProjectionGizmos()
+        {
+            var isSelected = UnityEditor.Selection.activeObject == gameObject;
+            if (!isSelected)
+                return;
+
             // Setup
             var bounds = new Vector3(1.0f, 1.0f, 0.0f);
             var color = new Color32(0, 120, 255, 255);
-            var selectedColor = new Color32(255, 255, 255, 255);
-            var isSelected = UnityEditor.Selection.activeObject == gameObject;
 
             // Draw Gizmos
             Gizmos.matrix = transform.localToWorldMatrix;
-            Gizmos.color = isSelected ? selectedColor : color;
-            Gizmos.DrawIcon(transform.position, kGizmoPath, true);
+            Gizmos.color = color;
             Gizmos.DrawWireCube(Vector3.zero, bounds);
+        }
+
+        void DrawMeshGizmos()
+        {
+            // TODO: Draw Mesh Gizmos
         }
 #endif
 #endregion
