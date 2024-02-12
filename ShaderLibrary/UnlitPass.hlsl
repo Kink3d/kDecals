@@ -11,12 +11,18 @@ struct Attributes
 {
     float4 positionOS       : POSITION;
     float3 normalOS         : NORMAL;
+    float4 texcoord         : TEXCOORD0;
     UNITY_VERTEX_INPUT_INSTANCE_ID
 };
 
 struct Varyings
 {
-    float4 positionPS       : TEXCOORD0;
+#ifdef _DECALTYPE_PROJECTION
+    float4 positionPS               : TEXCOORD0;
+#else
+    float4 uv                       : TEXCOORD0;
+#endif
+
     float fogCoord  		: TEXCOORD1;
     float3 normalWS         : TEXCOORD2;
     float4 vertex 			: SV_POSITION;
@@ -37,7 +43,13 @@ Varyings vert(Attributes input)
 
     VertexPositionInputs vertexInput = GetVertexPositionInputs(input.positionOS.xyz);
     output.vertex = vertexInput.positionCS;
+
+#ifdef _DECALTYPE_PROJECTION
     output.positionPS = TransformObjectToProjection(input.positionOS);
+#else
+    output.uv = input.texcoord;
+#endif
+
     output.fogCoord = ComputeFogFactor(vertexInput.positionCS.z);
     output.normalWS = TransformObjectToWorldNormal(input.normalOS);
 
@@ -51,11 +63,18 @@ half4 frag(Varyings input) : SV_Target
     UNITY_SETUP_INSTANCE_ID(input);
     UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 
+#ifdef _DECALTYPE_PROJECTION
     if(ClampProjection(input.positionPS, input.normalWS))
         discard;
+#endif
+    
+#ifdef _DECALTYPE_PROJECTION
+    float4 uv = input.positionPS;
+#else
+    float4 uv = input.uv;
+#endif
 
     // Apply Scale & Offset
-    float4 uv = input.positionPS;
     uv.xy = TRANSFORM_TEX(uv, _BaseMap);
 
     half4 texColor = SAMPLE_DECAL2D(_BaseMap, sampler_BaseMap, uv);
